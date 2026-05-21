@@ -56,10 +56,19 @@
 /* =========================================================
    Base
    ========================================================= */
+:root {
+  /* Tell browsers (and form controls) this is a light-themed site.
+     Without this, Chrome's Auto Dark Mode and Safari's auto-tinting
+     can invert the page to a dark scheme when the user's OS is in
+     dark mode, which makes the warm-paper canvas look near-black. */
+  color-scheme: light;
+}
+
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  background: var(--color-paper);
 }
 
 body {
@@ -68,6 +77,9 @@ body {
   font-family: var(--font-sans);
   font-feature-settings: "ss01", "cv11";
   -webkit-text-size-adjust: 100%;
+  /* Prevent Chrome's Auto Dark Mode from re-coloring our images
+     and backgrounds when the user is in OS dark mode. */
+  forced-color-adjust: none;
 }
 
 ::selection {
