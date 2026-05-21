@@ -93,10 +93,8 @@ export default function RootLayout({
             and the page never depends on the IntersectionObserver to
             unhide content. */}
         <script
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html:
-              "document.documentElement.classList.add('js');",
+            __html: "document.documentElement.classList.add('js');",
           }}
         />
       </head>
