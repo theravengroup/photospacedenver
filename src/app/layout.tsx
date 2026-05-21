@@ -87,6 +87,19 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        {/* Set the .js flag before first paint so reveal-on-scroll knows
+            JS is live. Without this, .reveal stays visible at opacity 1
+            and the page never depends on the IntersectionObserver to
+            unhide content. */}
+        <script
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html:
+              "document.documentElement.classList.add('js');",
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-paper text-graphite font-sans">
         {children}
       </body>
