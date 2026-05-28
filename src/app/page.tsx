@@ -62,7 +62,8 @@ export default function HomePage() {
                 sizes="(min-width: 1024px) 44vw, 100vw"
               />
               {/* Location badge — reinforces "this address" */}
-              <span className="absolute left-5 top-4 rounded-full bg-ink/70 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-bone backdrop-blur">
+              <span className="absolute left-5 top-4 flex items-center gap-1.5 rounded-full bg-bone px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-ink shadow-lg">
+                <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="shrink-0 text-tungsten fill-current"><circle cx="5" cy="4" r="2"/><path d="M5 1a3 3 0 0 1 3 3c0 2-3 5.5-3 5.5S2 6 2 4a3 3 0 0 1 3-3z" fillRule="evenodd" clipRule="evenodd"/></svg>
                 209 Kalamath St · Denver
               </span>
             </div>
@@ -99,8 +100,9 @@ export default function HomePage() {
                 sizes="(min-width: 1024px) 44vw, 100vw"
               />
               {/* Location badge — reinforces "take it anywhere" */}
-              <span className="absolute left-5 top-4 rounded-full bg-ink/70 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-bone backdrop-blur">
-                On location · Denver metro &amp; beyond
+              <span className="absolute left-5 top-4 flex items-center gap-1.5 rounded-full bg-tungsten px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-ink shadow-lg">
+                <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="shrink-0 fill-current"><path d="M1 5h8M6 2l3 3-3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
+                On location · anywhere
               </span>
             </div>
             <div className="flex flex-1 flex-col p-7 sm:p-8">
@@ -109,7 +111,7 @@ export default function HomePage() {
               <p className="mt-3 text-muted">
                 A deep rental inventory you pick up and take on location — cameras &amp; lenses, flash
                 &amp; continuous lighting, modifiers, grip, video, audio, and production supplies.
-                Pickup or Denver-metro delivery. No studio booking required.
+                No studio booking required. Pickup at the shop, or we ship anywhere.
               </p>
               <ul className="mt-5 space-y-2 text-sm text-muted">
                 <li><span className="mr-2 text-tungsten">&bull;</span>Phase One · Canon · Nikon · Fuji · Blackmagic</li>

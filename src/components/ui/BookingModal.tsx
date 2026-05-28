@@ -7,7 +7,7 @@ const STEPS = [
   {
     n: "01",
     title: "Pick your block",
-    body: "Choose a length — from a 2-hour minimum to a full day — and a time that works. Same rate, 24/7.",
+    body: "Choose a length — from a 2-hour minimum to a full day — and a time that works. Same rate, 24/7. Add lighting kits or an on-call assistant at checkout.",
   },
   {
     n: "02",
