@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PhotoSpace Denver
 
-## Getting Started
+Marketing + conversion site for **PhotoSpace Denver** — "Denver's creative production hub": studio
+rental, memberships, gear rental, podcast/interview production, and production services. This is the
+canonical site that consolidates the former `photospace.studio` into `photospacedenver.com`.
 
-First, run the development server:
+Built and maintained by **The Raven Group**.
+
+## Stack
+
+- **Next.js 16** (App Router, Turbopack) · **React 19** · **TypeScript** · **Tailwind CSS 4**
+- Fonts: **Fraunces** (display) + **Geist** (UI/body) · animation: **Framer Motion** (`motion`)
+- Deployed on **Vercel**
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # fill in keys as needed (all optional for local dev)
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Scripts: `npm run dev` · `npm run build` · `npm run start` · `npm run lint` · `npm run typecheck`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+  app/                 # routes (pages, route handlers, sitemap/robots/OG/icons)
+    [slug]/            # 7 high-intent SEO landing pages (from seo-pages.ts)
+    services/[slug]/   # 5 service detail pages (from service-pages.ts)
+    api/inquiry/       # form submission handler (Resend)
+  components/
+    ui/ layout/ sections/ cta/ forms/   # reusable, mostly server components
+  lib/
+    content/           # SINGLE SOURCE OF TRUTH for all business facts
+    schema.ts          # JSON-LD builders
+  proxy.ts             # legacy photospace.studio -> canonical 301s
+docs/                  # REBUILD_PLAN, REBUILD_REPORT, audit/
+public/images/         # studio + gear photography
+```
 
-## Learn More
+## Content model
 
-To learn more about Next.js, take a look at the following resources:
+**All business facts live in `src/lib/content/*`** (NAP, pricing, studio specs, gear catalog, services,
+SEO pages, FAQs, testimonials, clients, redirects). Never hard-code these in components. Change a fact
+once, it propagates everywhere — including `/studio-facts` and `/studio-facts.json`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Environment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+See [`.env.example`](.env.example). Forms work without keys locally (accepted + logged); set
+`RESEND_API_KEY` in production to deliver email. Analytics and Stripe are env-gated and inert until set.
 
-## Deploy on Vercel
+## Standards & docs
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `CLAUDE.md`, `DESIGN.md`, `COMPONENT_SOURCES.md`, `SECURITY_RULES.md` — project + TRG standards
+- [`ROADMAP.md`](ROADMAP.md) — current status and what's next
+- [`docs/REBUILD_REPORT.md`](docs/REBUILD_REPORT.md) — what was built and open TODOs
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy
+
+Pushing to `main` deploys to Vercel. Add `photospace.studio` (+ `www`) as project domains so the
+legacy-domain redirect (`src/proxy.ts`) fires in production.
