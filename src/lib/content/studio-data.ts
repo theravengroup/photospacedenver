@@ -39,7 +39,7 @@ export const STUDIO = {
    */
   included: [
     "A starter Profoto strobe or LED lighting kit",
-    "A working grip & stand package (C-stands, flags, sandbags, apple boxes)",
+    "Colorado's largest in-studio grip selection — C-stands, flags, booms, cutters, frames, fabrics, apple boxes, sandbags, and more",
     "Tether station (Capture One, Lightroom, Phocus)",
     "Chroma green & blue, seamless paper, and V-flat backdrops",
     "Controllable daylight on giant windows",

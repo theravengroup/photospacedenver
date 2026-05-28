@@ -136,10 +136,11 @@ export type NavItem = {
 };
 
 /**
- * Primary navigation — the two lanes lead: Studio and Gear.
- * Studio is a single link (its SEO landing pages are reachable from /studio and
- * the footer, deliberately not the menu). Gear opens a mega-menu of the seven
- * rental categories. Book is rendered as the header CTA.
+ * Primary navigation — Studio · Gear (mega-menu) · Memberships.
+ * SEO landing pages (/photo-studio-rental-denver etc.) are search-only —
+ * no nav or footer links; they get indexed via the sitemap.
+ * Pricing is studio-specific; it lives at /pricing and is linked contextually,
+ * not as a top-level nav item. Book is the header CTA button.
  */
 export const NAV_PRIMARY: NavItem[] = [
   {
@@ -166,19 +167,20 @@ export const NAV_PRIMARY: NavItem[] = [
     href: "/memberships",
     blurb: "Recurring studio access at member rates.",
   },
-  { label: "Pricing", href: "/pricing", blurb: "Simple pricing. Nothing hidden." },
 ];
 
-/** Footer link columns. SEO landing pages live here (not the primary menu). */
+/**
+ * Footer link columns. SEO landing pages are NOT linked here — they are
+ * search-only pages, discoverable via sitemap, not user navigation.
+ */
 export const FOOTER_COLUMNS: { heading: string; links: NavItem[] }[] = [
   {
     heading: "Studio",
     links: [
       { label: "The Studio", href: "/studio" },
-      { label: "Photo Studio Rental", href: "/photo-studio-rental-denver" },
-      { label: "Video Studio Rental", href: "/video-studio-rental-denver" },
-      { label: "Cyclorama Wall", href: "/cyclorama-wall-denver" },
-      { label: "Podcast & Interview", href: "/podcast-studio-denver" },
+      { label: "Pricing", href: "/pricing" },
+      { label: "Memberships", href: "/memberships" },
+      { label: "Book the Studio", href: "/book" },
     ],
   },
   {
@@ -189,15 +191,12 @@ export const FOOTER_COLUMNS: { heading: string; links: NavItem[] }[] = [
       { label: "Flash Lighting", href: "/flash-strobe-rental-denver" },
       { label: "Continuous Lighting", href: "/continuous-lighting-rental-denver" },
       { label: "Grip & Electrical", href: "/grip-equipment-rental-denver" },
+      { label: "Request a Quote", href: "/request-estimate" },
     ],
   },
   {
-    heading: "Company",
+    heading: "Info",
     links: [
-      { label: "Pricing", href: "/pricing" },
-      { label: "Memberships", href: "/memberships" },
-      { label: "Book the Studio", href: "/book" },
-      { label: "Request a Quote", href: "/request-estimate" },
       { label: "About", href: "/about" },
       { label: "FAQ", href: "/faq" },
       { label: "Contact", href: "/contact" },

@@ -15,8 +15,8 @@ export function SiteFooter() {
               <span className="text-[0.625rem] uppercase tracking-[0.22em] text-tungsten">Denver</span>
             </Link>
             <p className="measure-tight mt-4 text-sm text-muted">
-              Denver&rsquo;s purpose-built photo and video studio since {SITE.foundedYear}. Pro gear, 24/7
-              access, and a team that knows the work.
+              A purpose-built photo &amp; video studio for rent in Denver since {SITE.foundedYear} —
+              and a full gear-rental house for shoots that happen on location.
             </p>
             <address className="mt-6 space-y-1 text-sm not-italic text-muted">
               <div className="text-bone">{SITE.address.full}</div>

@@ -39,41 +39,47 @@ export default function HomePage() {
         <Reveal>
           <p className="eyebrow">Denver, Colorado · Est. {SITE.foundedYear}</p>
           <h1 className="font-display mt-5 tracking-tight leading-[1.03] text-[clamp(1.55rem,7.5vw,5.5rem)]">
-            A studio to shoot in.<br />The gear to shoot with.
+            A studio for shooting here.<br />Gear for shooting anywhere.
           </h1>
           <p className="measure mt-6 text-lg text-muted">
-            <strong className="font-semibold text-bone">photospace</strong> is two things under one
-            roof in Denver, both run by working pros since {SITE.foundedYear}. Pick your lane:
+            Since {SITE.foundedYear}, <strong className="font-semibold text-bone">photospace</strong> has
+            given Denver creatives two things worth having: a studio worth shooting in, and pro gear worth
+            taking on the road.
           </p>
         </Reveal>
 
-        {/* Two services, as two image-led cards */}
+        {/* Two services — studio (shoot here) vs. gear (take anywhere) */}
         <Reveal delay={0.1} className="mt-12 grid gap-5 lg:grid-cols-2">
-          {/* 01 — Studio */}
+
+          {/* 01 — Studio Rental: shoot HERE, at this address */}
           <div className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-bone/[0.04] transition-colors hover:border-tungsten/40">
             <div className="relative aspect-[16/10] overflow-hidden">
               <Image
                 src="/images/space/stage.jpg"
-                alt="photospace Denver's shooting floor, cyclorama, and grip wall"
+                alt="photospace shooting floor — 1,900 ft² with real cyclorama and grip wall"
                 fill
                 priority
                 className="object-cover transition-transform duration-700 ease-cinematic group-hover:scale-[1.04]"
                 sizes="(min-width: 1024px) 44vw, 100vw"
               />
+              {/* Location badge — reinforces "this address" */}
               <span className="absolute left-5 top-4 rounded-full bg-ink/70 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-bone backdrop-blur">
-                01 · Rent the space
+                209 Kalamath St · Denver
               </span>
             </div>
             <div className="flex flex-1 flex-col p-7 sm:p-8">
-              <h2 className="font-display text-display-lg">Studio Rental</h2>
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-tungsten">01 · Rent the studio</p>
+              <h2 className="font-display mt-2 text-display-lg">Shoot here.</h2>
               <p className="mt-3 text-muted">
-                A custom-built 1,900 ft² photo &amp; video studio — real cyclorama, a starter light &amp;
-                grip kit, and 24/7 access. From $100/hr.
+                A custom-built 1,900 ft² photo &amp; video studio at 209 Kalamath St — real cyclorama,
+                Colorado&rsquo;s largest in-studio grip selection, a starter lighting kit, and 24/7 access.
+                From $100/hr.
               </p>
               <ul className="mt-5 space-y-2 text-sm text-muted">
                 <li><span className="mr-2 text-tungsten">&bull;</span>Real 20&prime;-wide cyclorama wall</li>
-                <li><span className="mr-2 text-tungsten">&bull;</span>Tether station + art-director lounge</li>
-                <li><span className="mr-2 text-tungsten">&bull;</span>$100/hr · 2-hour minimum</li>
+                <li><span className="mr-2 text-tungsten">&bull;</span>CO&rsquo;s largest in-studio grip selection — included</li>
+                <li><span className="mr-2 text-tungsten">&bull;</span>Tether station · client lounge · working kitchen</li>
+                <li><span className="mr-2 text-tungsten">&bull;</span>$100/hr · 2-hour minimum · same rate 24/7</li>
               </ul>
               <div className="mt-auto flex flex-wrap gap-3 pt-8">
                 <BookingCTA page="home" location="hero-studio" />
@@ -81,38 +87,44 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          {/* 02 — Gear */}
+
+          {/* 02 — Gear Rental: take it anywhere, on location */}
           <div className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-bone/[0.04] transition-colors hover:border-tungsten/40">
             <div className="relative aspect-[16/10] overflow-hidden">
               <Image
                 src="/images/gear/gear.jpg"
-                alt="A flat-lay of cameras, lenses, Profoto lighting, and grip available to rent"
+                alt="Cameras, Profoto lighting, lenses, and grip — available for on-location rental"
                 fill
                 priority
                 className="object-cover transition-transform duration-700 ease-cinematic group-hover:scale-[1.04]"
                 sizes="(min-width: 1024px) 44vw, 100vw"
               />
+              {/* Location badge — reinforces "take it anywhere" */}
               <span className="absolute left-5 top-4 rounded-full bg-ink/70 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-bone backdrop-blur">
-                02 · Rent the gear
+                On location · Denver metro &amp; beyond
               </span>
             </div>
             <div className="flex flex-1 flex-col p-7 sm:p-8">
-              <h2 className="font-display text-display-lg">Gear Rental</h2>
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-tungsten">02 · Rent the gear</p>
+              <h2 className="font-display mt-2 text-display-lg">Take it anywhere.</h2>
               <p className="mt-3 text-muted">
-                A full rental house — cameras, lighting, modifiers &amp; grip from 27+ top brands.
-                Pickup or Denver-metro delivery.
+                A deep rental inventory you pick up and take on location — cameras &amp; lenses, flash
+                &amp; continuous lighting, modifiers, grip, video, audio, and production supplies.
+                Pickup or Denver-metro delivery. No studio booking required.
               </p>
               <ul className="mt-5 space-y-2 text-sm text-muted">
-                <li><span className="mr-2 text-tungsten">&bull;</span>Medium format through cinema</li>
-                <li><span className="mr-2 text-tungsten">&bull;</span>Profoto, Arri &amp; Nanlux lighting</li>
-                <li><span className="mr-2 text-tungsten">&bull;</span>~400 line items, daily rates</li>
+                <li><span className="mr-2 text-tungsten">&bull;</span>Phase One · Canon · Nikon · Fuji · Blackmagic</li>
+                <li><span className="mr-2 text-tungsten">&bull;</span>Profoto · Arri · Nanlux · Kino Flo lighting</li>
+                <li><span className="mr-2 text-tungsten">&bull;</span>Video, audio &amp; production supplies</li>
+                <li><span className="mr-2 text-tungsten">&bull;</span>~400 items · daily rates · pickup or delivery</li>
               </ul>
               <div className="mt-auto flex flex-wrap gap-3 pt-8">
-                <Button href="/gear-rental">Browse gear rental</Button>
+                <Button href="/gear-rental">Browse all gear rental</Button>
                 <EstimateCTA page="home" location="hero-gear" variant="ghost" />
               </div>
             </div>
           </div>
+
         </Reveal>
 
         <Reveal delay={0.15}>

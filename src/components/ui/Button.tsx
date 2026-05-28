@@ -39,6 +39,7 @@ export type ButtonProps = {
   /** For the <button> element (no href). */
   type?: "button" | "submit";
   disabled?: boolean;
+  onClick?: () => void;
 };
 
 function trackingAttrs(t?: CtaTracking) {
@@ -63,13 +64,14 @@ export function Button({
   ariaLabel,
   type = "button",
   disabled,
+  onClick,
 }: ButtonProps) {
   const classes = cn(BASE, SIZES[size], VARIANTS[variant], className);
   const attrs = trackingAttrs(tracking);
 
   if (!href) {
     return (
-      <button type={type} disabled={disabled} className={classes} aria-label={ariaLabel} {...attrs}>
+      <button type={type} disabled={disabled} onClick={onClick} className={classes} aria-label={ariaLabel} {...attrs}>
         {children}
       </button>
     );
