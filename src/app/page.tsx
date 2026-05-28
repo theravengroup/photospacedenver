@@ -181,7 +181,7 @@ export default function HomePage() {
           </div>
           <p className="mt-6 text-sm text-muted">
             Need something different? Multi-day campaigns and member rates —{" "}
-            <Link href="/pricing" className="text-tungsten hover:underline">see full pricing</Link>.
+            <Link href="/studio-pricing" className="text-tungsten hover:underline">see full pricing</Link>.
           </p>
         </Reveal>
 

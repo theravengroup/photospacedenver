@@ -95,7 +95,7 @@ export function buildStudioFacts() {
     idealUseCases: STUDIO.useCases.map((u) => u.title),
     pages: {
       studio: absoluteUrl("/studio"),
-      pricing: absoluteUrl("/pricing"),
+      pricing: absoluteUrl("/studio-pricing"),
       memberships: absoluteUrl("/memberships"),
       gearRental: absoluteUrl("/gear-rental"),
       podcast: absoluteUrl("/podcast-studio-denver"),

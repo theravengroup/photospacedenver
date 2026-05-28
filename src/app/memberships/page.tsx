@@ -56,7 +56,7 @@ export default function MembershipsPage() {
         >
           Apply for Membership
         </Button>
-        <Button href="/pricing" variant="outline" size="md">Compare options</Button>
+        <Button href="/studio-pricing" variant="outline" size="md">Compare options</Button>
       </PageHero>
 
       <Section tone="light" containerSize="wide">

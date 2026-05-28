@@ -178,7 +178,7 @@ export const FOOTER_COLUMNS: { heading: string; links: NavItem[] }[] = [
     heading: "Studio",
     links: [
       { label: "The Studio", href: "/studio" },
-      { label: "Pricing", href: "/pricing" },
+      { label: "Studio Pricing", href: "/studio-pricing" },
       { label: "Memberships", href: "/memberships" },
       { label: "Book the Studio", href: "/book" },
     ],

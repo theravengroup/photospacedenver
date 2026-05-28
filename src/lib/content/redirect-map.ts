@@ -15,6 +15,7 @@ export type Redirect = { from: string; to: string };
 export const REDIRECTS: Redirect[] = [
   // Studio
   { from: "/studio", to: "/studio" },
+  { from: "/pricing", to: "/studio-pricing" },
   { from: "/studio-guide", to: "/studio-facts" },
   { from: "/location", to: "/contact" },
   { from: "/lifespace", to: "/content-creator-studio-denver" }, // TODO(confirm)

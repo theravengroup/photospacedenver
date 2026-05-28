@@ -131,20 +131,20 @@ export const MEMBERSHIP_TERMS = {
   notRequiredToRent: true,
 };
 
-/** Add-on studio lighting kits (from old /book-online). */
+/** Add-on studio lighting kits (from /book-online). Profoto strobes + Chimera modifiers; Fiilex/Astra/Nanlux LED. */
 export const LIGHTING_KITS = {
   strobe: [
-    { name: "Strobe — Level One", price: 110 },
-    { name: "Strobe — Level Two", price: 180 },
-    { name: "Strobe — Level Three", price: 200 },
-    { name: "Strobe — Level Four", price: 270 },
-    { name: "Strobe — Pro", price: 300 },
+    { name: "Strobe — Level One", label: "One light", price: 110, contents: "1× Profoto D4 2400ws pack, 1× head, lamp extension, PocketWizard, reflector, softbox" },
+    { name: "Strobe — Level Two", label: "2-point lighting", price: 180, contents: "1× Profoto D4 2400ws pack, 2× heads, lamp extensions, PocketWizard, 2× reflector, 2× softbox" },
+    { name: "Strobe — Level Three", label: "3-point lighting", price: 200, contents: "1× Profoto D4 2400ws pack, 3× heads, 2× lamp extension, PocketWizard, 3× reflector, 3× softbox" },
+    { name: "Strobe — Level Four", label: "4-point lighting", price: 270, contents: "2× Profoto D4 2400ws packs, 4× heads, 2× lamp extension, PocketWizard, 4× reflector, 4× softbox" },
+    { name: "Strobe — Pro", label: "Ultimate strobe package", price: 300, contents: "2× Profoto Pro-8a 2400ws packs (Air Remote), 4× Pro heads, 2× lamp extension, Air Remote, 4× reflector, 4× softbox, beauty dish" },
   ],
   video: [
-    { name: "Video — Level One", price: 135 },
-    { name: "Video — Level Two", price: 225 },
-    { name: "Video — Level Three", price: 375 },
-    { name: "Video — Pro", price: 375 },
+    { name: "Video — Level One", label: "3-light LED", price: 135, contents: "3× Fiilex P360 head, 3× barndoor, 3× diffuser, 3× standard umbrella" },
+    { name: "Video — Level Two", label: "Panel kit", price: 225, contents: "2× Astra LED panel, 2× Chimera softbox" },
+    { name: "Video — Level Three", label: "High output", price: 375, contents: "2× Nanlux Dyno 650c" },
+    { name: "Video — Pro", label: "Pro output kit", price: 375, contents: "2× Nanlux Dyno 650c, 2× Nanlux TK-280B" },
   ],
 };
 
