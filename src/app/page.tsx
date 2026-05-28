@@ -42,13 +42,44 @@ export default function HomePage() {
             A studio to shoot in. The gear to shoot with.
           </h1>
           <p className="measure mt-6 text-lg text-muted">
-            PhotoSpace is two things under one roof in Denver: a custom-built photo &amp; video studio
-            for rent, and a full gear-rental house — cameras, lighting, and grip from the top brands.
-            Both run by working pros, since {SITE.foundedYear}.
+            PhotoSpace is two things under one roof in Denver, both run by working pros since{" "}
+            {SITE.foundedYear}. Pick your lane:
           </p>
-          <div className="mt-9 flex flex-wrap gap-3">
-            <BookingCTA page="home" location="hero" size="lg" />
-            <Button href="/gear-rental" variant="outline" size="lg">Explore gear rental</Button>
+        </Reveal>
+
+        {/* Two services, made explicit */}
+        <Reveal delay={0.1} className="mt-10">
+          <div className="flex flex-col gap-5 border-t border-hairline py-7 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+            <div className="sm:max-w-xl">
+              <div className="flex items-baseline gap-3">
+                <span className="font-display text-display-md text-tungsten">01</span>
+                <h2 className="font-display text-display-lg">Studio Rental</h2>
+              </div>
+              <p className="mt-2 text-muted">
+                A custom-built 1,900 ft² photo &amp; video studio — real cyclorama, a starter light &amp;
+                grip kit, and 24/7 access. From $100/hr.
+              </p>
+            </div>
+            <div className="flex shrink-0 flex-wrap gap-3">
+              <BookingCTA page="home" location="hero-studio" />
+              <Button href="/studio" variant="ghost">The studio &rarr;</Button>
+            </div>
+          </div>
+          <div className="flex flex-col gap-5 border-y border-hairline py-7 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+            <div className="sm:max-w-xl">
+              <div className="flex items-baseline gap-3">
+                <span className="font-display text-display-md text-tungsten">02</span>
+                <h2 className="font-display text-display-lg">Gear Rental</h2>
+              </div>
+              <p className="mt-2 text-muted">
+                A full rental house — cameras, lighting, modifiers &amp; grip from 27+ top brands.
+                Pickup or Denver-metro delivery.
+              </p>
+            </div>
+            <div className="flex shrink-0 flex-wrap gap-3">
+              <Button href="/gear-rental">Browse gear rental</Button>
+              <EstimateCTA page="home" location="hero-gear" variant="ghost" />
+            </div>
           </div>
         </Reveal>
 
@@ -72,78 +103,8 @@ export default function HomePage() {
         <ClientLogoWall />
       </Section>
 
-      {/* The two lanes */}
-      <Section tone="light" containerSize="wide">
-        <SectionHeading
-          eyebrow="Two ways to work here"
-          title="Rent the space, or rent the gear."
-          intro="Two equal sides of PhotoSpace — book the studio for the room, the cyc, and the light, or rent gear from the house for any shoot, anywhere in the metro."
-        />
-        <div className="mt-10 grid gap-8 lg:grid-cols-2">
-          {/* Studio lane */}
-          <Reveal className="group flex flex-col overflow-hidden rounded-card border border-hairline">
-            <div className="relative aspect-[16/10] overflow-hidden">
-              <Image
-                src="/images/space/stage.jpg"
-                alt="PhotoSpace Denver shooting floor and cyclorama"
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                sizes="(min-width: 1024px) 44vw, 100vw"
-              />
-            </div>
-            <div className="flex flex-1 flex-col p-7">
-              <p className="eyebrow">Rent the space</p>
-              <h3 className="font-display mt-2 text-display-lg">The Studio</h3>
-              <p className="mt-3 text-muted">
-                1,900 ft² of controllable light with a real cyclorama, a starter light and grip kit,
-                a calibrated tether station, and 24/7 access.
-              </p>
-              <ul className="mt-5 space-y-2 text-sm">
-                {["Real 20'-wide cyclorama wall", "Tether station + art-director lounge", "$100/hr · 2-hour minimum"].map((p) => (
-                  <li key={p}><span className="mr-2 text-tungsten">&bull;</span>{p}</li>
-                ))}
-              </ul>
-              <div className="mt-auto flex flex-wrap gap-3 pt-7">
-                <BookingCTA page="home" location="lane-studio" />
-                <Button href="/studio" variant="ghost">Explore the studio &rarr;</Button>
-              </div>
-            </div>
-          </Reveal>
-
-          {/* Gear lane */}
-          <Reveal delay={0.1} className="group flex flex-col overflow-hidden rounded-card border border-hairline">
-            <div className="relative aspect-[16/10] overflow-hidden">
-              <Image
-                src="/images/gear/gear.jpg"
-                alt="Camera, lighting, and grip gear available for rental"
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                sizes="(min-width: 1024px) 44vw, 100vw"
-              />
-            </div>
-            <div className="flex flex-1 flex-col p-7">
-              <p className="eyebrow">Rent the gear</p>
-              <h3 className="font-display mt-2 text-display-lg">Gear Rental</h3>
-              <p className="mt-3 text-muted">
-                A full rental house — cameras, lighting, modifiers, and grip from Profoto, Phase One,
-                Arri, and two dozen more of the top brands.
-              </p>
-              <ul className="mt-5 space-y-2 text-sm">
-                {["Medium format through cinema", "Profoto, Arri & Nanlux lighting", "Pickup or Denver-metro delivery"].map((p) => (
-                  <li key={p}><span className="mr-2 text-tungsten">&bull;</span>{p}</li>
-                ))}
-              </ul>
-              <div className="mt-auto flex flex-wrap gap-3 pt-7">
-                <EstimateCTA page="home" location="lane-gear" />
-                <Button href="/gear-rental" variant="ghost">Browse gear &rarr;</Button>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </Section>
-
       {/* Studio: not a converted warehouse */}
-      <Section tone="dark" className="grain" containerSize="wide">
+      <Section tone="light" containerSize="wide">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal>
             <SectionHeading
@@ -171,7 +132,7 @@ export default function HomePage() {
       </Section>
 
       {/* Gear: the rental house + brands */}
-      <Section tone="light" containerSize="wide">
+      <Section tone="dark" className="grain" containerSize="wide">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal className="order-2 lg:order-1">
             <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-hairline">
@@ -205,7 +166,7 @@ export default function HomePage() {
       </Section>
 
       {/* Built for the work */}
-      <Section tone="light" className="!pt-0" containerSize="wide">
+      <Section tone="light" containerSize="wide">
         <SectionHeading
           eyebrow="Built for the work"
           title="Your vision, unlimited."
