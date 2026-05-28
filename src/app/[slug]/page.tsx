@@ -153,63 +153,109 @@ function GearCategoryView({ c }: { c: GearCategory }) {
     { name: c.title, path: `/${c.seoSlug}` },
   ];
 
-  const related = GEAR_CATEGORIES.filter((x) => x.seoSlug !== c.seoSlug).map((x) => ({
-    label: x.title,
-    href: `/${x.seoSlug}`,
-    blurb: x.blurb,
-  }));
-
+  const related = GEAR_CATEGORIES.filter((x) => x.seoSlug !== c.seoSlug);
   const faqs = faqsByTag("gear", "location", "booking").slice(0, 6);
 
   return (
     <>
-      <PageHero eyebrow="Gear Rental" title={`${c.title} rental in Denver`} lede={c.blurb} breadcrumbs={breadcrumbs}>
+      <PageHero
+        eyebrow={`Gear Rental · ${c.title}`}
+        title={`${c.title} rental in Denver`}
+        lede={c.blurb}
+        breadcrumbs={breadcrumbs}
+      >
         <EstimateCTA page={`gear-${c.slug}`} location="hero" />
         <Button href="/gear-rental" variant="outline">All gear rental</Button>
       </PageHero>
 
+      {/* Intro + brands as pill badges */}
       <Section tone="light" containerSize="wide">
         <p className="measure text-lg">{c.intro ?? c.blurb}</p>
         {c.brands.length > 0 && (
-          <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
+          <div className="mt-8 flex flex-wrap gap-2">
             {c.brands.map((b) => (
-              <span key={b} className="text-sm text-muted">
-                <span className="mr-2 text-tungsten">&bull;</span>{b}
+              <span
+                key={b}
+                className="rounded-full border border-hairline px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-muted"
+              >
+                {b}
               </span>
             ))}
           </div>
         )}
       </Section>
 
+      {/* Catalog — premium card grid */}
       <Section tone="dark" className="grain" containerSize="wide">
-        <SectionHeading
-          eyebrow="The catalog"
-          title="What we carry."
-          intro="Full daily rates below, grouped like the shop. Weekly and multi-day available. Don't see it? Ask — we add and swap constantly."
-        />
-        <div className="mt-12 space-y-12">
+        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-hairline pb-8">
+          <div>
+            <p className="eyebrow">Daily rental rates</p>
+            <h2 className="font-display mt-2 text-display-lg">The catalog.</h2>
+          </div>
+          <p className="text-sm text-muted">Weekly &amp; multi-day available. Don&rsquo;t see it? Ask.</p>
+        </div>
+
+        <div className="mt-14 space-y-16">
           {c.groups.map((g) => (
             <div key={g.heading}>
-              <h3 className="text-sm font-medium uppercase tracking-[0.16em] text-tungsten">{g.heading}</h3>
-              <ul className="mt-4 border-t border-hairline">
+              {/* Editorial group divider */}
+              <div className="mb-5 flex items-center gap-5">
+                <h3 className="shrink-0 text-xs font-semibold uppercase tracking-[0.22em] text-tungsten">
+                  {g.heading}
+                </h3>
+                <div className="h-px flex-1 bg-hairline" />
+              </div>
+
+              {/* Item cards */}
+              <div className="grid gap-px overflow-hidden rounded-card border border-hairline bg-[var(--hairline)] sm:grid-cols-2 xl:grid-cols-3">
                 {g.items.map((item) => (
-                  <li key={item.name} className="flex items-baseline justify-between gap-x-6 border-b border-hairline py-2.5">
-                    <span className="text-base">{item.name}</span>
-                    <span className="shrink-0 text-sm text-muted">{item.price}</span>
-                  </li>
+                  <div
+                    key={item.name}
+                    className="flex items-start justify-between gap-4 bg-ink/90 p-5 transition-colors hover:bg-ink"
+                  >
+                    <span className="text-sm leading-snug text-bone">{item.name}</span>
+                    <span className="shrink-0 font-display text-xl text-tungsten">{item.price}</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           ))}
         </div>
-        <p className="mt-6 text-sm text-muted">
-          First-time on-location renters set up a rental account once.{" "}
-          <Link href="/request-estimate" className="text-tungsten hover:underline">Request a quote</Link> with your list and dates.
+
+        <p className="mt-10 text-sm text-muted">
+          First-time on-location renters set up a rental account once — a quick step covering insurance
+          and a card hold for replacement value.{" "}
+          <Link href="/request-estimate" className="text-tungsten hover:underline">
+            Request a quote
+          </Link>{" "}
+          with your list and dates.
         </p>
       </Section>
 
+      {/* More gear — category grid */}
+      <Section tone="light" containerSize="wide">
+        <SectionHeading eyebrow="More gear to rent" title="Browse by category." />
+        <div className="mt-8 grid gap-px overflow-hidden rounded-card border border-hairline bg-[var(--hairline)] sm:grid-cols-2 lg:grid-cols-3">
+          {related.map((r) => (
+            <Link
+              key={r.seoSlug}
+              href={`/${r.seoSlug}`}
+              className="group bg-panel p-6"
+            >
+              <h3 className="font-display text-display-md transition-colors group-hover:text-tungsten">
+                {r.title}
+              </h3>
+              <p className="mt-1.5 text-sm text-muted">{r.blurb}</p>
+              <span className="mt-4 inline-block text-sm text-tungsten opacity-0 transition-opacity group-hover:opacity-100">
+                Browse &rarr;
+              </span>
+            </Link>
+          ))}
+        </div>
+      </Section>
+
       {faqs.length > 0 && (
-        <Section tone="light" containerSize="default">
+        <Section tone="light" className="!pt-0" containerSize="default">
           <SectionHeading eyebrow="FAQ" title="Rental questions." />
           <div className="mt-8">
             <FaqList faqs={faqs} />
@@ -217,17 +263,10 @@ function GearCategoryView({ c }: { c: GearCategory }) {
         </Section>
       )}
 
-      <Section tone="light" className="!pt-0" containerSize="wide">
-        <SectionHeading eyebrow="More gear" title="Browse the rest of the kit." />
-        <div className="mt-8">
-          <RelatedPages items={related} />
-        </div>
-      </Section>
-
       <FinalCTA
         eyebrow="Tell us what you need"
         title="Request a quote."
-        body="Send your gear list and dates — we'll check availability and send a written quote, usually same business day."
+        body="Send your gear list and dates — we'll confirm availability and send a written quote, usually same business day."
       >
         <EstimateCTA page={`gear-${c.slug}`} location="final" size="lg" />
         <Button href="/gear-rental" variant="outline" size="lg">All gear rental</Button>
