@@ -1,19 +1,16 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const alt =
-  "PhotoSpace — Denver's home for professional production. Photo & video equipment rentals since 2008.";
+  "PhotoSpace Denver — Denver's creative production hub. Studio rental, memberships, and gear since 2008.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 /**
- * Dynamic Open Graph image.
- *
- * Typographic, brand-aligned. Industrial-neutral palette mirroring the
- * site canvas — warm paper background with charcoal type and a copper
- * accent rule. No external imagery required.
+ * Branded Open Graph image. Cinematic dark canvas, editorial serif headline,
+ * restrained tungsten accent — mirrors the site. No external imagery.
+ * Node runtime (default) so it prerenders statically.
  */
-export default async function OG() {
+export default function OG() {
   return new ImageResponse(
     (
       <div
@@ -23,101 +20,66 @@ export default async function OG() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: "72px",
-          background:
-            "linear-gradient(135deg, #f4f1ea 0%, #ebe6db 60%, #d8d1c1 100%)",
+          padding: 72,
+          background: "linear-gradient(135deg, #0e0e0d 0%, #161513 70%, #232019 100%)",
           fontFamily: "system-ui, -apple-system, sans-serif",
         }}
       >
-        {/* Top row: wordmark */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            gap: "12px",
-            color: "#1b1916",
-          }}
-        >
-          <span
-            style={{
-              fontSize: 44,
-              fontWeight: 500,
-              letterSpacing: "-0.03em",
-              lineHeight: 1,
-            }}
-          >
-            photospace
+        <div style={{ display: "flex", alignItems: "baseline", gap: 14, color: "#e8e3d8" }}>
+          <span style={{ fontSize: 44, fontWeight: 600, letterSpacing: "-0.02em", fontFamily: "Georgia, serif" }}>
+            PhotoSpace
           </span>
-          <span
-            style={{
-              fontSize: 14,
-              letterSpacing: "0.32em",
-              textTransform: "uppercase",
-              color: "#6b6358",
-            }}
-          >
+          <span style={{ fontSize: 14, letterSpacing: "0.3em", textTransform: "uppercase", color: "#c8842b" }}>
             Denver · since 2008
           </span>
         </div>
 
-        {/* Headline */}
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <span
-            style={{
-              fontSize: 22,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: "#9c6e47",
-              fontWeight: 500,
-              marginBottom: 24,
-            }}
-          >
-            Professional production rentals
+          <span style={{ fontSize: 20, letterSpacing: "0.2em", textTransform: "uppercase", color: "#c8842b", marginBottom: 22 }}>
+            Denver&rsquo;s creative production hub
           </span>
           <h1
             style={{
-              fontSize: 96,
-              fontWeight: 600,
-              letterSpacing: "-0.025em",
-              lineHeight: 0.96,
-              color: "#1b1916",
+              fontSize: 92,
+              fontWeight: 500,
+              letterSpacing: "-0.02em",
+              lineHeight: 0.98,
+              color: "#e8e3d8",
               margin: 0,
-              maxWidth: "920px",
+              maxWidth: 960,
+              fontFamily: "Georgia, 'Times New Roman', serif",
             }}
           >
-            Denver&rsquo;s home for{" "}
-            <span style={{ fontStyle: "italic", fontWeight: 400 }}>
-              professional production.
-            </span>
+            A real working studio,{" "}
+            <span style={{ fontStyle: "italic", color: "#d8a45a" }}>built for the work.</span>
           </h1>
         </div>
 
-        {/* Bottom row: divisions */}
         <div
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            color: "#322e27",
+            color: "#b7afa2",
             fontSize: 20,
             fontWeight: 500,
-            borderTop: "1px solid rgba(27,25,22,0.15)",
+            borderTop: "1px solid rgba(244,241,234,0.14)",
             paddingTop: 28,
           }}
         >
-          <div style={{ display: "flex", gap: 32 }}>
-            <span>Gear rental</span>
-            <span style={{ color: "#b7afa2" }}>·</span>
-            <span>Studio division</span>
-            <span style={{ color: "#b7afa2" }}>·</span>
-            <span>Production support</span>
+          <div style={{ display: "flex", gap: 24 }}>
+            <span>Studio</span>
+            <span style={{ color: "#6b6358" }}>·</span>
+            <span>Memberships</span>
+            <span style={{ color: "#6b6358" }}>·</span>
+            <span>Gear</span>
+            <span style={{ color: "#6b6358" }}>·</span>
+            <span>Productions</span>
           </div>
-          <span style={{ color: "#6b6358", fontWeight: 400 }}>
-            photospacedenver.com
-          </span>
+          <span style={{ color: "#c8842b" }}>photospacedenver.com</span>
         </div>
       </div>
     ),
-    { ...size }
+    { ...size },
   );
 }

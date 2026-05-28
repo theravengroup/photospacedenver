@@ -1,14 +1,9 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const size = { width: 64, height: 64 };
 export const contentType = "image/png";
 
-/**
- * Dynamic favicon. Typographic: a single "p" set in the brand
- * lowercase mark on the warm-paper canvas, with the copper accent
- * underline. Reads at favicon sizes without needing a logo SVG.
- */
+/** Favicon — serif "P" mark on the ink canvas with a tungsten underline. */
 export default function Icon() {
   return new ImageResponse(
     (
@@ -19,29 +14,21 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#1b1916",
-          color: "#f4f1ea",
-          fontFamily: "system-ui, -apple-system, sans-serif",
+          background: "#0e0e0d",
+          color: "#e8e3d8",
+          fontFamily: "Georgia, 'Times New Roman', serif",
           fontSize: 44,
-          fontWeight: 500,
-          letterSpacing: "-0.05em",
+          fontWeight: 600,
+          letterSpacing: "-0.03em",
           position: "relative",
         }}
       >
-        <span style={{ marginTop: -2 }}>p</span>
+        <span style={{ marginTop: -2 }}>P</span>
         <span
-          style={{
-            position: "absolute",
-            bottom: 10,
-            left: 18,
-            right: 18,
-            height: 3,
-            background: "#9c6e47",
-            borderRadius: 2,
-          }}
+          style={{ position: "absolute", bottom: 10, left: 18, right: 18, height: 3, background: "#c8842b", borderRadius: 2 }}
         />
       </div>
     ),
-    { ...size }
+    { ...size },
   );
 }

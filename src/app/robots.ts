@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { CANONICAL_DOMAIN, absoluteUrl } from "@/lib/content/site-config";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,9 +7,10 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
+        disallow: ["/thank-you"],
       },
     ],
-    sitemap: "https://photospacedenver.com/sitemap.xml",
-    host: "https://photospacedenver.com",
+    sitemap: absoluteUrl("/sitemap.xml"),
+    host: CANONICAL_DOMAIN,
   };
 }

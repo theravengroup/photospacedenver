@@ -1,106 +1,86 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
+import { JsonLd } from "@/components/JsonLd";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { MobileStickyCTA } from "@/components/layout/MobileStickyCTA";
+import { Analytics } from "@/components/Analytics";
+import { SITE } from "@/lib/content/site-config";
+import { organizationSchema, localBusinessSchema } from "@/lib/schema";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const siteUrl = "https://photospacedenver.com";
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap" });
+const fraunces = Fraunces({ variable: "--font-fraunces", subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE.url),
   title: {
-    default:
-      "Denver Camera, Lighting, Grip & Production Rentals — PhotoSpace",
-    template: "%s — PhotoSpace Denver",
+    default: "PhotoSpace Denver — Studio Rental, Memberships & Gear Rental",
+    template: "%s · PhotoSpace Denver",
   },
   description:
-    "PhotoSpace is Denver's home for professional production: photo and video equipment rentals, in-studio and on-location, since 2008. Profoto, Phase One, Hasselblad, Blackmagic, Sennheiser and more.",
-  applicationName: "PhotoSpace Denver",
-  authors: [{ name: "PhotoSpace Denver" }],
+    "Denver's creative production hub since 2008. A 1,900 ft² shooting floor with a real cyclorama, pro lighting and grip included, 24/7 access, plus gear rental, memberships, and production services. Where serious creators work.",
+  applicationName: SITE.name,
+  authors: [{ name: SITE.name }],
+  creator: SITE.name,
   keywords: [
-    "Denver camera rental",
-    "Denver video equipment rental",
-    "Denver lighting rental",
-    "Denver grip rental",
-    "Denver production rentals",
-    "Colorado production equipment rental",
-    "Phase One rental Denver",
-    "Profoto rental Denver",
-    "Hasselblad rental Denver",
-    "Blackmagic rental Denver",
-    "Denver photo studio rental",
+    "photo studio rental Denver",
+    "video studio rental Denver",
+    "cyclorama wall Denver",
+    "podcast studio Denver",
+    "product photography studio Denver",
+    "commercial photo studio Denver",
+    "content creator studio Denver",
+    "studio membership Denver",
+    "gear rental Denver",
+    "production studio Denver",
   ],
   openGraph: {
     type: "website",
-    url: siteUrl,
-    siteName: "PhotoSpace Denver",
-    title: "Denver's home for professional production",
+    url: SITE.url,
+    siteName: SITE.name,
+    title: "PhotoSpace Denver — Denver's Creative Production Hub",
     description:
-      "Photo and video equipment rentals, in-studio and on-location. Serving Denver and Colorado productions since 2008.",
+      "Studio rental, memberships, gear rental, podcast & interview production, and full production services — under one roof in Denver since 2008.",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Denver's home for professional production",
+    title: "PhotoSpace Denver — Denver's Creative Production Hub",
     description:
-      "Photo and video equipment rentals, in-studio and on-location. Serving Denver and Colorado productions since 2008.",
+      "A real working studio: 1,900 ft² floor, cyclorama, pro gear included, 24/7 access. Studio rental, memberships, and gear rental in Denver.",
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
   },
-  alternates: {
-    canonical: siteUrl,
-  },
+  alternates: { canonical: SITE.url },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f4f1ea",
-  colorScheme: "light",
+  themeColor: "#0e0e0d",
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
     >
-      <head>
-        {/* Set the .js flag before first paint so reveal-on-scroll knows
-            JS is live. Without this, .reveal stays visible at opacity 1
-            and the page never depends on the IntersectionObserver to
-            unhide content. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: "document.documentElement.classList.add('js');",
-          }}
-        />
-      </head>
-      <body className="min-h-full flex flex-col bg-paper text-graphite font-sans">
-        {children}
+      <body className="min-h-full flex flex-col">
+        <SiteHeader />
+        <main id="main" className="flex-1">{children}</main>
+        <SiteFooter />
+        <MobileStickyCTA />
+        <div className="h-14 lg:hidden" aria-hidden />
+        <JsonLd data={[organizationSchema(), localBusinessSchema()]} />
+        <Analytics />
       </body>
     </html>
   );

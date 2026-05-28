@@ -1,0 +1,198 @@
+/**
+ * All pricing in one typed module. Feeds /pricing, /memberships, /studio,
+ * /book, service pages, and schema makesOffer. Verbatim from the 2026-05-28
+ * audits. Items marked TODO(confirm) await owner confirmation.
+ */
+
+export type PriceTier = {
+  id: string;
+  name: string;
+  price: number;
+  unit: string;
+  /** e.g. "5 hours" */
+  detail?: string;
+  blurb?: string;
+  badge?: string;
+  featured?: boolean;
+};
+
+/** Headline studio rental tiers (marketed). */
+export const STUDIO_PRICING: PriceTier[] = [
+  {
+    id: "hourly",
+    name: "Hourly",
+    price: 100,
+    unit: "/hr",
+    detail: "2-hour minimum",
+    blurb: "Same rate 24/7 — no evening or weekend surcharge.",
+  },
+  {
+    id: "half-day",
+    name: "Half Day",
+    price: 485,
+    unit: "",
+    detail: "5 hours",
+    blurb: "Most booked — editorial, lookbook, and product.",
+    badge: "Most booked",
+    featured: true,
+  },
+  {
+    id: "full-day",
+    name: "Full Day",
+    price: 925,
+    unit: "",
+    detail: "10 hours",
+    blurb: "Full takeover for campaigns and multi-look productions.",
+  },
+];
+
+/** Live Acuity booking ladder (granular). Full day caps 10–12 hrs at $925. */
+export const ACUITY_LADDER: { hours: number; price: number; label?: string }[] = [
+  { hours: 2, price: 200 },
+  { hours: 3, price: 295 },
+  { hours: 4, price: 390 },
+  { hours: 5, price: 485, label: "Half day" },
+  { hours: 6, price: 575 },
+  { hours: 7, price: 665 },
+  { hours: 8, price: 755 },
+  { hours: 9, price: 840 },
+  { hours: 10, price: 925, label: "Full day" },
+  { hours: 11, price: 925 },
+  { hours: 12, price: 925 },
+];
+
+export const TOUR = { price: 0, durationMin: 20, label: "Free studio tour" };
+
+export type MembershipTier = {
+  id: string;
+  name: string;
+  hoursPerMonth: number;
+  price: number;
+  /** Computed effective hourly (not shown on old site; surfaced per REBUILD_PLAN §12). */
+  effectiveHourly: number;
+  blurb: string;
+  badge?: string;
+  featured?: boolean;
+};
+
+export const MEMBERSHIP_TIERS: MembershipTier[] = [
+  {
+    id: "spark",
+    name: "Spark",
+    hoursPerMonth: 5,
+    price: 425,
+    effectiveHourly: 85,
+    blurb: "Perfect for starting out. Flexible hours to ignite projects and keep a creative habit.",
+  },
+  {
+    id: "creator",
+    name: "Creator",
+    hoursPerMonth: 10,
+    price: 895,
+    effectiveHourly: 89.5,
+    blurb: "Double your creative time. Built for consistent creators and growing brands.",
+    badge: "Best balance",
+    featured: true,
+  },
+  {
+    id: "visionary",
+    name: "Visionary",
+    hoursPerMonth: 20,
+    price: 1495,
+    effectiveHourly: 74.75,
+    blurb: "Maximum access for ambitious professionals who need ample time and total creative freedom.",
+  },
+];
+
+/** What members get on top of a standard rental. */
+export const MEMBERSHIP_BENEFITS = [
+  "24/7 private studio access",
+  "Everything in a standard rental",
+  "More Profoto strobe lighting",
+  "More LED kits",
+  "Tons of lighting modifiers",
+  "Backdrops including chroma blue + green",
+  "FX: fog & haze machines",
+  "Discounted cameras, lenses & premium add-ons",
+];
+
+/**
+ * Membership terms — from WP /memberships.
+ * TODO(confirm): still current? (90-day minimum, auto-renew, no rollover).
+ * TODO(confirm): actual member hourly rate (never published).
+ */
+export const MEMBERSHIP_TERMS = {
+  billingCycleDays: 30,
+  minimumCommitmentDays: 90,
+  autoRenew: true,
+  cancellationNoticeDays: 30,
+  rollover: false,
+  extraHourRate: 65,
+  notRequiredToRent: true,
+};
+
+/** Add-on studio lighting kits (from old /book-online). */
+export const LIGHTING_KITS = {
+  strobe: [
+    { name: "Strobe — Level One", price: 110 },
+    { name: "Strobe — Level Two", price: 180 },
+    { name: "Strobe — Level Three", price: 200 },
+    { name: "Strobe — Level Four", price: 270 },
+    { name: "Strobe — Pro", price: 300 },
+  ],
+  video: [
+    { name: "Video — Level One", price: 135 },
+    { name: "Video — Level Two", price: 225 },
+    { name: "Video — Level Three", price: 375 },
+    { name: "Video — Pro", price: 375 },
+  ],
+};
+
+/** Production service pricing (camera cleaning, drone, ShootPod, event venue). */
+export const SERVICE_PRICING = {
+  cameraCleaning: [
+    { name: "1-day turnaround", price: 95, unit: "/kit" },
+    { name: "2-day turnaround", price: 85, unit: "/kit" },
+    { name: "3-day turnaround", price: 75, unit: "/kit" },
+  ],
+  cameraCleaningExtras: {
+    additionalLens: 20,
+    largeSensor: 25, // Hasselblad, Phase One, RED
+    firmwareUpdate: 29,
+  },
+  drone: [
+    { name: "We Fly & Shoot (raw)", price: 150, unit: "/hr + mileage" },
+    { name: "We Fly, You Shoot (raw)", price: 250, unit: "/hr + mileage" },
+    { name: "Edited video", price: 350, unit: "/minute + mileage" },
+    { name: "Retouched stills", price: 125, unit: "/image + mileage" },
+  ],
+  shootPod: {
+    daily: 175,
+    freeMiles: 100,
+    perMileAfter: 0.55,
+  },
+  eventVenue: { price: 1125, unit: "/day", hours: "7:00am–midnight" },
+};
+
+/**
+ * Fees & policies. TODO(confirm): card fee 3% vs 3.5%; studio "4×" vs gear "3×"
+ * multi-day rule.
+ */
+export const FEES = {
+  cardFeePct: 3, // TODO(confirm): policies say 3%, estimate form said 3.5%.
+  achFeePct: 1,
+  overtimeHourly: 65,
+  cycRepaint: 150,
+  depositPctOver3k: 50,
+  minimumRental: 100,
+  multiDay: {
+    studio: "4× daily rate", // TODO(confirm)
+    gear: "3× daily rate", // TODO(confirm)
+    weekendBilling: "weekends billed as 1× day",
+  },
+} as const;
+
+/** Format a USD price without trailing .00. */
+export function usd(n: number): string {
+  return n % 1 === 0 ? `$${n}` : `$${n.toFixed(2)}`;
+}
