@@ -41,10 +41,9 @@ export default function HomePage() {
           <h1 className="font-display mt-5 tracking-tight leading-[1.03] text-[clamp(1.55rem,7.5vw,5.5rem)]">
             A studio for shooting here.<br />Gear for shooting anywhere.
           </h1>
-          <p className="measure mt-6 text-lg text-muted">
+          <p className="mt-8 leading-[1.35] text-muted text-[clamp(1rem,2.5vw,1.5rem)]">
             Since {SITE.foundedYear}, <strong className="font-semibold text-bone">photospace</strong> has
-            given Denver creatives two things worth having: a studio worth shooting in, and pro gear worth
-            taking on the road.
+            given Denver creatives two things worth having:<br />a studio worth shooting in, and pro gear worth taking on the road.
           </p>
         </Reveal>
 
