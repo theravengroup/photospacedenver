@@ -32,7 +32,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: "What equipment is included with a studio rental?",
-    a: "Every booking includes the full 2,400 ft² space, 1,900 ft² shooting floor, real cyclorama, strobe and continuous LED lighting, modifiers, grip, tether station (Capture One, Lightroom, Phocus), kitchen, make-up station, changing room, outdoor deck, free parking, and load-in ramp. Premium add-ons — Phase One XF IQ4 150MP, Profoto B1X / B10X Plus / D2 / Pro8a kits, premium Canon / Nikon / Sony / Fuji bodies and lenses, on-call assistants and digital techs — are available on-site at member-friendly rates.",
+    a: "Every booking includes the full 2,400 ft² space, 1,900 ft² shooting floor, real cyclorama, a starter strobe or LED lighting kit, a working grip & stand package, tether station (Capture One, Lightroom, Phocus), backdrops, kitchen, make-up station, changing room, outdoor deck, free parking, and load-in ramp. Premium lighting, modifiers, cameras, and lenses — Phase One XF IQ4 150MP, Profoto B1X / B10X Plus / D2 / Pro8a kits, premium Canon / Nikon / Sony / Fuji bodies and lenses, plus on-call assistants and digital techs — are available on-site as add-ons at member-friendly rates.",
     tags: ["gear", "studio"],
   },
   {
@@ -62,7 +62,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: "Is lighting equipment included with the studio rental?",
-    a: "Yes. Strobe and continuous LED lighting, modifiers, and grip are all included with every booking — no setup fees, no equipment surcharges. Premium Profoto kits (B1X, B10X Plus, D2, Pro8a) and additional continuous lighting are available as on-site add-ons at member-friendly rates.",
+    a: "A starter strobe or LED kit and a working grip package come with every booking — no setup fees, and the same rate 24/7 with no evening or weekend surcharge. Premium Profoto kits (B1X, B10X Plus, D2, Pro8a), additional continuous lighting, and lighting modifiers are available as on-site add-ons at member-friendly rates.",
     tags: ["gear", "studio", "pricing"],
   },
   {

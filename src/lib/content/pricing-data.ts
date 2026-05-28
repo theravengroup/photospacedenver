@@ -148,24 +148,8 @@ export const LIGHTING_KITS = {
   ],
 };
 
-/** Production service pricing (camera cleaning, drone, ShootPod, event venue). */
+/** ShootPod mobile studio + event-venue pricing. */
 export const SERVICE_PRICING = {
-  cameraCleaning: [
-    { name: "1-day turnaround", price: 95, unit: "/kit" },
-    { name: "2-day turnaround", price: 85, unit: "/kit" },
-    { name: "3-day turnaround", price: 75, unit: "/kit" },
-  ],
-  cameraCleaningExtras: {
-    additionalLens: 20,
-    largeSensor: 25, // Hasselblad, Phase One, RED
-    firmwareUpdate: 29,
-  },
-  drone: [
-    { name: "We Fly & Shoot (raw)", price: 150, unit: "/hr + mileage" },
-    { name: "We Fly, You Shoot (raw)", price: 250, unit: "/hr + mileage" },
-    { name: "Edited video", price: 350, unit: "/minute + mileage" },
-    { name: "Retouched stills", price: 125, unit: "/image + mileage" },
-  ],
   shootPod: {
     daily: 175,
     freeMiles: 100,

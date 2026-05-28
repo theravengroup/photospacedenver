@@ -21,9 +21,9 @@ export const SITE = {
   /** Used in schema Organization.alternateName. */
   alternateName: "PhotoSpace Studio",
   legalName: "PhotoSpace",
-  tagline: "Denver's Creative Production Hub",
+  tagline: "Studio & Gear Rental in Denver",
   positioning:
-    "Studio rental, memberships, gear rental, podcast & interview production, and full production services — under one roof in Denver.",
+    "Two ways to create in Denver: a custom-built photo & video studio for rent, and a full gear-rental house — cameras, lighting, and grip from the top brands. Since 2008.",
   foundedYear: 2008, // TODO(confirm): "20+ years" copy refers to owner experience, not company age.
   owner: "Dan Jahn",
   url: CANONICAL_DOMAIN,
@@ -104,7 +104,7 @@ export const CTA_LABELS = {
   bookStudio: "Book the Studio",
   bookTour: "Book a Studio Tour",
   viewMemberships: "View Memberships",
-  requestEstimate: "Request an Estimate",
+  requestEstimate: "Request a Quote",
   compareOptions: "Compare Rental Options",
   applyMembership: "Apply for Membership",
   getDirections: "Get Directions",
@@ -135,21 +135,30 @@ export type NavItem = {
   children?: NavItem[];
 };
 
-/** Primary navigation. Pillars first, Book is rendered as the header CTA. */
+/**
+ * Primary navigation — the two lanes lead: Studio and Gear.
+ * Studio is a single link (its SEO landing pages are reachable from /studio and
+ * the footer, deliberately not the menu). Gear opens a mega-menu of the seven
+ * rental categories. Book is rendered as the header CTA.
+ */
 export const NAV_PRIMARY: NavItem[] = [
   {
     label: "Studio",
     href: "/studio",
-    blurb: "1,900 ft² shooting floor, real cyclorama, gear included.",
+    blurb: "1,900 ft² shooting floor, real cyclorama, 24/7 access.",
+  },
+  {
+    label: "Gear",
+    href: "/gear-rental",
+    blurb: "Cameras, lighting, and grip from the top brands.",
     children: [
-      { label: "The Studio", href: "/studio", blurb: "Specs, space, and what's included." },
-      { label: "Photo Studio Rental", href: "/photo-studio-rental-denver" },
-      { label: "Video Studio Rental", href: "/video-studio-rental-denver" },
-      { label: "Cyclorama Wall", href: "/cyclorama-wall-denver" },
-      { label: "Product Photography", href: "/product-photography-studio-denver" },
-      { label: "Content Creator Studio", href: "/content-creator-studio-denver" },
-      { label: "Commercial Photo Studio", href: "/commercial-photo-studio-denver" },
-      { label: "Podcast & Interview Studio", href: "/podcast-studio-denver" },
+      { label: "Cameras & Lenses", href: "/camera-lens-rental-denver" },
+      { label: "Flash Lighting", href: "/flash-strobe-rental-denver" },
+      { label: "Continuous Lighting", href: "/continuous-lighting-rental-denver" },
+      { label: "Lighting Modifiers", href: "/lighting-modifier-rental-denver" },
+      { label: "Grip & Electrical", href: "/grip-equipment-rental-denver" },
+      { label: "Photo & Video Accessories", href: "/photo-video-accessory-rental-denver" },
+      { label: "Production Supplies", href: "/production-supply-rental-denver" },
     ],
   },
   {
@@ -157,29 +166,10 @@ export const NAV_PRIMARY: NavItem[] = [
     href: "/memberships",
     blurb: "Recurring studio access at member rates.",
   },
-  {
-    label: "Gear Rental",
-    href: "/gear-rental",
-    blurb: "Cameras, lighting, grip — Profoto, Phase One, and more.",
-  },
-  {
-    label: "Productions",
-    href: "/productions",
-    blurb: "Production support, services, and the ShootPod mobile studio.",
-    children: [
-      { label: "Production Support", href: "/productions" },
-      { label: "All Services", href: "/services" },
-      { label: "Location Scouting", href: "/services/location-scouting" },
-      { label: "Production Management", href: "/services/production-management" },
-      { label: "Drone Services", href: "/services/drone-services" },
-      { label: "Camera Cleaning", href: "/services/camera-cleaning" },
-      { label: "Retouching", href: "/services/retouching" },
-    ],
-  },
   { label: "Pricing", href: "/pricing", blurb: "Simple pricing. Nothing hidden." },
 ];
 
-/** Footer link columns. */
+/** Footer link columns. SEO landing pages live here (not the primary menu). */
 export const FOOTER_COLUMNS: { heading: string; links: NavItem[] }[] = [
   {
     heading: "Studio",
@@ -192,21 +182,23 @@ export const FOOTER_COLUMNS: { heading: string; links: NavItem[] }[] = [
     ],
   },
   {
-    heading: "Rent",
+    heading: "Gear Rental",
     links: [
-      { label: "Gear Rental", href: "/gear-rental" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "Memberships", href: "/memberships" },
-      { label: "Book the Studio", href: "/book" },
-      { label: "Request an Estimate", href: "/request-estimate" },
+      { label: "All Gear Rental", href: "/gear-rental" },
+      { label: "Cameras & Lenses", href: "/camera-lens-rental-denver" },
+      { label: "Flash Lighting", href: "/flash-strobe-rental-denver" },
+      { label: "Continuous Lighting", href: "/continuous-lighting-rental-denver" },
+      { label: "Grip & Electrical", href: "/grip-equipment-rental-denver" },
     ],
   },
   {
     heading: "Company",
     links: [
+      { label: "Pricing", href: "/pricing" },
+      { label: "Memberships", href: "/memberships" },
+      { label: "Book the Studio", href: "/book" },
+      { label: "Request a Quote", href: "/request-estimate" },
       { label: "About", href: "/about" },
-      { label: "Productions", href: "/productions" },
-      { label: "Services", href: "/services" },
       { label: "FAQ", href: "/faq" },
       { label: "Contact", href: "/contact" },
     ],

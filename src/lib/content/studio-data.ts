@@ -32,16 +32,32 @@ export const STUDIO = {
     { label: "Parking", value: "Free street parking + load-in ramp" },
   ] satisfies Spec[],
 
-  /** Everything included with a studio rental, no surcharge. */
+  /**
+   * Included with every studio rental. Premium lighting, modifiers, cameras,
+   * and lenses are NOT included — they're à la carte add-ons (see `addOns`),
+   * discounted for members.
+   */
   included: [
-    "Strobe lighting (Profoto)",
-    "Continuous LED lighting",
-    "Lighting modifiers",
-    "Full grip package",
+    "A starter Profoto strobe or LED lighting kit",
+    "A working grip & stand package (C-stands, flags, sandbags, apple boxes)",
     "Tether station (Capture One, Lightroom, Phocus)",
     "Chroma green & blue, seamless paper, and V-flat backdrops",
+    "Controllable daylight on giant windows",
     "Working kitchen & client lounge",
     "Free parking & load-in ramp",
+    "24/7 keyless access",
+  ],
+
+  /**
+   * Available as paid add-ons — à la carte, discounted for members. These do
+   * NOT come with the room; they're rented from the on-site gear house.
+   */
+  addOns: [
+    "Premium strobe & continuous lighting kits (Profoto, Arri, Nanlux)",
+    "Lighting modifiers — softboxes, octas, parabolics, beauty dishes",
+    "Cameras & lenses (Phase One, Canon, Nikon, Sony, Fuji, Blackmagic)",
+    "Specialty grip & electrical",
+    "On-call assistants & digital techs",
   ],
 
   /** Facility amenities. */

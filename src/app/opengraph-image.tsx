@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "PhotoSpace Denver — Denver's creative production hub. Studio rental, memberships, and gear since 2008.";
+  "PhotoSpace Denver — Denver's photo & video studio and gear-rental house. Studio rental, memberships, and gear since 2008.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -36,7 +36,7 @@ export default function OG() {
 
         <div style={{ display: "flex", flexDirection: "column" }}>
           <span style={{ fontSize: 20, letterSpacing: "0.2em", textTransform: "uppercase", color: "#c8842b", marginBottom: 22 }}>
-            Denver&rsquo;s creative production hub
+            Studio &amp; gear rental in Denver
           </span>
           <h1
             style={{
@@ -70,11 +70,11 @@ export default function OG() {
           <div style={{ display: "flex", gap: 24 }}>
             <span>Studio</span>
             <span style={{ color: "#6b6358" }}>·</span>
-            <span>Memberships</span>
-            <span style={{ color: "#6b6358" }}>·</span>
             <span>Gear</span>
             <span style={{ color: "#6b6358" }}>·</span>
-            <span>Productions</span>
+            <span>Memberships</span>
+            <span style={{ color: "#6b6358" }}>·</span>
+            <span>Pricing</span>
           </div>
           <span style={{ color: "#c8842b" }}>photospacedenver.com</span>
         </div>

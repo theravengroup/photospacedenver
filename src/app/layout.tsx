@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     template: "%s · PhotoSpace Denver",
   },
   description:
-    "Denver's creative production hub since 2008. A 1,900 ft² shooting floor with a real cyclorama, pro lighting and grip included, 24/7 access, plus gear rental, memberships, and production services. Where serious creators work.",
+    "Denver's photo & video studio and gear-rental house since 2008. A 1,900 ft² shooting floor with a real cyclorama, a starter light & grip kit, and 24/7 access — plus camera, lighting, and grip rental from the top brands, and studio memberships.",
   applicationName: SITE.name,
   authors: [{ name: SITE.name }],
   creator: SITE.name,
@@ -34,22 +34,22 @@ export const metadata: Metadata = {
     "content creator studio Denver",
     "studio membership Denver",
     "gear rental Denver",
-    "production studio Denver",
+    "camera lighting grip rental Denver",
   ],
   openGraph: {
     type: "website",
     url: SITE.url,
     siteName: SITE.name,
-    title: "PhotoSpace Denver — Denver's Creative Production Hub",
+    title: "PhotoSpace Denver — Studio & Gear Rental",
     description:
-      "Studio rental, memberships, gear rental, podcast & interview production, and full production services — under one roof in Denver since 2008.",
+      "A custom-built photo & video studio for rent, and a full gear-rental house — cameras, lighting, and grip from the top brands. Under one roof in Denver since 2008.",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PhotoSpace Denver — Denver's Creative Production Hub",
+    title: "PhotoSpace Denver — Studio & Gear Rental",
     description:
-      "A real working studio: 1,900 ft² floor, cyclorama, pro gear included, 24/7 access. Studio rental, memberships, and gear rental in Denver.",
+      "A real working studio — 1,900 ft² floor, real cyclorama, 24/7 access — plus camera, lighting, and grip rental in Denver. Studio + gear, since 2008.",
   },
   robots: {
     index: true,

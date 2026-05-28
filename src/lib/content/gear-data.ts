@@ -1,6 +1,7 @@
 /**
- * Gear rental catalog — 7 categories. Powers /gear-rental (GearGrid) and the
- * estimate flow. Daily rates are verbatim from the 2026-05-28 WP audit.
+ * Gear rental catalog — 7 categories. Powers the /gear-rental hub and the seven
+ * SEO category pages (/<category>-rental-denver via /[slug]). Daily rates are
+ * verbatim from the 2026-05-28 WP audit.
  *
  * This models the priced hero items + brand coverage per category. The full
  * line-item rate card (hundreds of SKUs) is preserved in
@@ -18,10 +19,15 @@ export type GearItem = {
 
 export type GearCategory = {
   slug: string;
-  /** In-page anchor id; old /gear/<x>/ URLs 301 here. */
+  /** Top-level SEO route slug, e.g. /camera-lens-rental-denver. */
+  seoSlug: string;
+  /** In-page anchor id; legacy /gear/<x>/ URLs 301 to the SEO page. */
   anchor: string;
   title: string;
   blurb: string;
+  /** Longer hero/intro paragraph for the category page. */
+  intro?: string;
+  seo?: { title: string; description: string; keywords: string[] };
   brands: string[];
   items: GearItem[];
 };
@@ -29,10 +35,19 @@ export type GearCategory = {
 export const GEAR_CATEGORIES: GearCategory[] = [
   {
     slug: "cameras-lenses",
+    seoSlug: "camera-lens-rental-denver",
     anchor: "cameras",
     title: "Cameras & Lenses",
     blurb:
       "Medium format through mirrorless and cinema — bodies and lenses for the work. Body-only rentals include a battery and charger; lenses include a UV filter.",
+    intro:
+      "Medium format through mirrorless and cinema — pro bodies and the glass to match, ready to shoot. Body-only rentals include a battery and charger; lenses ship with a UV filter. Pick up at the Kalamath St. shop or have it delivered across the Denver metro.",
+    seo: {
+      title: "Camera & Lens Rental in Denver — Phase One, Canon, Nikon, Sony",
+      description:
+        "Rent cameras and lenses in Denver — Phase One IQ4 150MP, Fujifilm GFX, Canon R5, Nikon Z8, Blackmagic cinema, plus RF/Z/GF and cine glass. Pickup or Denver-metro delivery.",
+      keywords: ["camera rental Denver", "lens rental Denver", "Phase One rental Denver", "cinema camera rental Denver"],
+    },
     brands: ["Phase One", "Hasselblad", "Canon", "Nikon", "Fujifilm", "Blackmagic", "Sony", "GoPro", "DJI", "Mevo"],
     items: [
       { name: "Phase One IQ4 150MP Kit", brand: "Phase One", price: 825, note: "Medium format, XF/XT body + Schneider Kreuznach lens" },
@@ -47,10 +62,19 @@ export const GEAR_CATEGORIES: GearCategory[] = [
   },
   {
     slug: "flash-lighting",
+    seoSlug: "flash-strobe-rental-denver",
     anchor: "flash",
     title: "Flash Lighting",
     blurb:
       "Profoto strobes from on-camera speedlights to 2400ws studio packs. Kits ship in a case with your choice of Air Remote (Canon / Nikon / Sony / Fuji / Universal).",
+    intro:
+      "Profoto strobes from on-camera speedlights to 2400ws studio packs — battery-powered B-series for location, pack-and-head systems for the studio. Every kit ships in a case with your choice of Air Remote (Canon / Nikon / Sony / Fuji / Universal) and PocketWizard options.",
+    seo: {
+      title: "Strobe & Flash Lighting Rental in Denver — Profoto",
+      description:
+        "Rent Profoto strobes in Denver — B10X Plus, B1X, D2, Pro-11 (2400ws), Pro-8a, and A10 speedlights, plus PocketWizard remotes. Pickup or Denver-metro delivery.",
+      keywords: ["strobe rental Denver", "Profoto rental Denver", "flash rental Denver", "studio lighting rental Denver"],
+    },
     brands: ["Profoto", "PocketWizard"],
     items: [
       { name: "B10X Plus (500ws)", brand: "Profoto", price: 175 },
@@ -65,10 +89,19 @@ export const GEAR_CATEGORIES: GearCategory[] = [
   },
   {
     slug: "continuous-lighting",
+    seoSlug: "continuous-lighting-rental-denver",
     anchor: "continuous",
     title: "Continuous Lighting",
     blurb:
       "Color-accurate continuous and LED for video and hybrid shoots — point sources, panels, tubes, and big soft fixtures.",
+    intro:
+      "Color-accurate continuous and LED for video and hybrid shoots — from Arri SkyPanels and Nanlux point sources to Astera tubes, Kino Flo soft fixtures, and Aputure RGBWW. High output, dialable color, and the modifiers to shape it.",
+    seo: {
+      title: "Continuous & LED Lighting Rental in Denver — Arri, Nanlux, Aputure",
+      description:
+        "Rent continuous LED lighting in Denver — Arri SkyPanel, Nanlux Dyno/Evoke, Creamsource, Astera tubes, Kino Flo, and Aputure. Pickup or Denver-metro delivery.",
+      keywords: ["continuous lighting rental Denver", "LED lighting rental Denver", "Arri SkyPanel rental Denver", "video lighting rental Denver"],
+    },
     brands: ["Arri", "Nanlux", "Aputure", "Kino Flo", "Astera", "Creamsource", "Quasar", "LitePanel", "Fiilex", "Lowel"],
     items: [
       { name: "Dyno 1200C", brand: "Nanlux", price: 500 },
@@ -83,10 +116,19 @@ export const GEAR_CATEGORIES: GearCategory[] = [
   },
   {
     slug: "lighting-modifiers",
+    seoSlug: "lighting-modifier-rental-denver",
     anchor: "modifiers",
     title: "Lighting Modifiers",
     blurb:
       "Hard, soft, big, small — shaped to your call. Softboxes, octas, parabolas, beauty dishes, grids, umbrellas, scrims, and sun control.",
+    intro:
+      "Hard, soft, big, small — the light, shaped to your call. Chimera and Profoto softboxes, deep octas and parabolics, the Bron Para 177, beauty dishes, grids, umbrellas, and SunBounce sun control. Adapters for every head we rent.",
+    seo: {
+      title: "Lighting Modifier Rental in Denver — Softboxes, Octas, Parabolics",
+      description:
+        "Rent lighting modifiers in Denver — Chimera and Profoto softboxes, octas, the Bron Para 177, beauty dishes, grids, umbrellas, and SunBounce. Pickup or delivery.",
+      keywords: ["softbox rental Denver", "lighting modifier rental Denver", "octabank rental Denver", "beauty dish rental Denver"],
+    },
     brands: ["Chimera", "Profoto", "Westcott", "SunBounce", "Photek", "Elinchrom", "Bron"],
     items: [
       { name: "Para 177", brand: "Bron", price: 225, note: "with Profoto adapter" },
@@ -101,10 +143,19 @@ export const GEAR_CATEGORIES: GearCategory[] = [
   },
   {
     slug: "grip-electrical",
+    seoSlug: "grip-equipment-rental-denver",
     anchor: "grip",
     title: "Grip & Electrical",
     blurb:
       "The room behind the room. C-stands, flags, cutters, booms, clamps, apple boxes, sandbags, frames, fabrics, and distro.",
+    intro:
+      "The room behind the room. Matthews and Avenger C-stands, flags and cutters, the MegaBoom and Super Boom, Magliner carts, 12×12 frames with full fabric sets, apple boxes, sandbags, clamps, and electrical distribution.",
+    seo: {
+      title: "Grip & Electrical Rental in Denver — C-Stands, Flags, Booms",
+      description:
+        "Rent grip and electrical in Denver — Matthews C-stands, MegaBoom, Magliner carts, flags and cutters, 12×12 frames and fabrics, apple boxes, and sandbags.",
+      keywords: ["grip rental Denver", "C-stand rental Denver", "grip equipment rental Denver", "flag and cutter rental Denver"],
+    },
     brands: ["Matthews", "Avenger", "Manfrotto", "Gitzo", "Magliner"],
     items: [
       { name: "C-Stand 40\" w/ head + arm", brand: "Matthews", price: 10, note: "20\" $8" },
@@ -119,10 +170,19 @@ export const GEAR_CATEGORIES: GearCategory[] = [
   },
   {
     slug: "photo-video-accessories",
+    seoSlug: "photo-video-accessory-rental-denver",
     anchor: "accessories",
     title: "Photo & Video Accessories",
     blurb:
       "The in-between gear that makes a shoot work — tripods, gimbals, sliders, monitors, mics, recorders, media, and readers.",
+    intro:
+      "The in-between gear that makes a shoot work — DJI Ronin gimbals, Edelkrone sliders, Manfrotto fluid heads and tripods, SmallHD monitors, matte boxes, Zoom/Rode/Sennheiser audio, wireless lavs, and CFexpress/SD/CFast media with readers.",
+    seo: {
+      title: "Photo & Video Accessory Rental in Denver — Gimbals, Sliders, Audio",
+      description:
+        "Rent photo and video accessories in Denver — DJI Ronin gimbals, Edelkrone sliders, Manfrotto tripods, SmallHD monitors, Zoom/Rode/Sennheiser audio, and media.",
+      keywords: ["gimbal rental Denver", "slider rental Denver", "audio rental Denver", "monitor rental Denver"],
+    },
     brands: ["Manfrotto", "Benro", "DJI", "Edelkrone", "Wooden Camera", "SmallHD", "Zoom", "Rode", "Sennheiser", "Kessler"],
     items: [
       { name: "Slider+ Pro Long", brand: "Edelkrone", price: 95 },
@@ -137,10 +197,19 @@ export const GEAR_CATEGORIES: GearCategory[] = [
   },
   {
     slug: "production-supplies",
+    seoSlug: "production-supply-rental-denver",
     anchor: "production-supplies",
     title: "Production Supplies",
     blurb:
       "The kit you forgot at the office — tables, chairs, generators, comms, steamers, tents, SFX, and the utility gear that keeps a set running.",
+    intro:
+      "The kit you forgot at the office — pop-up tents, Honda generators, fog/haze and SFX machines, walkies and surveillance headsets, garment steamers and wardrobe racks, folding tables, ladders, and space heaters. The utility gear that keeps a set running.",
+    seo: {
+      title: "Production Supply Rental in Denver — Tents, Generators, Comms",
+      description:
+        "Rent production supplies in Denver — pop-up tents, Honda generators, fog/haze machines, walkies, garment steamers, folding tables, ladders, and space heaters.",
+      keywords: ["production supplies rental Denver", "generator rental Denver", "fog machine rental Denver", "pop-up tent rental Denver"],
+    },
     brands: ["Honda"],
     items: [
       { name: "Pop-up tent 10×10'", price: 75 },
@@ -167,3 +236,17 @@ export const SHOOTPOD = {
 export function gearCategoryBySlug(slug: string): GearCategory | undefined {
   return GEAR_CATEGORIES.find((c) => c.slug === slug);
 }
+
+export const GEAR_SEO_SLUGS = GEAR_CATEGORIES.map((c) => c.seoSlug);
+
+export function gearCategoryBySeoSlug(seoSlug: string): GearCategory | undefined {
+  return GEAR_CATEGORIES.find((c) => c.seoSlug === seoSlug);
+}
+
+/** "Gear from all the top brands" — the rental house's headline brand wall. */
+export const GEAR_BRANDS = [
+  "Profoto", "Phase One", "Chimera", "PocketWizard", "Nikon", "Fujifilm",
+  "Westcott", "SunBounce", "Zacuto", "Foba", "Manfrotto", "Gitzo", "Apple",
+  "Eizo", "GoPro", "Hoodman", "Litepanels", "Matthews", "Lowel", "DJI",
+  "Avenger", "Cinevate", "Kino Flo", "Zoom", "Rode", "Sennheiser", "Blackmagic",
+];

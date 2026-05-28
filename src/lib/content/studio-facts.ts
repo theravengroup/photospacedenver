@@ -98,8 +98,6 @@ export function buildStudioFacts() {
       pricing: absoluteUrl("/pricing"),
       memberships: absoluteUrl("/memberships"),
       gearRental: absoluteUrl("/gear-rental"),
-      productions: absoluteUrl("/productions"),
-      services: absoluteUrl("/services"),
       podcast: absoluteUrl("/podcast-studio-denver"),
       contact: absoluteUrl("/contact"),
       faq: absoluteUrl("/faq"),

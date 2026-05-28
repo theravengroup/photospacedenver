@@ -9,25 +9,25 @@ import { breadcrumbSchema } from "@/lib/schema";
 import { SITE } from "@/lib/content/site-config";
 
 export const metadata = pageMeta({
-  title: "Request an Estimate — PhotoSpace Denver",
+  title: "Request a Quote — PhotoSpace Denver",
   description:
-    "Request a written estimate for studio, gear, or production. Send your dates and gear list — we'll confirm availability, usually the same business day.",
+    "Request a written quote for studio, gear, or a multi-day shoot. Send your dates and gear list — we'll confirm availability, usually the same business day.",
   path: "/request-estimate",
   noindex: true,
 });
 
 const breadcrumbs = [
   { name: "Home", path: "/" },
-  { name: "Request an Estimate", path: "/request-estimate" },
+  { name: "Request a Quote", path: "/request-estimate" },
 ];
 
 export default function RequestEstimatePage() {
   return (
     <>
       <PageHero
-        eyebrow="Estimate"
-        title="Request an estimate."
-        lede="Tell us what you need and when. We'll check availability, advise on anything we'd swap or add, and send a written estimate — usually the same business day."
+        eyebrow="Quote"
+        title="Request a quote."
+        lede="Tell us what you need and when. We'll check availability, advise on anything we'd swap or add, and send a written quote — usually the same business day."
         breadcrumbs={breadcrumbs}
       />
 
@@ -36,9 +36,9 @@ export default function RequestEstimatePage() {
           <InquiryForm
             type="estimate"
             page="request-estimate"
-            submitLabel="Request an Estimate"
-            successTitle="Estimate request received."
-            successBody="Thanks — we'll review availability and follow up with a written estimate, usually the same business day."
+            submitLabel="Request a Quote"
+            successTitle="Quote request received."
+            successBody="Thanks — we'll review availability and follow up with a written quote, usually the same business day."
           >
             <div className="grid gap-5 sm:grid-cols-2">
               <Field label="Name" name="name" required autoComplete="name" />
@@ -48,7 +48,7 @@ export default function RequestEstimatePage() {
                 label="What do you need?"
                 name="rental_type"
                 required
-                options={["Studio only", "Studio + gear", "Gear only", "Production support"]}
+                options={["Studio only", "Studio + gear", "Gear only", "Multi-day / custom"]}
               />
               <Field label="Start date" name="start_date" type="date" />
               <Field label="End date" name="end_date" type="date" />

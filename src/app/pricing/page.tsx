@@ -24,7 +24,7 @@ import { faqsByTag } from "@/lib/content/faqs";
 export const metadata = pageMeta({
   title: "PhotoSpace Denver Pricing — Studio, Memberships & Add-Ons",
   description:
-    "Transparent pricing: studio $100/hr (2-hr minimum), half-day $485, full-day $925, memberships from $425/mo, plus lighting kits, camera cleaning, drone, and ShootPod rates.",
+    "Transparent pricing: studio $100/hr (2-hr minimum), half-day $485, full-day $925, memberships from $425/mo, plus add-on lighting kits, gear rental, and the ShootPod mobile studio.",
   path: "/pricing",
   keywords: ["studio rental pricing Denver", "photo studio rates Denver", "studio membership pricing Denver"],
 });
@@ -53,7 +53,7 @@ export default function PricingPage() {
       <PageHero
         eyebrow="Pricing"
         title="Simple pricing. Nothing hidden."
-        lede="No setup fees. No equipment surcharges. The number you see is the number you pay — the same rate, 24/7."
+        lede="No setup fees, and the same rate 24/7 — no evening or weekend surcharge. A starter light and grip kit comes with the room; premium lighting, modifiers, cameras, and lenses are à la carte add-ons, discounted for members."
         breadcrumbs={breadcrumbs}
       >
         <BookingCTA page="pricing" location="hero" />
@@ -119,33 +119,35 @@ export default function PricingPage() {
         </p>
       </Section>
 
-      {/* Services */}
+      {/* Gear rental & ShootPod */}
       <Section tone="light" containerSize="wide">
-        <SectionHeading eyebrow="Services" title="Production add-ons." />
-        <div className="mt-10 grid gap-10 md:grid-cols-3">
-          <div>
-            <h3 className="font-medium">Camera cleaning</h3>
-            <p className="mt-1 text-sm text-muted">Per kit, by turnaround.</p>
-            <RateRows rows={SERVICE_PRICING.cameraCleaning} />
-          </div>
-          <div>
-            <h3 className="font-medium">Drone services</h3>
-            <p className="mt-1 text-sm text-muted">Licensed & insured, plus mileage.</p>
-            <RateRows rows={SERVICE_PRICING.drone} />
-          </div>
+        <SectionHeading
+          eyebrow="Gear rental"
+          title="Add the gear to match."
+          intro="Cameras, lighting, modifiers, and grip from the top brands — by the day, picked up at the shop or delivered across the Denver metro."
+        />
+        <div className="mt-10 grid gap-10 md:grid-cols-2">
           <div>
             <h3 className="font-medium">ShootPod mobile studio</h3>
             <p className="mt-1 text-sm text-muted">Grip van, pre-packed and ready.</p>
-            <RateRows
-              rows={[{ name: "Per day", price: SERVICE_PRICING.shootPod.daily, unit: "/day" }]}
-            />
+            <RateRows rows={[{ name: "Per day", price: SERVICE_PRICING.shootPod.daily, unit: "/day" }]} />
             <p className="mt-2 text-xs text-muted">
               First {SERVICE_PRICING.shootPod.freeMiles} miles free, then ${SERVICE_PRICING.shootPod.perMileAfter}/mile.
             </p>
           </div>
+          <div>
+            <h3 className="font-medium">Full gear catalog</h3>
+            <p className="mt-1 text-sm text-muted">
+              Daily rates across seven categories — cameras &amp; lenses, flash and continuous lighting,
+              modifiers, grip &amp; electrical, accessories, and production supplies.
+            </p>
+            <p className="mt-3 text-sm">
+              <Link href="/gear-rental" className="text-tungsten hover:underline">Browse all gear rental &rarr;</Link>
+            </p>
+          </div>
         </div>
         <p className="mt-8 text-sm text-muted">
-          Renting gear on location? <Link href="/request-estimate" className="text-tungsten hover:underline">Request an estimate</Link> for a written quote.
+          Renting gear on location or planning a multi-day shoot? <Link href="/request-estimate" className="text-tungsten hover:underline">Request a quote</Link> for a written estimate.
         </p>
       </Section>
 
@@ -159,7 +161,7 @@ export default function PricingPage() {
       <FinalCTA
         eyebrow="Ready when you are"
         title="Lock in your time."
-        body="Book the studio in under a minute, or request an estimate for gear and production."
+        body="Book the studio in under a minute, or request a quote for gear or a multi-day shoot."
       >
         <BookingCTA page="pricing" location="final" size="lg" />
         <EstimateCTA page="pricing" location="final" variant="outline" size="lg" />

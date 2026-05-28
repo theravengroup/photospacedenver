@@ -28,22 +28,22 @@ export const SEO_LANDING: SeoLanding[] = [
     slug: "photo-studio-rental-denver",
     eyebrow: "Photo studio rental",
     h1: "Photo studio rental in Denver",
-    lede: "1,900 ft² of controllable light, a real cyclorama, and pro lighting and grip included — by the hour, half-day, or full day.",
+    lede: "1,900 ft² of controllable light, a real cyclorama, and a starter lighting & grip kit included — by the hour, half-day, or full day.",
     intro:
       "Walk in and shoot. The shooting floor is calibrated, the cyc is clean, and the lighting and grip are already here. Book two hours for a single setup or take the whole day for a campaign.",
     sections: [
       { heading: "A floor built for stills", body: "1,900 ft² of shooting space with a 20'-wide cyclorama, individually controllable blinds on giant windows, and 8 dedicated 20-amp circuits. Tether to Capture One, Lightroom, or Phocus at a station with a second monitor for art directors." },
-      { heading: "Lighting and grip included", body: "Profoto strobes, continuous LED, modifiers, and a full grip package come with the room — no setup fees, no equipment surcharges. Premium camera and lens kits are available on-site as add-ons." },
+      { heading: "Lighting and grip to start", body: "A starter Profoto strobe or LED kit and a working grip package come with the room — no setup fees. Premium lighting, modifiers, cameras, and lenses are available on-site as add-ons, discounted for members." },
       { heading: "Easy in, easy out", body: "Free parking, a load-in ramp, a working kitchen, and a client lounge. Book a session 24/7 at the same rate, or come by for a free 20-minute tour first." },
     ],
-    highlights: ["1,900 ft² shooting floor", "Real cyclorama wall", "Lighting & grip included", "$100/hr · 2-hr minimum", "24/7 access"],
+    highlights: ["1,900 ft² shooting floor", "Real cyclorama wall", "Starter light & grip included", "$100/hr · 2-hr minimum", "24/7 access"],
     faqTags: ["studio", "booking", "pricing", "gear"],
     related: ["cyclorama-wall-denver", "commercial-photo-studio-denver", "product-photography-studio-denver"],
     primaryCta: "book",
     seo: {
-      title: "Photo Studio Rental Denver — Cyclorama, Lighting Included",
+      title: "Photo Studio Rental Denver — Real Cyclorama, 24/7 Access",
       description:
-        "Rent a 1,900 ft² photo studio in Denver with a real cyclorama, Profoto lighting and grip included, and 24/7 access. $100/hr, 2-hour minimum. Book or tour.",
+        "Rent a 1,900 ft² photo studio in Denver with a real cyclorama, a starter lighting & grip kit, and 24/7 access. $100/hr, 2-hour minimum. Book or tour.",
       keywords: ["photo studio rental Denver", "photography studio Denver", "studio with cyclorama Denver", "studio rental Denver hourly"],
     },
   },
@@ -125,17 +125,17 @@ export const SEO_LANDING: SeoLanding[] = [
       "Built for batch content. Walk in, plug in, and create. The lighting and grip are ready, the cyc gives you clean looks, and a membership makes recurring content days pay off.",
     sections: [
       { heading: "Built for batching", body: "Knock out 20–50 pieces in a session: stills, reels, sponsor deliverables, and seasonal refreshes. Multiple looks from one room — cyc, daylight, and set areas." },
-      { heading: "Pro without the production headache", body: "Strobe and continuous LED, modifiers, and grip are included. No piecing rentals together across Denver — it's all here, and there's espresso." },
+      { heading: "Pro without the production headache", body: "A starter strobe or LED kit and grip come with the room, and the full lighting, modifier, and camera catalog is on-site as add-ons. No piecing rentals together across Denver — it's all here, and there's espresso." },
       { heading: "A membership that pays off", body: "If you shoot monthly, the Creator membership is built for you: recurring hours at member rates plus discounted camera and lens add-ons." },
     ],
-    highlights: ["Batch 20–50 pieces", "Multiple looks, one room", "Lighting included", "Creator membership", "Walk in and shoot"],
+    highlights: ["Batch 20–50 pieces", "Multiple looks, one room", "Starter light included", "Creator membership", "Walk in and shoot"],
     faqTags: ["content", "membership", "studio", "booking"],
     related: ["video-studio-rental-denver", "podcast-studio-denver", "photo-studio-rental-denver"],
     primaryCta: "membership",
     seo: {
       title: "Content Creator Studio Denver — Built for Content Days",
       description:
-        "A Denver content creator studio built for batch days — pro lighting included, multiple looks, and a Creator membership for recurring shoots. Book or join.",
+        "A Denver content creator studio built for batch days — pro lighting on hand, multiple looks, and a Creator membership for recurring shoots. Book or join.",
       keywords: ["content creator studio Denver", "content studio Denver", "creator studio rental Denver", "studio for content days Denver"],
     },
   },

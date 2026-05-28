@@ -19,25 +19,26 @@ export const REDIRECTS: Redirect[] = [
   { from: "/location", to: "/contact" },
   { from: "/lifespace", to: "/content-creator-studio-denver" }, // TODO(confirm)
 
-  // Gear
+  // Gear (legacy /gear/<x> + old anchors → new SEO category pages)
   { from: "/gear", to: "/gear-rental" },
-  { from: "/gear/cameras-lenses", to: "/gear-rental#cameras" },
-  { from: "/gear/flash-lighting", to: "/gear-rental#flash" },
-  { from: "/gear/continuous-lighting", to: "/gear-rental#continuous" },
-  { from: "/gear/lighting-modifiers", to: "/gear-rental#modifiers" },
-  { from: "/gear/grip", to: "/gear-rental#grip" },
-  { from: "/gear/production-supplies", to: "/gear-rental#production-supplies" },
-  { from: "/gear/photo-and-video-accessories", to: "/gear-rental#accessories" },
-  { from: "/shootpod", to: "/productions" },
+  { from: "/gear/cameras-lenses", to: "/camera-lens-rental-denver" },
+  { from: "/gear/flash-lighting", to: "/flash-strobe-rental-denver" },
+  { from: "/gear/continuous-lighting", to: "/continuous-lighting-rental-denver" },
+  { from: "/gear/lighting-modifiers", to: "/lighting-modifier-rental-denver" },
+  { from: "/gear/grip", to: "/grip-equipment-rental-denver" },
+  { from: "/gear/production-supplies", to: "/production-supply-rental-denver" },
+  { from: "/gear/photo-and-video-accessories", to: "/photo-video-accessory-rental-denver" },
+  { from: "/shootpod", to: "/gear-rental" },
 
-  // Services
-  { from: "/services", to: "/services" },
-  { from: "/location-scouting", to: "/services/location-scouting" },
-  { from: "/production-management", to: "/services/production-management" },
-  { from: "/camera-cleaning", to: "/services/camera-cleaning" },
-  { from: "/drone-services", to: "/services/drone-services" },
-  { from: "/retouching", to: "/services/retouching" },
-  { from: "/resources", to: "/productions" },
+  // Production services (retired — focus is studio + gear)
+  { from: "/productions", to: "/gear-rental" },
+  { from: "/services", to: "/gear-rental" },
+  { from: "/location-scouting", to: "/" },
+  { from: "/production-management", to: "/" },
+  { from: "/camera-cleaning", to: "/gear-rental" },
+  { from: "/drone-services", to: "/" },
+  { from: "/retouching", to: "/" },
+  { from: "/resources", to: "/" },
 
   // Memberships
   { from: "/memberships", to: "/memberships" },
@@ -69,7 +70,7 @@ export const REDIRECTS: Redirect[] = [
   { from: "/internship", to: "/about" },
 
   // Low-value / stale (301 to nearest relevant; 410 optional later)
-  { from: "/workshops", to: "/services" },
+  { from: "/workshops", to: "/" },
   { from: "/workshop", to: "/" },
   { from: "/workshop-casting", to: "/" },
   { from: "/blog", to: "/" },
