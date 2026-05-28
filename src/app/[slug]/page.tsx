@@ -19,9 +19,7 @@ import {
   GEAR_SEO_SLUGS,
   gearCategoryBySeoSlug,
   type GearCategory,
-  type GearItem,
 } from "@/lib/content/gear-data";
-import { usd } from "@/lib/content/pricing-data";
 import { faqsByTag } from "@/lib/content/faqs";
 
 export const dynamicParams = false;
@@ -148,11 +146,6 @@ function StudioSeoView({ page, slug }: { page: SeoLanding; slug: string }) {
 
 /* ------------------------------ Gear category ----------------------------- */
 
-function rate(item: GearItem): string {
-  if (item.price == null) return "Inquire";
-  return `${usd(item.price)}${item.unit ?? "/day"}`;
-}
-
 function GearCategoryView({ c }: { c: GearCategory }) {
   const breadcrumbs = [
     { name: "Home", path: "/" },
@@ -192,20 +185,23 @@ function GearCategoryView({ c }: { c: GearCategory }) {
         <SectionHeading
           eyebrow="The catalog"
           title="What we carry."
-          intro="Daily rates below; weekly and multi-day available. Don't see it? Ask — we add and swap constantly."
+          intro="Full daily rates below, grouped like the shop. Weekly and multi-day available. Don't see it? Ask — we add and swap constantly."
         />
-        <ul className="mt-10 border-t border-hairline">
-          {c.items.map((item) => (
-            <li key={item.name} className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-hairline py-4">
-              <div className="min-w-0">
-                <span className="text-base">{item.name}</span>
-                {item.brand && <span className="ml-2 text-xs uppercase tracking-[0.14em] text-muted">{item.brand}</span>}
-                {item.note && <p className="mt-0.5 text-sm text-muted">{item.note}</p>}
-              </div>
-              <span className="shrink-0 font-display text-lg">{rate(item)}</span>
-            </li>
+        <div className="mt-12 space-y-12">
+          {c.groups.map((g) => (
+            <div key={g.heading}>
+              <h3 className="text-sm font-medium uppercase tracking-[0.16em] text-tungsten">{g.heading}</h3>
+              <ul className="mt-4 border-t border-hairline">
+                {g.items.map((item) => (
+                  <li key={item.name} className="flex items-baseline justify-between gap-x-6 border-b border-hairline py-2.5">
+                    <span className="text-base">{item.name}</span>
+                    <span className="shrink-0 text-sm text-muted">{item.price}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ul>
+        </div>
         <p className="mt-6 text-sm text-muted">
           First-time on-location renters set up a rental account once.{" "}
           <Link href="/request-estimate" className="text-tungsten hover:underline">Request a quote</Link> with your list and dates.
