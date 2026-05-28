@@ -1,9 +1,11 @@
 import { CLIENTS } from "@/lib/content/clients";
 
 /**
- * "Trusted by" wall. Logo image assets aren't in the repo yet (TODO: pull from
- * media library — REBUILD_PLAN §16), so brands render as a refined type
- * marquee. Swap to <Image> per client once assets land.
+ * "Trusted by" wall. Renders brand names in a refined type marquee — a
+ * deliberate, coherent treatment. Logo art exists at /images/clients/<slug>.png
+ * (see clients.ts), but the sources are low-res 200×100 PNGs and 3 brands have
+ * no mark, so a mixed logo wall looks uneven; revisit with consistent, hi-res
+ * logos for all brands before switching to images.
  */
 export function ClientLogoWall() {
   const row = [...CLIENTS, ...CLIENTS];
