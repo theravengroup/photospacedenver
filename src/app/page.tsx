@@ -4,11 +4,9 @@ import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { ClientLogoWall } from "@/components/sections/ClientLogoWall";
-import { UseCaseGrid } from "@/components/sections/UseCaseGrid";
 import { PricingCards } from "@/components/sections/PricingCards";
 import { MembershipCards } from "@/components/sections/MembershipCards";
 import { Testimonials } from "@/components/sections/Testimonials";
-import { Steps } from "@/components/sections/Steps";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { FaqList } from "@/components/sections/FaqList";
 import { BookingCTA, EstimateCTA } from "@/components/cta/Ctas";
@@ -25,11 +23,6 @@ const HERO_STATS = [
   { value: `Since ${SITE.foundedYear}`, label: "Denver-run" },
 ];
 
-const HOME_STEPS = [
-  { title: "Book or request a quote", body: "Reserve a studio session, or send a gear list and dates for a written quote — each takes about a minute." },
-  { title: "Walk in and shoot", body: "Grip, lighting, and the tether station are ready. Be set up and shooting within fifteen minutes." },
-  { title: "Do it again", body: "Save your kit, refine your looks, and build a creative habit that pays off on a membership." },
-];
 
 export default function HomePage() {
   return (
@@ -148,12 +141,13 @@ export default function HomePage() {
         <ClientLogoWall />
       </Section>
 
-      {/* Studio: not a converted warehouse */}
+      {/* ── STUDIO LANE ── space, pricing, memberships all clearly in context */}
       <Section tone="light" containerSize="wide">
+        {/* The space */}
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal>
             <SectionHeading
-              eyebrow="The studio"
+              eyebrow="Studio rental · 209 Kalamath St"
               title="This is not a converted warehouse."
               intro="Custom-built from the ground up by photographers and videographers — a real cyclorama, controllable daylight, a working kitchen and lounge, and the power to run a serious set."
             />
@@ -174,9 +168,37 @@ export default function HomePage() {
             </div>
           </Reveal>
         </div>
+
+        {/* Studio rental pricing — still in the same section/context */}
+        <Reveal className="mt-20 border-t border-hairline pt-16">
+          <SectionHeading
+            eyebrow="Studio rental · pricing"
+            title="Simple pricing. Nothing hidden."
+            intro="No setup fees, same rate 24/7 — no evening or weekend surcharge. A starter light and grip kit comes with the room; premium lighting, cameras, and lenses are à la carte add-ons."
+          />
+          <div className="mt-10">
+            <PricingCards page="home" />
+          </div>
+          <p className="mt-6 text-sm text-muted">
+            Need something different? Multi-day campaigns and member rates —{" "}
+            <Link href="/pricing" className="text-tungsten hover:underline">see full pricing</Link>.
+          </p>
+        </Reveal>
+
+        {/* Studio memberships — still in the same section/context */}
+        <Reveal className="mt-20 border-t border-hairline pt-16">
+          <SectionHeading
+            eyebrow="Studio rental · memberships"
+            title="Create more. Pay less."
+            intro="Three studio membership levels, designed around how you actually shoot — recurring access at member rates plus discounted gear add-ons. Studio access only; gear rental is separate."
+          />
+          <div className="mt-10">
+            <MembershipCards page="home" />
+          </div>
+        </Reveal>
       </Section>
 
-      {/* Gear: the rental house + brands */}
+      {/* ── GEAR LANE ── clearly separated from the studio content above */}
       <Section tone="dark" className="grain" containerSize="wide">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal className="order-2 lg:order-1">
@@ -192,9 +214,9 @@ export default function HomePage() {
           </Reveal>
           <Reveal delay={0.1} className="order-1 lg:order-2">
             <SectionHeading
-              eyebrow="The rental house"
+              eyebrow="Gear rental · take it anywhere"
               title="Gear from all the top brands."
-              intro="Cameras, lighting, modifiers, grip, accessories, and production supplies — by the day, picked up at the shop or delivered across the Denver metro."
+              intro="A deep rental inventory — cameras & lenses, flash & continuous lighting, modifiers, grip, video, audio, and production supplies. Pick up at the shop or we ship anywhere. No studio booking required."
             />
             <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
               {GEAR_BRANDS.slice(0, 14).map((b) => (
@@ -210,59 +232,11 @@ export default function HomePage() {
         </div>
       </Section>
 
-      {/* Built for the work */}
-      <Section tone="light" containerSize="wide">
-        <SectionHeading
-          eyebrow="Built for the work"
-          title="Your vision, unlimited."
-          intro="From a 30-minute headshot to a three-day campaign — if you can imagine it, the studio scales to fit. A few of the formats that walk in most:"
-        />
-        <div className="mt-10">
-          <UseCaseGrid />
-        </div>
-      </Section>
-
-      {/* Pricing teaser */}
-      <Section tone="dark" className="grain" containerSize="wide">
-        <SectionHeading
-          eyebrow="Pricing"
-          title="Simple pricing. Nothing hidden."
-          intro="No setup fees, and the same rate 24/7 — no evening or weekend surcharge. A starter light and grip kit comes with the room; premium lighting, cameras, and lenses are à la carte add-ons."
-        />
-        <div className="mt-10">
-          <PricingCards page="home" />
-        </div>
-        <p className="mt-6 text-sm text-muted">
-          Need something different? Multi-day campaigns, gear, and member rates —{" "}
-          <Link href="/pricing" className="text-tungsten hover:underline">see full pricing</Link>.
-        </p>
-      </Section>
-
-      {/* Memberships teaser */}
-      <Section tone="light" containerSize="wide">
-        <SectionHeading
-          eyebrow="Memberships"
-          title="Create more. Pay less."
-          intro="Three commitment levels, designed around how you actually shoot — recurring access at member rates plus discounted gear add-ons."
-        />
-        <div className="mt-10">
-          <MembershipCards page="home" />
-        </div>
-      </Section>
-
       {/* Testimonials */}
-      <Section tone="dark" containerSize="wide">
+      <Section tone="light" containerSize="wide">
         <SectionHeading eyebrow="From the floor" title="What creators say." />
         <div className="mt-10">
           <Testimonials items={TESTIMONIALS.slice(0, 3)} />
-        </div>
-      </Section>
-
-      {/* How it works */}
-      <Section tone="light" containerSize="wide">
-        <SectionHeading eyebrow="How it works" title="Three steps from click to created." />
-        <div className="mt-10">
-          <Steps steps={HOME_STEPS} />
         </div>
       </Section>
 
