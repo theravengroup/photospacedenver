@@ -47,42 +47,70 @@ export default function HomePage() {
           </p>
         </Reveal>
 
-        {/* Two services, as two cards */}
+        {/* Two services, as two image-led cards */}
         <Reveal delay={0.1} className="mt-12 grid gap-5 lg:grid-cols-2">
           {/* 01 — Studio */}
-          <div className="group flex flex-col rounded-card border border-hairline bg-bone/[0.04] p-7 transition-colors hover:border-tungsten/40 hover:bg-bone/[0.06] sm:p-9">
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-tungsten">01 · Rent the space</p>
-            <h2 className="font-display mt-3 text-display-lg">Studio Rental</h2>
-            <p className="mt-3 text-muted">
-              A custom-built 1,900 ft² photo &amp; video studio — real cyclorama, a starter light &amp;
-              grip kit, and 24/7 access. From $100/hr.
-            </p>
-            <ul className="mt-5 space-y-2 text-sm text-muted">
-              <li><span className="mr-2 text-tungsten">&bull;</span>Real 20&prime;-wide cyclorama wall</li>
-              <li><span className="mr-2 text-tungsten">&bull;</span>Tether station + art-director lounge</li>
-              <li><span className="mr-2 text-tungsten">&bull;</span>$100/hr · 2-hour minimum</li>
-            </ul>
-            <div className="mt-auto flex flex-wrap gap-3 pt-8">
-              <BookingCTA page="home" location="hero-studio" />
-              <Button href="/studio" variant="ghost">The studio &rarr;</Button>
+          <div className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-bone/[0.04] transition-colors hover:border-tungsten/40">
+            <div className="relative aspect-[16/10] overflow-hidden">
+              <Image
+                src="/images/space/stage.jpg"
+                alt="PhotoSpace Denver's shooting floor, cyclorama, and grip wall"
+                fill
+                priority
+                className="object-cover transition-transform duration-700 ease-cinematic group-hover:scale-[1.04]"
+                sizes="(min-width: 1024px) 44vw, 100vw"
+              />
+              <span className="absolute left-5 top-4 rounded-full bg-ink/70 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-bone backdrop-blur">
+                01 · Rent the space
+              </span>
+            </div>
+            <div className="flex flex-1 flex-col p-7 sm:p-8">
+              <h2 className="font-display text-display-lg">Studio Rental</h2>
+              <p className="mt-3 text-muted">
+                A custom-built 1,900 ft² photo &amp; video studio — real cyclorama, a starter light &amp;
+                grip kit, and 24/7 access. From $100/hr.
+              </p>
+              <ul className="mt-5 space-y-2 text-sm text-muted">
+                <li><span className="mr-2 text-tungsten">&bull;</span>Real 20&prime;-wide cyclorama wall</li>
+                <li><span className="mr-2 text-tungsten">&bull;</span>Tether station + art-director lounge</li>
+                <li><span className="mr-2 text-tungsten">&bull;</span>$100/hr · 2-hour minimum</li>
+              </ul>
+              <div className="mt-auto flex flex-wrap gap-3 pt-8">
+                <BookingCTA page="home" location="hero-studio" />
+                <Button href="/studio" variant="ghost">The studio &rarr;</Button>
+              </div>
             </div>
           </div>
           {/* 02 — Gear */}
-          <div className="group flex flex-col rounded-card border border-hairline bg-bone/[0.04] p-7 transition-colors hover:border-tungsten/40 hover:bg-bone/[0.06] sm:p-9">
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-tungsten">02 · Rent the gear</p>
-            <h2 className="font-display mt-3 text-display-lg">Gear Rental</h2>
-            <p className="mt-3 text-muted">
-              A full rental house — cameras, lighting, modifiers &amp; grip from 27+ top brands.
-              Pickup or Denver-metro delivery.
-            </p>
-            <ul className="mt-5 space-y-2 text-sm text-muted">
-              <li><span className="mr-2 text-tungsten">&bull;</span>Medium format through cinema</li>
-              <li><span className="mr-2 text-tungsten">&bull;</span>Profoto, Arri &amp; Nanlux lighting</li>
-              <li><span className="mr-2 text-tungsten">&bull;</span>~400 line items, daily rates</li>
-            </ul>
-            <div className="mt-auto flex flex-wrap gap-3 pt-8">
-              <Button href="/gear-rental">Browse gear rental</Button>
-              <EstimateCTA page="home" location="hero-gear" variant="ghost" />
+          <div className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-bone/[0.04] transition-colors hover:border-tungsten/40">
+            <div className="relative aspect-[16/10] overflow-hidden">
+              <Image
+                src="/images/gear/gear.jpg"
+                alt="A flat-lay of cameras, lenses, Profoto lighting, and grip available to rent"
+                fill
+                priority
+                className="object-cover transition-transform duration-700 ease-cinematic group-hover:scale-[1.04]"
+                sizes="(min-width: 1024px) 44vw, 100vw"
+              />
+              <span className="absolute left-5 top-4 rounded-full bg-ink/70 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-bone backdrop-blur">
+                02 · Rent the gear
+              </span>
+            </div>
+            <div className="flex flex-1 flex-col p-7 sm:p-8">
+              <h2 className="font-display text-display-lg">Gear Rental</h2>
+              <p className="mt-3 text-muted">
+                A full rental house — cameras, lighting, modifiers &amp; grip from 27+ top brands.
+                Pickup or Denver-metro delivery.
+              </p>
+              <ul className="mt-5 space-y-2 text-sm text-muted">
+                <li><span className="mr-2 text-tungsten">&bull;</span>Medium format through cinema</li>
+                <li><span className="mr-2 text-tungsten">&bull;</span>Profoto, Arri &amp; Nanlux lighting</li>
+                <li><span className="mr-2 text-tungsten">&bull;</span>~400 line items, daily rates</li>
+              </ul>
+              <div className="mt-auto flex flex-wrap gap-3 pt-8">
+                <Button href="/gear-rental">Browse gear rental</Button>
+                <EstimateCTA page="home" location="hero-gear" variant="ghost" />
+              </div>
             </div>
           </div>
         </Reveal>
