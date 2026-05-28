@@ -10,9 +10,9 @@ import { breadcrumbSchema } from "@/lib/schema";
 import { BOOKING } from "@/lib/content/site-config";
 
 export const metadata = pageMeta({
-  title: "Book the Studio — PhotoSpace Denver",
+  title: "Book the Studio — photospace Denver",
   description:
-    "Reserve the PhotoSpace Denver studio in under a minute — pick your block and lock it in. Free 20-minute studio tours available 7 days a week.",
+    "Reserve the photospace Denver studio in under a minute — pick your block and lock it in. Free 20-minute studio tours available 7 days a week.",
   path: "/book",
   keywords: ["book photo studio Denver", "studio availability Denver", "reserve studio Denver"],
 });
@@ -46,7 +46,7 @@ export default function BookPage() {
         <SectionHeading eyebrow="Live availability" title="Book your session or a free tour." />
         <div className="mt-8 overflow-hidden rounded-card border border-hairline bg-panel">
           <iframe
-            title="PhotoSpace Denver — book the studio (live availability)"
+            title="photospace Denver — book the studio (live availability)"
             src={BOOKING.acuityEmbed}
             className="w-full"
             style={{ minHeight: 1000, border: 0 }}

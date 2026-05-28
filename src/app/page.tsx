@@ -38,12 +38,12 @@ export default function HomePage() {
       <Section tone="dark" className="grain pt-32 sm:pt-44" containerSize="wide">
         <Reveal>
           <p className="eyebrow">Denver, Colorado · Est. {SITE.foundedYear}</p>
-          <h1 className="font-display mt-5 max-w-[18ch] text-display-2xl">
-            A studio to shoot in. The gear to shoot with.
+          <h1 className="font-display mt-5 tracking-tight leading-[1.03] text-[clamp(1.55rem,7.5vw,5.5rem)]">
+            A studio to shoot in.<br />The gear to shoot with.
           </h1>
           <p className="measure mt-6 text-lg text-muted">
-            PhotoSpace is two things under one roof in Denver, both run by working pros since{" "}
-            {SITE.foundedYear}. Pick your lane:
+            <strong className="font-semibold text-bone">photospace</strong> is two things under one
+            roof in Denver, both run by working pros since {SITE.foundedYear}. Pick your lane:
           </p>
         </Reveal>
 
@@ -54,7 +54,7 @@ export default function HomePage() {
             <div className="relative aspect-[16/10] overflow-hidden">
               <Image
                 src="/images/space/stage.jpg"
-                alt="PhotoSpace Denver's shooting floor, cyclorama, and grip wall"
+                alt="photospace Denver's shooting floor, cyclorama, and grip wall"
                 fill
                 priority
                 className="object-cover transition-transform duration-700 ease-cinematic group-hover:scale-[1.04]"
@@ -153,7 +153,7 @@ export default function HomePage() {
             <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-hairline">
               <Image
                 src="/images/space/lounge.jpg"
-                alt="The PhotoSpace client lounge"
+                alt="The photospace client lounge"
                 fill
                 className="object-cover"
                 sizes="(min-width: 1024px) 44vw, 100vw"

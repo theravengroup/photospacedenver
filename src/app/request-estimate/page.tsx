@@ -9,7 +9,7 @@ import { breadcrumbSchema } from "@/lib/schema";
 import { SITE } from "@/lib/content/site-config";
 
 export const metadata = pageMeta({
-  title: "Request a Quote — PhotoSpace Denver",
+  title: "Request a Quote — photospace Denver",
   description:
     "Request a written quote for studio, gear, or a multi-day shoot. Send your dates and gear list — we'll confirm availability, usually the same business day.",
   path: "/request-estimate",

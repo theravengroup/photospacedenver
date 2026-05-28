@@ -15,12 +15,12 @@ export const LEGACY_DOMAIN = "https://photospace.studio";
 
 export const SITE = {
   /** Brand mark / wordmark text. */
-  brand: "PhotoSpace",
+  brand: "photospace",
   /** Public-facing name. */
-  name: "PhotoSpace Denver",
+  name: "photospace Denver",
   /** Used in schema Organization.alternateName. */
-  alternateName: "PhotoSpace Studio",
-  legalName: "PhotoSpace",
+  alternateName: "photospace Studio",
+  legalName: "photospace",
   tagline: "Studio & Gear Rental in Denver",
   positioning:
     "Two ways to create in Denver: a custom-built photo & video studio for rent, and a full gear-rental house — cameras, lighting, and grip from the top brands. Since 2008.",

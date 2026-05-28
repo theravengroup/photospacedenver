@@ -9,11 +9,11 @@ import { breadcrumbSchema } from "@/lib/schema";
 import { FEES, usd } from "@/lib/content/pricing-data";
 
 export const metadata = pageMeta({
-  title: "Rental & Studio Policies — PhotoSpace Denver",
+  title: "Rental & Studio Policies — photospace Denver",
   description:
-    "PhotoSpace Denver policies: insurance and liability, deposits and payment, cancellation and rescheduling, and studio-use terms.",
+    "photospace Denver policies: insurance and liability, deposits and payment, cancellation and rescheduling, and studio-use terms.",
   path: "/policies",
-  keywords: ["PhotoSpace Denver policies", "studio rental terms Denver"],
+  keywords: ["photospace Denver policies", "studio rental terms Denver"],
 });
 
 const breadcrumbs = [

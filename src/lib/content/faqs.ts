@@ -36,12 +36,12 @@ export const FAQS: Faq[] = [
     tags: ["gear", "studio"],
   },
   {
-    q: "Does PhotoSpace offer studio memberships?",
+    q: "Does photospace offer studio memberships?",
     a: "Yes. Three monthly memberships — Spark (5 hrs/mo, $425), Creator (10 hrs/mo, $895), and Visionary (20 hrs/mo, $1,495) — give Denver photographers and videographers recurring access at member rates, plus discounted camera, lens, and lighting add-ons.",
     tags: ["membership", "pricing"],
   },
   {
-    q: "Is PhotoSpace good for commercial shoots and brand campaigns?",
+    q: "Is photospace good for commercial shoots and brand campaigns?",
     a: "It's what the studio is built for. Brands including Nike, Under Armour, Oakley, New Balance, Amazon, Allstate, RH, the Denver Broncos, and Marie Claire have shot campaigns, editorials, and lookbooks on this floor. The space is sized and equipped for multi-look productions, agency teams, art-director-friendly client lounges, and full-day takeovers.",
     tags: ["commercial", "studio"],
   },
@@ -51,12 +51,12 @@ export const FAQS: Faq[] = [
     tags: ["studio", "policy"],
   },
   {
-    q: "Where is PhotoSpace located in Denver?",
+    q: "Where is photospace located in Denver?",
     a: "209 Kalamath St, Unit 1, Denver, CO 80223 — in Denver's Sun Valley neighborhood, just off I-25 and minutes from downtown. The building has free parking, a load-in ramp, and an outdoor deck.",
     tags: ["location"],
   },
   {
-    q: "How do I book PhotoSpace?",
+    q: "How do I book photospace?",
     a: "Book directly through the live availability scheduler on the booking page — pick your block, confirm, and the studio is yours. Free 20-minute studio tours are bookable through the same scheduler if you'd like to walk the space first. For multi-day campaigns or custom productions, request an estimate and we'll send a written quote.",
     tags: ["booking", "tour"],
   },
@@ -66,7 +66,7 @@ export const FAQS: Faq[] = [
     tags: ["gear", "studio", "pricing"],
   },
   {
-    q: "Is PhotoSpace designed for content creators and brand teams?",
+    q: "Is photospace designed for content creators and brand teams?",
     a: "Yes. The studio is built for the full range of professional creative work — photographers, videographers, content creators, influencers, agencies, and in-house brand teams. The Creator membership in particular is built for recurring content output.",
     tags: ["content", "membership"],
   },

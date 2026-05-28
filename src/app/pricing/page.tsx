@@ -22,7 +22,7 @@ import {
 import { faqsByTag } from "@/lib/content/faqs";
 
 export const metadata = pageMeta({
-  title: "PhotoSpace Denver Pricing — Studio, Memberships & Add-Ons",
+  title: "photospace Denver Pricing — Studio, Memberships & Add-Ons",
   description:
     "Transparent pricing: studio $100/hr (2-hr minimum), half-day $485, full-day $925, memberships from $425/mo, plus add-on lighting kits, gear rental, and the ShootPod mobile studio.",
   path: "/pricing",

@@ -1,5 +1,5 @@
 /**
- * Single structured fact sheet for PhotoSpace Denver, assembled from the data
+ * Single structured fact sheet for photospace Denver, assembled from the data
  * modules. Powers both the human-readable /studio-facts page and the
  * machine-readable /studio-facts.json export so they never drift.
  */

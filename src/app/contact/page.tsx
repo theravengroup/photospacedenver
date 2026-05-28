@@ -9,11 +9,11 @@ import { breadcrumbSchema } from "@/lib/schema";
 import { SITE, ANALYTICS_EVENTS, CTA_LABELS } from "@/lib/content/site-config";
 
 export const metadata = pageMeta({
-  title: "Contact & Visit — PhotoSpace Denver",
+  title: "Contact & Visit — photospace Denver",
   description:
-    "Visit PhotoSpace Denver at 209 Kalamath St, Unit 1, Denver, CO 80223 — free parking and a load-in ramp. Call (303) 284-6057 or book a free 20-minute studio tour.",
+    "Visit photospace Denver at 209 Kalamath St, Unit 1, Denver, CO 80223 — free parking and a load-in ramp. Call (303) 284-6057 or book a free 20-minute studio tour.",
   path: "/contact",
-  keywords: ["PhotoSpace Denver location", "photo studio Denver address", "studio tour Denver"],
+  keywords: ["photospace Denver location", "photo studio Denver address", "studio tour Denver"],
 });
 
 const breadcrumbs = [
@@ -92,7 +92,7 @@ export default function ContactPage() {
 
           <div className="overflow-hidden rounded-card border border-hairline">
             <iframe
-              title="Map to PhotoSpace Denver, 209 Kalamath St, Unit 1"
+              title="Map to photospace Denver, 209 Kalamath St, Unit 1"
               src={mapEmbed}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

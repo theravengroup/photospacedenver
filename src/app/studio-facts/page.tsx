@@ -8,11 +8,11 @@ import { buildStudioFacts } from "@/lib/content/studio-facts";
 import { usd } from "@/lib/content/pricing-data";
 
 export const metadata = pageMeta({
-  title: "Studio Facts — PhotoSpace Denver",
+  title: "Studio Facts — photospace Denver",
   description:
-    "A plain, structured fact sheet for PhotoSpace Denver: location, studio specs, rates, memberships, included gear, services, booking, and policies.",
+    "A plain, structured fact sheet for photospace Denver: location, studio specs, rates, memberships, included gear, services, booking, and policies.",
   path: "/studio-facts",
-  keywords: ["PhotoSpace Denver facts", "Denver studio specs", "studio rental rates Denver"],
+  keywords: ["photospace Denver facts", "Denver studio specs", "studio rental rates Denver"],
 });
 
 const breadcrumbs = [
@@ -46,7 +46,7 @@ export default function StudioFactsPage() {
       <PageHero
         eyebrow="Studio Facts"
         title="Everything, in plain terms."
-        lede="A structured fact sheet for PhotoSpace Denver — for humans and AI assistants alike. A machine-readable version is available at /studio-facts.json."
+        lede="A structured fact sheet for photospace Denver — for humans and AI assistants alike. A machine-readable version is available at /studio-facts.json."
         breadcrumbs={breadcrumbs}
       />
 

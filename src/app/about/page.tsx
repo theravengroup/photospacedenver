@@ -12,11 +12,11 @@ import { SITE } from "@/lib/content/site-config";
 import { TESTIMONIALS } from "@/lib/content/testimonials";
 
 export const metadata = pageMeta({
-  title: "About PhotoSpace Denver — Built by Production Pros",
+  title: "About photospace Denver — Built by Production Pros",
   description:
-    "PhotoSpace has been Denver's home for professional production since 2008 — a purpose-built studio and gear house run by working photographers and videographers.",
+    "photospace has been Denver's home for professional production since 2008 — a purpose-built studio and gear house run by working photographers and videographers.",
   path: "/about",
-  keywords: ["about PhotoSpace Denver", "Denver production studio", "Dan Jahn PhotoSpace"],
+  keywords: ["about photospace Denver", "Denver production studio", "Dan Jahn photospace"],
 });
 
 const breadcrumbs = [
@@ -40,7 +40,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About"
         title={`A real working studio, since ${SITE.foundedYear}.`}
-        lede="PhotoSpace was custom-built from the ground up by photographers and videographers — designed to remove friction from production days, for creators and commercial teams alike."
+        lede="photospace was custom-built from the ground up by photographers and videographers — designed to remove friction from production days, for creators and commercial teams alike."
         breadcrumbs={breadcrumbs}
       >
         <TourCTA page="about" location="hero" />
@@ -51,7 +51,7 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow="The story"
             title="This is not a converted warehouse."
-            intro={`Founded in ${SITE.foundedYear} and run by owner Dan Jahn, PhotoSpace is a purpose-built studio and gear house in Denver's Sun Valley — the city's home for professional photo and video production.`}
+            intro={`Founded in ${SITE.foundedYear} and run by owner Dan Jahn, photospace is a purpose-built studio and gear house in Denver's Sun Valley — the city's home for professional photo and video production.`}
           />
           <p className="measure text-lg text-muted">
             The idea is simple: a serious, comfortable, fully-equipped place to make great work, backed
@@ -77,7 +77,7 @@ export default function AboutPage() {
 
       <Section tone="dark" className="border-t border-hairline !py-12" container={false}>
         <p className="mb-6 text-center text-xs uppercase tracking-[0.18em] text-muted">
-          Shot at PhotoSpace
+          Shot at photospace
         </p>
         <ClientLogoWall />
       </Section>

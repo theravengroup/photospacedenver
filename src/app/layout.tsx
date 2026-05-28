@@ -16,8 +16,8 @@ const fraunces = Fraunces({ variable: "--font-fraunces", subsets: ["latin"], dis
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: "PhotoSpace Denver — Studio Rental, Memberships & Gear Rental",
-    template: "%s · PhotoSpace Denver",
+    default: "photospace Denver — Studio Rental, Memberships & Gear Rental",
+    template: "%s · photospace Denver",
   },
   description:
     "Denver's photo & video studio and gear-rental house since 2008. A 1,900 ft² shooting floor with a real cyclorama, a starter light & grip kit, and 24/7 access — plus camera, lighting, and grip rental from the top brands, and studio memberships.",
@@ -40,14 +40,14 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE.url,
     siteName: SITE.name,
-    title: "PhotoSpace Denver — Studio & Gear Rental",
+    title: "photospace Denver — Studio & Gear Rental",
     description:
       "A custom-built photo & video studio for rent, and a full gear-rental house — cameras, lighting, and grip from the top brands. Under one roof in Denver since 2008.",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PhotoSpace Denver — Studio & Gear Rental",
+    title: "photospace Denver — Studio & Gear Rental",
     description:
       "A real working studio — 1,900 ft² floor, real cyclorama, 24/7 access — plus camera, lighting, and grip rental in Denver. Studio + gear, since 2008.",
   },

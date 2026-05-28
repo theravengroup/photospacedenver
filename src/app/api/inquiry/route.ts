@@ -40,7 +40,7 @@ export async function POST(req: Request) {
 
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.INQUIRY_TO_EMAIL ?? SITE.contact.email;
-  const from = process.env.INQUIRY_FROM_EMAIL ?? "PhotoSpace Denver <onboarding@resend.dev>";
+  const from = process.env.INQUIRY_FROM_EMAIL ?? "photospace Denver <onboarding@resend.dev>";
 
   if (apiKey) {
     const res = await fetch("https://api.resend.com/emails", {

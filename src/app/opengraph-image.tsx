@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "PhotoSpace Denver — Denver's photo & video studio and gear-rental house. Studio rental, memberships, and gear since 2008.";
+  "photospace Denver — Denver's photo & video studio and gear-rental house. Studio rental, memberships, and gear since 2008.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -26,8 +26,8 @@ export default function OG() {
         }}
       >
         <div style={{ display: "flex", alignItems: "baseline", gap: 14, color: "#e8e3d8" }}>
-          <span style={{ fontSize: 44, fontWeight: 600, letterSpacing: "-0.02em", fontFamily: "Georgia, serif" }}>
-            PhotoSpace
+          <span style={{ fontSize: 44, fontWeight: 700, letterSpacing: "-0.02em", fontFamily: "Georgia, serif" }}>
+            photospace
           </span>
           <span style={{ fontSize: 14, letterSpacing: "0.3em", textTransform: "uppercase", color: "#c8842b" }}>
             Denver · since 2008

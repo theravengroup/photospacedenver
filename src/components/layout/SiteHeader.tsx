@@ -71,8 +71,9 @@ export function SiteHeader() {
       )}
     >
       <div className="mx-auto flex h-16 w-full max-w-[88rem] items-center justify-between px-5 sm:h-20 sm:px-8">
-        <Link href="/" aria-label="PhotoSpace Denver — home" className="inline-flex items-baseline gap-2">
-          <span className="font-display text-xl tracking-tight text-bone sm:text-2xl">PhotoSpace</span>
+        <Link href="/" aria-label="photospace Denver — home" className="inline-flex items-center gap-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element -- brand wordmark logo */}
+          <img src="/images/brand/photospace-logo-small.png" alt="photospace" className="h-6 w-auto sm:h-7" />
           <span className="hidden text-[0.625rem] uppercase tracking-[0.22em] text-tungsten sm:inline">Denver</span>
         </Link>
 

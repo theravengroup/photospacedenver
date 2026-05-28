@@ -11,7 +11,7 @@ export function SiteFooter() {
           {/* Brand + contact */}
           <div>
             <Link href="/" className="inline-flex items-baseline gap-2">
-              <span className="font-display text-2xl tracking-tight text-bone">PhotoSpace</span>
+              <span className="font-display text-2xl font-bold tracking-tight text-bone">photospace</span>
               <span className="text-[0.625rem] uppercase tracking-[0.22em] text-tungsten">Denver</span>
             </Link>
             <p className="measure-tight mt-4 text-sm text-muted">

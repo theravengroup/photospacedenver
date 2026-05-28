@@ -9,8 +9,8 @@ import { breadcrumbSchema } from "@/lib/schema";
 import { MEMBERSHIP_TIERS, MEMBERSHIP_TERMS, usd } from "@/lib/content/pricing-data";
 
 export const metadata = pageMeta({
-  title: "Membership Application — PhotoSpace Denver",
-  description: "Apply for a PhotoSpace Denver studio membership. Tell us about you and pick a tier — we'll follow up to complete the agreement and payment.",
+  title: "Membership Application — photospace Denver",
+  description: "Apply for a photospace Denver studio membership. Tell us about you and pick a tier — we'll follow up to complete the agreement and payment.",
   path: "/memberships/apply",
   noindex: true,
 });
@@ -55,7 +55,7 @@ export default function MembershipApplyPage() {
             <Checkbox
               name="agreement_ack"
               required
-              label={`I understand membership is billed every ${MEMBERSHIP_TERMS.billingCycleDays} days with a ${MEMBERSHIP_TERMS.minimumCommitmentDays}-day minimum, and that PhotoSpace will follow up to complete the agreement, e-signature, and payment.`}
+              label={`I understand membership is billed every ${MEMBERSHIP_TERMS.billingCycleDays} days with a ${MEMBERSHIP_TERMS.minimumCommitmentDays}-day minimum, and that photospace will follow up to complete the agreement, e-signature, and payment.`}
             />
           </InquiryForm>
 

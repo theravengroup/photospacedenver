@@ -9,9 +9,9 @@ import { breadcrumbSchema } from "@/lib/schema";
 import { FAQS } from "@/lib/content/faqs";
 
 export const metadata = pageMeta({
-  title: "Studio Rental FAQ — PhotoSpace Denver",
+  title: "Studio Rental FAQ — photospace Denver",
   description:
-    "Answers about renting PhotoSpace Denver: hourly pricing, what's included, video, memberships, booking, free tours, gear rental, delivery, and cancellation.",
+    "Answers about renting photospace Denver: hourly pricing, what's included, video, memberships, booking, free tours, gear rental, delivery, and cancellation.",
   path: "/faq",
   keywords: ["studio rental FAQ Denver", "photo studio Denver questions"],
 });
@@ -27,7 +27,7 @@ export default function FaqPage() {
       <PageHero
         eyebrow="FAQ"
         title="Questions, answered."
-        lede="Everything about booking, pricing, gear, memberships, and how a day at PhotoSpace works."
+        lede="Everything about booking, pricing, gear, memberships, and how a day at photospace works."
         breadcrumbs={breadcrumbs}
       >
         <BookingCTA page="faq" location="hero" />

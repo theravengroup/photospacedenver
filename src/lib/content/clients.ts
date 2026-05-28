@@ -1,5 +1,5 @@
 /**
- * Brands and creators that have shot at PhotoSpace ("Trusted by top creators in
+ * Brands and creators that have shot at photospace ("Trusted by top creators in
  * Denver & beyond"). Logo art lives at /public/images/clients/<slug>.png for 22
  * of 26; Nike, Denver Broncos, Jiberish, and Peter Yang have no mark. The wall
  * renders names as text (see ClientLogoWall), so the `logo` paths are kept as

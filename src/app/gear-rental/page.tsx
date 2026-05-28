@@ -15,7 +15,7 @@ import { usd } from "@/lib/content/pricing-data";
 import { faqsByTag } from "@/lib/content/faqs";
 
 export const metadata = pageMeta({
-  title: "Camera, Lighting & Grip Rental in Denver — PhotoSpace",
+  title: "Camera, Lighting & Grip Rental in Denver — photospace",
   description:
     "Denver gear rental: Profoto, Phase One, Canon, Nikon, Blackmagic, Arri, and more — cameras, lighting, modifiers, grip, accessories, and production supplies. Pickup or Denver-metro delivery.",
   path: "/gear-rental",

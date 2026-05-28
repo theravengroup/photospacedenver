@@ -10,7 +10,7 @@ import { CLIENTS } from "@/lib/content/clients";
 export function ClientLogoWall() {
   const row = [...CLIENTS, ...CLIENTS];
   return (
-    <div className="marquee overflow-hidden" aria-label="Brands that have shot at PhotoSpace">
+    <div className="marquee overflow-hidden" aria-label="Brands that have shot at photospace">
       <div className="marquee-track flex items-center gap-12 py-2">
         {row.map((c, i) => (
           <span

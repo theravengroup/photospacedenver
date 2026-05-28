@@ -15,9 +15,9 @@ import { MEMBERSHIP_BENEFITS, MEMBERSHIP_TERMS, usd } from "@/lib/content/pricin
 import { faqsByTag } from "@/lib/content/faqs";
 
 export const metadata = pageMeta({
-  title: "Studio Memberships in Denver — PhotoSpace",
+  title: "Studio Memberships in Denver — photospace",
   description:
-    "PhotoSpace Denver studio memberships: Spark (5 hrs, $425/mo), Creator (10 hrs, $895/mo), Visionary (20 hrs, $1,495/mo). 24/7 access, member rates, and discounted add-ons.",
+    "photospace Denver studio memberships: Spark (5 hrs, $425/mo), Creator (10 hrs, $895/mo), Visionary (20 hrs, $1,495/mo). 24/7 access, member rates, and discounted add-ons.",
   path: "/memberships",
   keywords: ["studio membership Denver", "photography studio membership Denver", "monthly studio access Denver"],
 });

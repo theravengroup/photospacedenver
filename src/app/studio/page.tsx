@@ -19,9 +19,9 @@ import { TESTIMONIALS } from "@/lib/content/testimonials";
 import { faqsByTag } from "@/lib/content/faqs";
 
 export const metadata = pageMeta({
-  title: "Photo & Video Studio Rental in Denver — PhotoSpace",
+  title: "Photo & Video Studio Rental in Denver — photospace",
   description:
-    "Rent PhotoSpace Denver's 1,900 ft² studio — a real cyclorama, a starter light & grip kit, a calibrated tether station, and 24/7 access. $100/hr, half-day $485, full-day $925.",
+    "Rent photospace Denver's 1,900 ft² studio — a real cyclorama, a starter light & grip kit, a calibrated tether station, and 24/7 access. $100/hr, half-day $485, full-day $925.",
   path: "/studio",
   keywords: ["studio rental Denver", "photo studio Denver", "video studio Denver", "cyclorama studio Denver"],
 });
@@ -63,15 +63,15 @@ const FRAMES = [
     headline: "Yours, midnight or sunrise.",
     body: "209 Kalamath St, Unit 1. Free parking, a load-in ramp, an outdoor deck, and a real working kitchen. Easy in, easy out, midnight or sunrise — the studio is yours when the work is.",
     img: "/images/space/studio-denver-2016.jpg",
-    alt: "The PhotoSpace building in Denver's Sun Valley",
+    alt: "The photospace building in Denver's Sun Valley",
   },
 ];
 
 const ARCHIVE = [
-  { src: "/images/portfolio/fashion-01.jpg", alt: "Fashion editorial shot at PhotoSpace" },
-  { src: "/images/portfolio/hiro-01.jpg", alt: "Portrait campaign shot at PhotoSpace" },
-  { src: "/images/portfolio/fashion-02.jpg", alt: "Lookbook image shot at PhotoSpace" },
-  { src: "/images/portfolio/fashion-04.jpg", alt: "Editorial frame shot at PhotoSpace" },
+  { src: "/images/portfolio/fashion-01.jpg", alt: "Fashion editorial shot at photospace" },
+  { src: "/images/portfolio/hiro-01.jpg", alt: "Portrait campaign shot at photospace" },
+  { src: "/images/portfolio/fashion-02.jpg", alt: "Lookbook image shot at photospace" },
+  { src: "/images/portfolio/fashion-04.jpg", alt: "Editorial frame shot at photospace" },
 ];
 
 export default function StudioPage() {
@@ -93,7 +93,7 @@ export default function StudioPage() {
           <SectionHeading
             eyebrow="A Denver original"
             title="This is not a converted warehouse."
-            intro="PhotoSpace was custom-built from the ground up by working photographers and videographers — designed to capture your best work with unmatched comfort and creative flexibility. A real cyclorama, controllable daylight, and the power to run a serious set."
+            intro="photospace was custom-built from the ground up by working photographers and videographers — designed to capture your best work with unmatched comfort and creative flexibility. A real cyclorama, controllable daylight, and the power to run a serious set."
           />
           <SpecList items={STUDIO.specs} />
         </div>
@@ -186,7 +186,7 @@ export default function StudioPage() {
         <SectionHeading
           eyebrow="From the archive"
           title="Shot here."
-          intro="A small sample of the campaigns, editorials, and shoots booked, lit, and shot on this floor — and every one of them was shot at PhotoSpace."
+          intro="A small sample of the campaigns, editorials, and shoots booked, lit, and shot on this floor — and every one of them was shot at photospace."
         />
         <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
           {ARCHIVE.map((img, i) => (
