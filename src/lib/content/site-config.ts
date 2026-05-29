@@ -136,17 +136,22 @@ export type NavItem = {
 };
 
 /**
- * Primary navigation — Studio · Gear (mega-menu) · Memberships.
+ * Primary navigation — two top-level lanes: Studio · Gear (both mega-menus).
+ * Memberships, Studio Pricing, and Book live under Studio (not top-level).
  * SEO landing pages (/photo-studio-rental-denver etc.) are search-only —
  * no nav or footer links; they get indexed via the sitemap.
- * Pricing is studio-specific; it lives at /pricing and is linked contextually,
- * not as a top-level nav item. Book is the header CTA button.
+ * Book the Studio is also surfaced as the header CTA button.
  */
 export const NAV_PRIMARY: NavItem[] = [
   {
     label: "Studio",
     href: "/studio",
     blurb: "1,900 ft² shooting floor, real cyclorama, 24/7 access.",
+    children: [
+      { label: "Studio Pricing", href: "/studio-pricing" },
+      { label: "Memberships", href: "/memberships" },
+      { label: "Book the Studio", href: "/book" },
+    ],
   },
   {
     label: "Gear",
@@ -161,11 +166,6 @@ export const NAV_PRIMARY: NavItem[] = [
       { label: "Photo & Video Accessories", href: "/photo-video-accessory-rental-denver" },
       { label: "Production Supplies", href: "/production-supply-rental-denver" },
     ],
-  },
-  {
-    label: "Memberships",
-    href: "/memberships",
-    blurb: "Recurring studio access at member rates.",
   },
 ];
 

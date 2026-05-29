@@ -14,8 +14,6 @@ import {
   Tag,
   CalendarCheck,
   Sparkles,
-  Star,
-  Crown,
   ArrowRight,
   FileText,
   ShieldCheck,
@@ -30,7 +28,6 @@ import {
   NavigationMenuLink,
 } from "@/components/ui/NavigationMenu";
 import { MEMBERSHIP_TIERS } from "@/lib/content/pricing-data";
-import { cn } from "@/lib/cn";
 
 /** Gear categories surfaced in the mega menu — icon + short, accurate descriptor. */
 const GEAR_CATEGORIES: { href: string; label: string; desc: string; icon: LucideIcon }[] = [
@@ -49,12 +46,12 @@ const STUDIO_LINKS: { href: string; label: string; desc: string; icon: LucideIco
   { href: "/book", label: "Book the Studio", desc: "Reserve your time — same rate, day or night.", icon: CalendarCheck },
 ];
 
-const TIER_ICONS: Record<string, LucideIcon> = { spark: Sparkles, creator: Star, visionary: Crown };
+const MIN_MEMBER_PRICE = Math.min(...MEMBERSHIP_TIERS.map((t) => t.price));
 
 function MenuRow({ href, label, desc, icon: Icon }: { href: string; label: string; desc?: string; icon: LucideIcon }) {
   return (
     <NavigationMenuLink asChild>
-      <Link href={href} className="group/row flex items-start gap-3 rounded-lg p-3 outline-none transition-colors hover:bg-white/[0.04] focus-visible:bg-white/[0.06]">
+      <Link href={href} className="group/row flex items-start gap-3 rounded-lg p-3 transition-colors hover:bg-white/[0.04] focus-visible:bg-white/[0.06]">
         <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-md border border-hairline bg-white/[0.03] text-tungsten transition-colors group-hover/row:border-tungsten/40">
           <Icon className="size-4" aria-hidden />
         </span>
@@ -70,7 +67,7 @@ function MenuRow({ href, label, desc, icon: Icon }: { href: string; label: strin
 function FeatureCard({ href, src, alt, eyebrow, title, cta }: { href: string; src: string; alt: string; eyebrow: string; title: string; cta: string }) {
   return (
     <NavigationMenuLink asChild>
-      <Link href={href} className="group/feat relative flex min-h-[210px] flex-col justify-end overflow-hidden rounded-card border border-hairline outline-none">
+      <Link href={href} className="group/feat relative flex min-h-[210px] flex-col justify-end overflow-hidden rounded-card border border-hairline">
         <Image src={src} alt={alt} fill sizes="380px" className="object-cover opacity-70 transition-transform duration-700 ease-out group-hover/feat:scale-105" />
         <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-transparent" />
         <div className="relative p-5">
@@ -88,38 +85,9 @@ function FeatureCard({ href, src, alt, eyebrow, title, cta }: { href: string; sr
 function SideLink({ href, label, icon: Icon }: { href: string; label: string; icon: LucideIcon }) {
   return (
     <NavigationMenuLink asChild>
-      <Link href={href} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-bone/85 outline-none transition-colors hover:bg-white/[0.04] hover:text-bone focus-visible:bg-white/[0.06]">
+      <Link href={href} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-bone/85 transition-colors hover:bg-white/[0.04] hover:text-bone focus-visible:bg-white/[0.06]">
         <Icon className="size-4 text-tungsten" aria-hidden />
         {label}
-      </Link>
-    </NavigationMenuLink>
-  );
-}
-
-function TierCard({ tier }: { tier: (typeof MEMBERSHIP_TIERS)[number] }) {
-  const Icon = TIER_ICONS[tier.id] ?? Sparkles;
-  return (
-    <NavigationMenuLink asChild>
-      <Link
-        href="/memberships"
-        className={cn(
-          "group/tier relative flex flex-col rounded-card border p-4 outline-none transition-colors",
-          tier.featured ? "border-tungsten/50 bg-tungsten/[0.06]" : "border-hairline hover:border-bone/20",
-        )}
-      >
-        {tier.badge && (
-          <span className="absolute right-3 top-3 rounded-full bg-tungsten/15 px-2 py-0.5 text-[10px] uppercase tracking-[0.12em] text-tungsten">
-            {tier.badge}
-          </span>
-        )}
-        <Icon className="size-5 text-tungsten" aria-hidden />
-        <span className="font-display mt-3 text-lg text-bone">{tier.name}</span>
-        <span className="mt-1 text-sm text-bone">
-          ${tier.price}
-          <span className="text-muted">/mo</span>
-        </span>
-        <span className="text-xs text-muted">{tier.hoursPerMonth} hrs/mo</span>
-        <span className="mt-2 line-clamp-2 text-xs leading-relaxed text-muted">{tier.blurb}</span>
       </Link>
     </NavigationMenuLink>
   );
@@ -146,6 +114,23 @@ export function MegaMenu({ className }: { className?: string }) {
                 {STUDIO_LINKS.map((l) => (
                   <MenuRow key={l.href} {...l} />
                 ))}
+                <NavigationMenuLink asChild>
+                  <Link
+                    href="/memberships"
+                    className="group/mem mt-2 flex items-center gap-3 rounded-lg border border-tungsten/30 bg-tungsten/[0.06] p-3 transition-colors hover:border-tungsten/50 focus-visible:border-tungsten/50"
+                  >
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-md border border-tungsten/30 text-tungsten">
+                      <Sparkles className="size-4" aria-hidden />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm font-medium text-bone">Memberships</span>
+                      <span className="mt-0.5 block text-xs text-muted">
+                        Studio access at member rates — from ${MIN_MEMBER_PRICE}/mo.
+                      </span>
+                    </span>
+                    <ArrowRight className="size-4 shrink-0 text-tungsten transition-transform group-hover/mem:translate-x-0.5" aria-hidden />
+                  </Link>
+                </NavigationMenuLink>
               </div>
             </div>
           </NavigationMenuContent>
@@ -160,7 +145,7 @@ export function MegaMenu({ className }: { className?: string }) {
                 <div className="flex items-center justify-between px-1">
                   <p className="text-[11px] uppercase tracking-[0.2em] text-muted">Rent by category</p>
                   <NavigationMenuLink asChild>
-                    <Link href="/gear-rental" className="text-xs text-tungsten outline-none hover:underline">
+                    <Link href="/gear-rental" className="text-xs text-tungsten hover:underline">
                       All gear rental &rarr;
                     </Link>
                   </NavigationMenuLink>
@@ -195,30 +180,6 @@ export function MegaMenu({ className }: { className?: string }) {
           </NavigationMenuContent>
         </NavigationMenuItem>
 
-        {/* Memberships */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Memberships</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <div className="w-[min(820px,94vw)] p-6">
-              <div className="flex items-end justify-between px-1">
-                <div>
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-tungsten">Memberships</p>
-                  <p className="font-display mt-1 text-lg text-bone">Recurring access, at member rates.</p>
-                </div>
-                <NavigationMenuLink asChild>
-                  <Link href="/memberships" className="text-xs text-tungsten outline-none hover:underline">
-                    Compare all &rarr;
-                  </Link>
-                </NavigationMenuLink>
-              </div>
-              <div className="mt-4 grid grid-cols-3 gap-3">
-                {MEMBERSHIP_TIERS.map((tier) => (
-                  <TierCard key={tier.id} tier={tier} />
-                ))}
-              </div>
-            </div>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   );

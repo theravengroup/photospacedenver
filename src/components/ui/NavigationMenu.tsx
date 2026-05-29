@@ -43,7 +43,7 @@ function NavigationMenuList({
 const NavigationMenuItem = NavigationMenuPrimitive.Item;
 
 const triggerClass =
-  "group inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm text-bone/80 outline-none transition-colors hover:text-bone focus-visible:text-bone data-[state=open]:text-bone";
+  "group inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm text-bone/80 transition-colors hover:text-bone focus-visible:text-bone data-[state=open]:text-bone";
 
 function NavigationMenuTrigger({
   className,
