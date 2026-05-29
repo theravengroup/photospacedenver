@@ -4,6 +4,11 @@ import Link from "next/link";
 import { PageHero } from "@/components/sections/PageHero";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/sections/SectionHeading";
+import { SpecList } from "@/components/sections/SpecList";
+import { IncludedGrid } from "@/components/sections/IncludedGrid";
+import { StudioFrames } from "@/components/sections/StudioFrames";
+import { ShotHereGallery } from "@/components/sections/ShotHereGallery";
+import { Testimonials } from "@/components/sections/Testimonials";
 import { FaqList } from "@/components/sections/FaqList";
 import { RelatedPages } from "@/components/sections/RelatedPages";
 import { FinalCTA } from "@/components/sections/FinalCTA";
@@ -13,6 +18,9 @@ import { BookingCTA, TourCTA, EstimateCTA, MembershipCTA } from "@/components/ct
 import { JsonLd } from "@/components/JsonLd";
 import { pageMeta } from "@/lib/content/metadata";
 import { breadcrumbSchema, serviceSchema } from "@/lib/schema";
+import { STUDIO } from "@/lib/content/studio-data";
+import { getShotArchive } from "@/lib/content/shot-archive";
+import { TESTIMONIALS } from "@/lib/content/testimonials";
 import { SEO_SLUGS, seoPageBySlug, type SeoCta, type SeoLanding } from "@/lib/content/seo-pages";
 import {
   GEAR_CATEGORIES,
@@ -79,6 +87,7 @@ function StudioSeoView({ page, slug }: { page: SeoLanding; slug: string }) {
     .map((p) => ({ label: p.h1, href: `/${p.slug}`, blurb: p.lede }));
 
   const faqs = faqsByTag(...page.faqTags).slice(0, 6);
+  const archive = getShotArchive();
 
   return (
     <>
@@ -87,25 +96,92 @@ function StudioSeoView({ page, slug }: { page: SeoLanding; slug: string }) {
         {page.primaryCta !== "tour" && <TourCTA page={slug} location="hero" variant="outline" />}
       </PageHero>
 
+      {/* Lead — this page's unique intro + highlights, with the studio at a glance */}
       <Section tone="light" containerSize="wide">
-        <p className="measure text-lg">{page.intro}</p>
-        <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
-          {page.highlights.map((h) => (
-            <span key={h} className="text-sm">
-              <span className="mr-2 text-tungsten">&bull;</span>{h}
-            </span>
+        <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+          <div>
+            <p className="measure text-lg">{page.intro}</p>
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
+              {page.highlights.map((h) => (
+                <span key={h} className="text-sm">
+                  <span className="mr-2 text-tungsten">&bull;</span>{h}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h2 className="text-sm uppercase tracking-[0.14em] text-muted">The studio at a glance</h2>
+            <div className="mt-4">
+              <SpecList items={STUDIO.specs} />
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* Inside the studio — four frames (shared with /studio) */}
+      <StudioFrames />
+
+      {/* Built for the work — this page's unique, format-specific angle */}
+      <Section tone="dark" className="grain" containerSize="wide">
+        <SectionHeading eyebrow={page.eyebrow} title="Built for the work." />
+        <div className="mt-12 grid gap-x-16 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+          {page.sections.map((s) => (
+            <Reveal key={s.heading} className="border-t border-hairline pt-5">
+              <h3 className="font-display text-display-md">{s.heading}</h3>
+              <p className="mt-3 text-muted">{s.body}</p>
+            </Reveal>
           ))}
         </div>
       </Section>
 
-      <Section tone="dark" className="grain" containerSize="wide">
-        <div className="grid gap-x-16 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
-          {page.sections.map((s) => (
-            <Reveal key={s.heading} className="border-t border-hairline pt-5">
-              <h2 className="font-display text-display-md">{s.heading}</h2>
-              <p className="mt-3 text-muted">{s.body}</p>
-            </Reveal>
+      {/* Included + add-ons (shared with /studio) */}
+      <Section tone="light" containerSize="wide">
+        <SectionHeading
+          eyebrow="Included with every rental"
+          title="Walk in ready."
+          intro="A starter light and grip kit comes with the room — no setup fees, the same rate 24/7. Here's what's in the box."
+        />
+        <div className="mt-10">
+          <IncludedGrid items={STUDIO.included} columns={2} />
+        </div>
+        <div className="mt-12 rounded-card border border-hairline p-7">
+          <h3 className="text-sm uppercase tracking-[0.14em] text-tungsten">Available as add-ons</h3>
+          <p className="mt-2 text-sm text-muted">
+            À la carte from the on-site gear house — discounted for members. Premium lighting, modifiers,
+            cameras, and lenses are not included with the room.
+          </p>
+          <ul className="mt-4 grid gap-x-10 gap-y-2 sm:grid-cols-2">
+            {STUDIO.addOns.map((a) => (
+              <li key={a} className="border-t border-hairline pt-2 text-sm">{a}</li>
+            ))}
+          </ul>
+          <p className="mt-5 text-sm">
+            <Link href="/gear-rental" className="text-tungsten hover:underline">Browse gear rental &rarr;</Link>
+          </p>
+        </div>
+      </Section>
+
+      {/* Step inside — amenities (shared with /studio) */}
+      <Section tone="light" className="!pt-0" containerSize="wide">
+        <SectionHeading eyebrow="Step inside" title="Everything the day needs." />
+        <div className="mt-10 grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+          {STUDIO.amenities.map((a) => (
+            <div key={a.name} className="border-t border-hairline pt-4">
+              <h3 className="font-medium">{a.name}</h3>
+              {a.detail && <p className="mt-1 text-sm text-muted">{a.detail}</p>}
+            </div>
           ))}
+        </div>
+      </Section>
+
+      {/* From the archive — shot here (shared with /studio) */}
+      <ShotHereGallery shots={archive} />
+
+      {/* Testimonials (shared with /studio) */}
+      <Section tone="dark" containerSize="wide">
+        <SectionHeading eyebrow="From the floor" title="What creators say." />
+        <div className="mt-10">
+          <Testimonials items={TESTIMONIALS.slice(0, 6)} />
         </div>
       </Section>
 
