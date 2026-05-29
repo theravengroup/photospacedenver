@@ -186,6 +186,29 @@ export const SEO_LANDING: SeoLanding[] = [
       keywords: ["podcast studio Denver", "interview studio Denver", "podcast recording studio Denver", "video podcast studio Colorado"],
     },
   },
+  {
+    slug: "headshot-studio-denver",
+    eyebrow: "Headshots & personal brand",
+    h1: "Headshot studio in Denver",
+    lede: "Fast, client-ready headshot and personal-brand sessions — executives, founders, talent, and whole teams. Consistent lighting, easy load-in, and no weather to wait on.",
+    intro:
+      "Walk in, sit down, look great. The lighting is dialed in, the cyclorama gives you clean backgrounds in any color, and the tether station means you and your subject approve shots in real time. Built for a single executive portrait or a full-team headshot day.",
+    sections: [
+      { heading: "Consistent, repeatable light", body: "A starter Profoto strobe or LED kit and a working grip package come with the room, so every face is lit the same way — essential for team headshots that need to match across a roster. Premium modifiers and beauty dishes are on-site as add-ons." },
+      { heading: "Built for teams and tight schedules", body: "Run dozens of people through in a day: a comfortable client lounge to wait in, a make-up station and changing room, fast tethered review, and 24/7 access so you can book around the workday." },
+      { heading: "Backgrounds for every brand", body: "The real cyclorama paints to any color, plus seamless paper and V-flats — clean white, on-brand color, or a moody portrait look, all in one session without moving rooms." },
+    ],
+    highlights: ["Executive & team headshots", "Consistent, repeatable lighting", "Cyc + seamless backdrops", "Make-up & changing room", "Tethered real-time review"],
+    faqTags: ["studio", "booking", "pricing"],
+    related: ["photo-studio-rental-denver", "commercial-photo-studio-denver", "content-creator-studio-denver"],
+    primaryCta: "book",
+    seo: {
+      title: "Headshot Studio Denver — Executive & Team Headshots",
+      description:
+        "Book a Denver headshot studio for executive, founder, talent, and team headshots — consistent lighting, a real cyclorama, make-up room, and tethered review. 24/7 access.",
+      keywords: ["headshot studio Denver", "headshot photography Denver", "team headshots Denver", "executive headshots Denver", "personal brand photography Denver"],
+    },
+  },
 ];
 
 export function seoPageBySlug(slug: string): SeoLanding | undefined {

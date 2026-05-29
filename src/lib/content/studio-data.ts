@@ -118,7 +118,7 @@ export const STUDIO = {
       slug: "headshots-personal-brand",
       title: "Headshots & personal brand",
       blurb: "Fast, client-ready sessions — executives, talent, founders, and teams. Reliable lighting, easy load-in, no weather.",
-      href: "/photo-studio-rental-denver",
+      href: "/headshot-studio-denver",
     },
   ],
 

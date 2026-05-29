@@ -262,6 +262,39 @@ p, li, dt, dd, blockquote, figcaption {
   100% { transform: scale(1.14) translate3d(-1.5%, -1.5%, 0); }
 }
 
+/* Page transition — gentle fade-in on every route change (app/template.tsx).
+   Opacity-only, so it never creates a containing block for fixed/sticky kids. */
+@keyframes page-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.page-transition {
+  animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Skeleton shimmer for loading states. */
+@keyframes shimmer {
+  0%   { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+.skeleton,
+.skeleton-dark {
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+.skeleton {
+  background-image: linear-gradient(90deg, rgba(20, 18, 14, 0.05) 25%, rgba(20, 18, 14, 0.11) 50%, rgba(20, 18, 14, 0.05) 75%);
+}
+.skeleton-dark {
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.05) 75%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition { animation: none; }
+  .skeleton,
+  .skeleton-dark { animation: none; }
+}
+
 /* =========================================================
    Navigation mega-menu (Radix NavigationMenu)
    ========================================================= */
