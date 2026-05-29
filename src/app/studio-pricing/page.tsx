@@ -7,6 +7,7 @@ import { MembershipCards } from "@/components/sections/MembershipCards";
 import { FaqList } from "@/components/sections/FaqList";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { BookingCTA } from "@/components/cta/Ctas";
+import { MultiDayRequest } from "@/components/forms/MultiDayRequest";
 import { JsonLd } from "@/components/JsonLd";
 import { pageMeta } from "@/lib/content/metadata";
 import { breadcrumbSchema } from "@/lib/schema";
@@ -85,6 +86,10 @@ export default function StudioPricingPage() {
             <p className="mt-3 text-sm text-muted">
               2-hour minimum. Full-day rate covers 10–12 hours. Free {TOUR.durationMin}-minute studio
               tours, 7 days a week.
+            </p>
+            <p className="mt-4 text-sm text-muted">
+              Shooting multiple days? Multi-day bookings are by request, not self-booked —{" "}
+              <MultiDayRequest page="studio-pricing">request your dates</MultiDayRequest>.
             </p>
           </div>
 
