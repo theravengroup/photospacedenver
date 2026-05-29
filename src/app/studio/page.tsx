@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import Link from "next/link";
 import Image from "next/image";
 import { PageHero } from "@/components/sections/PageHero";
@@ -68,14 +70,19 @@ const FRAMES = [
   },
 ];
 
-/** Real "shot here" gallery — campaigns and editorials photographed on the floor at photospace. */
-const ARCHIVE = [
-  "001", "002", "003", "004", "005", "006", "008", "009", "010",
-  "012", "013", "014", "015", "016", "017", "018", "019", "020",
-].map((n) => ({
-  src: `/images/shot-at-photospace/${n}-andrew-cope.webp`,
-  alt: "Work shot at photospace",
-}));
+/**
+ * Real "shot here" gallery — read straight from the folder at build time, so
+ * dropping new images into public/images/shot-at-photospace/ surfaces them in
+ * the gallery on the next build (no code change needed).
+ */
+const ARCHIVE = fs
+  .readdirSync(path.join(process.cwd(), "public/images/shot-at-photospace"))
+  .filter((f) => /\.(webp|jpe?g|png)$/i.test(f))
+  .sort()
+  .map((file) => ({
+    src: `/images/shot-at-photospace/${file}`,
+    alt: "Work shot at photospace",
+  }));
 
 export default function StudioPage() {
   return (
