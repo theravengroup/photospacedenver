@@ -166,9 +166,20 @@ body {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 8px 30px -12px rgba(27, 25, 22, 0.18);
 }
 
+/* Stronger frost for large overlay panels (mega menu, booking modal): more
+   opaque + a heavier blur so the page behind reads as a soft frosted field,
+   true to liquid-glass principles. Thin chrome keeps the lighter .glass. */
+.glass-overlay {
+  background-color: color-mix(in oklab, var(--color-ink) 84%, transparent);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
+          backdrop-filter: blur(28px) saturate(1.6);
+  box-shadow: inset 0 1px 0 rgba(244, 241, 234, 0.1), 0 16px 48px -16px rgba(0, 0, 0, 0.6);
+}
+
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .glass { background-color: color-mix(in oklab, var(--color-ink) 92%, transparent); }
   .glass-light { background-color: color-mix(in oklab, var(--color-paper) 94%, transparent); }
+  .glass-overlay { background-color: color-mix(in oklab, var(--color-ink) 97%, transparent); }
   .bg-panel { background-color: var(--panel); background-image: none; }
 }
 
