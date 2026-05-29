@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { JsonLd } from "@/components/JsonLd";
 import { pageMeta } from "@/lib/content/metadata";
 import { breadcrumbSchema, serviceSchema } from "@/lib/schema";
-import { GEAR_CATEGORIES, GEAR_BRANDS, SHOOTPOD } from "@/lib/content/gear-data";
+import { GEAR_CATEGORIES, GEAR_BRANDS, SHOOTPOD, RENTAL_WEEK } from "@/lib/content/gear-data";
 import { usd } from "@/lib/content/pricing-data";
 import { faqsByTag } from "@/lib/content/faqs";
 
@@ -61,8 +61,15 @@ export default function GearRentalPage() {
         <SectionHeading
           eyebrow="The catalog"
           title="Seven categories, one shop."
-          intro="Browse by category for daily rates and brand coverage. Don't see it? Ask — we add and swap constantly."
+          intro="Browse by category for rates and brand coverage. Don't see it? Ask — we add and swap constantly."
         />
+        <div className="mt-8 rounded-card border border-hairline bg-panel p-5 sm:flex sm:items-baseline sm:gap-4">
+          <p className="shrink-0 text-xs font-semibold uppercase tracking-[0.18em] text-tungsten">{RENTAL_WEEK.label}</p>
+          <p className="mt-1.5 text-sm sm:mt-0">
+            <span className="font-semibold">{RENTAL_WEEK.statement}</span>{" "}
+            <span className="text-muted">{RENTAL_WEEK.detail}</span>
+          </p>
+        </div>
         <div className="mt-10 grid gap-px overflow-hidden rounded-card border border-hairline bg-[var(--hairline)] sm:grid-cols-2 lg:grid-cols-3">
           {GEAR_CATEGORIES.map((c) => (
             <Link key={c.seoSlug} href={`/${c.seoSlug}`} className="group bg-panel p-7">

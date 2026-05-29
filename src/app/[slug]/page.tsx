@@ -17,6 +17,7 @@ import { SEO_SLUGS, seoPageBySlug, type SeoCta, type SeoLanding } from "@/lib/co
 import {
   GEAR_CATEGORIES,
   GEAR_SEO_SLUGS,
+  RENTAL_WEEK,
   gearCategoryBySeoSlug,
   type GearCategory,
 } from "@/lib/content/gear-data";
@@ -146,6 +147,11 @@ function StudioSeoView({ page, slug }: { page: SeoLanding; slug: string }) {
 
 /* ------------------------------ Gear category ----------------------------- */
 
+/** Stable anchor id from a catalog group heading (for the on-page jump menu). */
+function groupId(heading: string): string {
+  return heading.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
 function GearCategoryView({ c }: { c: GearCategory }) {
   const breadcrumbs = [
     { name: "Home", path: "/" },
@@ -161,60 +167,67 @@ function GearCategoryView({ c }: { c: GearCategory }) {
       <PageHero
         eyebrow={`Gear Rental · ${c.title}`}
         title={`${c.title} rental in Denver`}
-        lede={c.blurb}
+        lede={c.intro ?? c.blurb}
         breadcrumbs={breadcrumbs}
       >
         <EstimateCTA page={`gear-${c.slug}`} location="hero" />
         <Button href="/gear-rental" variant="outline">All gear rental</Button>
       </PageHero>
 
-      {/* Intro + brands as pill badges */}
-      <Section tone="light" containerSize="wide">
-        <p className="measure text-lg">{c.intro ?? c.blurb}</p>
-        {c.brands.length > 0 && (
-          <div className="mt-8 flex flex-wrap gap-2">
-            {c.brands.map((b) => (
-              <span
-                key={b}
-                className="rounded-full border border-hairline px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-muted"
-              >
-                {b}
-              </span>
-            ))}
+      {/* On-page menu — jump to any catalog section */}
+      {c.groups.length > 1 && (
+        <div className="surface-light glass-light sticky top-16 z-30 border-b border-hairline sm:top-20">
+          <div className="mx-auto max-w-[88rem] px-5 sm:px-8">
+            <nav
+              aria-label={`${c.title} catalog sections`}
+              className="flex gap-2 overflow-x-auto py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+              {c.groups.map((g) => (
+                <a
+                  key={g.heading}
+                  href={`#${groupId(g.heading)}`}
+                  className="shrink-0 rounded-full border border-hairline px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-muted transition-colors hover:border-tungsten/50 hover:text-ink"
+                >
+                  {g.heading}
+                </a>
+              ))}
+            </nav>
           </div>
-        )}
-      </Section>
+        </div>
+      )}
 
-      {/* Catalog — premium card grid */}
-      <Section tone="dark" className="grain" containerSize="wide">
-        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-hairline pb-8">
+      {/* Catalog — light surface, dark readable text */}
+      <Section tone="light" containerSize="wide">
+        <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4 border-b border-hairline pb-8">
           <div>
-            <p className="eyebrow">Daily rental rates</p>
+            <p className="eyebrow">Rental rates</p>
             <h2 className="font-display mt-2 text-display-lg">The catalog.</h2>
           </div>
-          <p className="text-sm text-muted">Weekly &amp; multi-day available. Don&rsquo;t see it? Ask.</p>
+          <p className="max-w-sm text-sm text-muted">
+            <span className="font-semibold text-ink">{RENTAL_WEEK.statement}</span> {RENTAL_WEEK.detail}
+          </p>
         </div>
 
         <div className="mt-14 space-y-16">
           {c.groups.map((g) => (
-            <div key={g.heading}>
+            <div key={g.heading} id={groupId(g.heading)} className="scroll-mt-36">
               {/* Editorial group divider */}
               <div className="mb-5 flex items-center gap-5">
-                <h3 className="shrink-0 text-xs font-semibold uppercase tracking-[0.22em] text-tungsten">
+                <h3 className="shrink-0 text-xs font-semibold uppercase tracking-[0.22em] text-ink">
                   {g.heading}
                 </h3>
                 <div className="h-px flex-1 bg-hairline" />
               </div>
 
-              {/* Item cards */}
+              {/* Item cards — dark text on light, easy to scan */}
               <div className="grid gap-px overflow-hidden rounded-card border border-hairline bg-[var(--hairline)] sm:grid-cols-2 xl:grid-cols-3">
                 {g.items.map((item) => (
                   <div
                     key={item.name}
-                    className="flex items-start justify-between gap-4 bg-ink/90 p-5 transition-colors hover:bg-ink"
+                    className="flex items-start justify-between gap-4 bg-[var(--panel)] p-5 transition-colors hover:bg-[var(--color-sand)]"
                   >
-                    <span className="text-sm leading-snug text-bone">{item.name}</span>
-                    <span className="shrink-0 font-display text-xl text-tungsten">{item.price}</span>
+                    <span className="text-sm leading-snug">{item.name}</span>
+                    <span className="shrink-0 font-display text-lg font-medium text-ink">{item.price}</span>
                   </div>
                 ))}
               </div>

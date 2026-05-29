@@ -109,6 +109,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   background: var(--color-ink);
+  scroll-behavior: smooth;
 }
 
 body {

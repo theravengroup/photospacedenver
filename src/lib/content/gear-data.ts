@@ -26,6 +26,17 @@ export type GearCategory = {
   groups: GearGroup[];
 };
 
+/**
+ * Rental billing model — a 3-day rental week. Surfaced on /gear-rental and on
+ * every gear category page. (Owner-stated 2026-05-29.)
+ */
+export const RENTAL_WEEK = {
+  label: "How rentals are billed",
+  statement: "We rent on a 3-day rental week.",
+  detail:
+    "Three, four, five, six, and seven days are all billed as a single 3-day rental — so a full week costs the same as three.",
+};
+
 export const GEAR_CATEGORIES: GearCategory[] = [
   {
     slug: "cameras-lenses",
