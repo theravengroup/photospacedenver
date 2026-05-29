@@ -1,13 +1,9 @@
-import { SITE } from "@/lib/content/site-config";
 import { verifyTurnstile } from "@/lib/forms/turnstile";
+import { sendEmail } from "@/lib/forms/email";
 
 /**
- * Receives estimate / membership / contact form submissions and emails them.
- *
- * Uses the Resend REST API (no SDK dependency) when RESEND_API_KEY is set;
- * otherwise it accepts and logs the submission so forms work end-to-end before
- * email is wired up. Configure in production:
- *   RESEND_API_KEY, INQUIRY_TO_EMAIL, INQUIRY_FROM_EMAIL
+ * Receives estimate / membership / contact form submissions and emails them
+ * via the shared sendEmail helper (Resend REST API, or logs when unconfigured).
  */
 
 type Payload = Record<string, string> & { type?: string; name?: string; email?: string; company_website?: string };
@@ -52,24 +48,9 @@ export async function POST(req: Request) {
     .map(([k, v]) => `${k}: ${v}`)
     .join("\n");
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.INQUIRY_TO_EMAIL ?? SITE.contact.email;
-  const from = process.env.INQUIRY_FROM_EMAIL ?? "photospace Denver <onboarding@resend.dev>";
-
-  if (apiKey) {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from, to, reply_to: email, subject, text: body }),
-    });
-    if (!res.ok) {
-      console.error("Resend send failed", res.status, await res.text());
-      return Response.json({ ok: false, error: "We couldn't send that just now — please call us." }, { status: 502 });
-    }
-    return Response.json({ ok: true, delivered: true });
+  const sent = await sendEmail({ subject, text: body, replyTo: email });
+  if (!sent.ok) {
+    return Response.json({ ok: false, error: sent.error ?? "We couldn't send that just now — please call us." }, { status: 502 });
   }
-
-  // TODO(env): set RESEND_API_KEY in production to actually deliver these.
-  console.info(`[inquiry] (no RESEND_API_KEY) ${subject}\n${body}`);
-  return Response.json({ ok: true, delivered: false });
+  return Response.json({ ok: true, delivered: sent.delivered });
 }
