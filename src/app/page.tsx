@@ -201,7 +201,7 @@ export default function HomePage() {
           <SectionHeading
             eyebrow="Studio rental · memberships"
             title="Create more. Pay less."
-            intro="Three studio membership levels, designed around how you actually shoot — recurring access at member rates plus discounted gear add-ons. Studio access only; gear rental is separate."
+            intro="Three studio membership levels, designed around how you actually shoot — recurring access at member rates. Everything that comes with a standard studio rental is still included; the same premium add-ons stay available à la carte, discounted for members."
           />
           <div className="mt-10">
             <MembershipCards page="home" />
@@ -278,7 +278,7 @@ export default function HomePage() {
       <Section tone="light" containerSize="wide">
         <SectionHeading eyebrow="From the floor" title="What creators say." />
         <div className="mt-10">
-          <Testimonials items={TESTIMONIALS.slice(0, 3)} />
+          <Testimonials items={TESTIMONIALS.slice(0, 4)} />
         </div>
       </Section>
 

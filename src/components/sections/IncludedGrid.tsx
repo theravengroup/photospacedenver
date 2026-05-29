@@ -1,9 +1,9 @@
 /** A two-column checklist for "what's included" / benefits. */
 export function IncludedGrid({ items, columns = 2 }: { items: readonly string[]; columns?: 2 | 3 }) {
   return (
-    <ul className={`grid gap-x-10 gap-y-6 ${columns === 3 ? "sm:grid-cols-2 lg:grid-cols-3" : "sm:grid-cols-2"}`}>
+    <ul className={`gap-x-10 ${columns === 3 ? "columns-1 sm:columns-2 lg:columns-3" : "columns-1 sm:columns-2"}`}>
       {items.map((item) => (
-        <li key={item} className="flex items-start gap-3 text-base leading-relaxed">
+        <li key={item} className="mb-6 flex break-inside-avoid items-start gap-3 text-base leading-relaxed">
           <Check />
           <span>{item}</span>
         </li>

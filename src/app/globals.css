@@ -250,6 +250,12 @@ p, li, dt, dd, blockquote, figcaption {
           mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
 }
 
+/* Map pin — gentle continuous "drop" bob for the location marker. */
+@keyframes pin-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
 /* =========================================================
    Navigation mega-menu (Radix NavigationMenu)
    ========================================================= */

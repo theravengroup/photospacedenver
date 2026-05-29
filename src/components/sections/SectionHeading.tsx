@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import { brand } from "@/lib/brand";
 
 type As = "h1" | "h2" | "h3";
 
@@ -32,7 +33,7 @@ export function SectionHeading({
       </Title>
       {intro && (
         <p className={cn("mt-4 text-lg text-muted", align === "center" ? "mx-auto measure" : "measure")}>
-          {intro}
+          {brand(intro)}
         </p>
       )}
     </div>

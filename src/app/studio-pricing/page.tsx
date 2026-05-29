@@ -187,7 +187,7 @@ export default function StudioPricingPage() {
         <SectionHeading
           eyebrow="Studio rental · memberships"
           title="Shoot more, pay less per hour."
-          intro="Three studio membership levels — recurring monthly access at member rates, plus discounted add-ons. Studio access only; gear rental is priced separately."
+          intro="Three studio membership levels — recurring monthly access at member rates. Everything included with a standard studio rental still comes with your membership; the same premium add-ons stay available à la carte, discounted for members."
         />
         <div className="mt-10">
           <MembershipCards page="studio-pricing" />

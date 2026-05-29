@@ -1,6 +1,7 @@
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { Breadcrumbs, type Crumb } from "@/components/ui/Breadcrumbs";
+import { brand } from "@/lib/brand";
 
 /**
  * Premium interior-page hero, shared site-wide. Clears the fixed header and
@@ -49,7 +50,7 @@ export function PageHero({
         </Reveal>
         {lede && (
           <Reveal delay={0.16}>
-            <p className="measure mt-6 text-lg leading-relaxed text-muted sm:text-xl">{lede}</p>
+            <p className="measure mt-6 text-lg leading-relaxed text-muted sm:text-xl">{brand(lede)}</p>
           </Reveal>
         )}
         {children && (

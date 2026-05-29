@@ -22,11 +22,11 @@ export function Location() {
               sizes="(min-width: 1024px) 45vw, 90vw"
               className="object-cover"
             />
-            <div aria-hidden className="pointer-events-none absolute left-1/2 top-[46%] z-10 -translate-x-1/2 -translate-y-1/2">
-              <span className="relative flex size-3.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-tungsten/60" />
-                <span className="relative inline-flex size-3.5 rounded-full bg-tungsten ring-4 ring-tungsten/25" />
-              </span>
+            <div aria-hidden className="pointer-events-none absolute left-[37%] top-[46%] z-10 -translate-x-1/2 -translate-y-full">
+              <MapPin
+                className="size-10 animate-[pin-bob_2.4s_ease-in-out_infinite] fill-[var(--color-brand-green)] text-ink drop-shadow-[0_6px_12px_rgba(0,0,0,0.55)]"
+                strokeWidth={1.5}
+              />
             </div>
             <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/90 via-ink/40 to-transparent px-5 pb-4 pt-16">
               <p className="text-xs font-medium uppercase tracking-[0.18em] text-bone">
