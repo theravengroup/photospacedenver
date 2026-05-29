@@ -7,12 +7,12 @@ import { ClientLogoWall } from "@/components/sections/ClientLogoWall";
 import { PricingCards } from "@/components/sections/PricingCards";
 import { MembershipCards } from "@/components/sections/MembershipCards";
 import { Testimonials } from "@/components/sections/Testimonials";
-import { FinalCTA } from "@/components/sections/FinalCTA";
 import { FaqList } from "@/components/sections/FaqList";
+import { Location } from "@/components/sections/Location";
 import { BookingCTA, EstimateCTA } from "@/components/cta/Ctas";
 import { Button } from "@/components/ui/Button";
 import { SITE } from "@/lib/content/site-config";
-import { GEAR_BRANDS } from "@/lib/content/gear-data";
+import { GEAR_BRANDS, GEAR_CATEGORIES } from "@/lib/content/gear-data";
 import { TESTIMONIALS } from "@/lib/content/testimonials";
 import { faqsByTag } from "@/lib/content/faqs";
 
@@ -32,7 +32,8 @@ export default function HomePage() {
         <Reveal>
           <p className="eyebrow">Denver, Colorado · Est. {SITE.foundedYear}</p>
           <h1 className="font-display mt-5 tracking-tight leading-[1.03] text-[clamp(1.55rem,7.5vw,5.5rem)]">
-            A studio for shooting here.<br />Gear for shooting anywhere.
+            A <span className="text-tungsten underline decoration-2 underline-offset-[0.2em]">studio</span> for shooting <span className="text-tungsten underline decoration-2 underline-offset-[0.2em]">here</span>.<br />
+            <span className="rounded bg-tungsten/15 px-[0.18em] text-tungsten [box-decoration-break:clone] [-webkit-box-decoration-break:clone]">Gear</span> for shooting <span className="rounded bg-tungsten/15 px-[0.18em] text-tungsten [box-decoration-break:clone] [-webkit-box-decoration-break:clone]">anywhere</span>.
           </h1>
           <p className="mt-8 leading-[1.35] text-muted text-[clamp(1rem,2.5vw,1.5rem)]">
             Since {SITE.foundedYear}, <strong className="font-semibold text-bone">photospace</strong> has
@@ -142,6 +143,17 @@ export default function HomePage() {
 
       {/* ── STUDIO LANE ── space, pricing, memberships all clearly in context */}
       <Section tone="light" containerSize="wide">
+        {/* Lane header — clearly frames everything below as STUDIO */}
+        <Reveal>
+          <div className="mb-16 max-w-2xl border-b border-hairline pb-10">
+            <p className="eyebrow">Studio rental</p>
+            <h2 className="font-display mt-4 leading-[1.02] text-[clamp(2.75rem,6.5vw,5rem)]">The studio.</h2>
+            <p className="mt-4 text-lg text-muted">
+              A custom-built photo &amp; video studio at 209 Kalamath St — book it by the hour, the day, or on a membership.
+            </p>
+          </div>
+        </Reveal>
+
         {/* The space */}
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal>
@@ -197,8 +209,20 @@ export default function HomePage() {
         </Reveal>
       </Section>
 
-      {/* ── GEAR LANE ── clearly separated from the studio content above */}
+      {/* ── GEAR LANE ── doubled content; clearly framed as GEAR RENTAL */}
       <Section tone="dark" className="grain" containerSize="wide">
+        {/* Lane header — clearly frames everything below as GEAR RENTAL */}
+        <Reveal>
+          <div className="mb-16 max-w-2xl border-b border-hairline pb-10">
+            <p className="eyebrow">Gear rental</p>
+            <h2 className="font-display mt-4 leading-[1.02] text-[clamp(2.75rem,6.5vw,5rem)]">The gear house.</h2>
+            <p className="mt-4 text-lg text-muted">
+              A deep rental inventory you take on location — cameras, lighting, grip, and more. Pickup or delivery within 500 miles of Denver, no studio booking required.
+            </p>
+          </div>
+        </Reveal>
+
+        {/* Image + brands + CTAs */}
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal className="order-2 lg:order-1">
             <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-hairline">
@@ -212,12 +236,11 @@ export default function HomePage() {
             </div>
           </Reveal>
           <Reveal delay={0.1} className="order-1 lg:order-2">
-            <SectionHeading
-              eyebrow="Gear rental · take it anywhere"
-              title="Gear from all the top brands."
-              intro="A deep rental inventory — cameras & lenses, flash & continuous lighting, modifiers, grip, video, audio, and production supplies. Pick up at the shop, or we deliver within 500 miles of Denver. No studio booking required."
-            />
-            <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
+            <h3 className="font-display text-display-md">From all the top brands.</h3>
+            <p className="mt-3 text-muted">
+              Cameras &amp; lenses, flash &amp; continuous lighting, modifiers, grip, video, audio, and production supplies.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
               {GEAR_BRANDS.slice(0, 14).map((b) => (
                 <span key={b} className="text-xs font-medium uppercase tracking-[0.12em] text-muted">{b}</span>
               ))}
@@ -229,6 +252,26 @@ export default function HomePage() {
             </div>
           </Reveal>
         </div>
+
+        {/* Browse by category — doubles the gear lane's weight */}
+        <Reveal className="mt-16 border-t border-hairline pt-14">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <p className="eyebrow">Rent by category</p>
+            <p className="text-sm text-muted">Seven categories, one shop.</p>
+          </div>
+          <div className="mt-8 grid gap-px overflow-hidden rounded-card border border-hairline bg-[var(--hairline)] sm:grid-cols-2 lg:grid-cols-3">
+            {GEAR_CATEGORIES.map((c) => (
+              <Link key={c.seoSlug} href={`/${c.seoSlug}`} className="group bg-panel p-6">
+                <h4 className="font-display text-display-md transition-colors group-hover:text-tungsten">{c.title}</h4>
+                <p className="mt-1.5 text-sm text-muted">{c.blurb}</p>
+              </Link>
+            ))}
+            <Link href="/gear-rental" className="group flex flex-col justify-center gap-1.5 bg-panel p-6">
+              <span className="font-display text-display-md text-tungsten">All gear &rarr;</span>
+              <span className="text-sm text-muted">Browse the full rental house.</span>
+            </Link>
+          </div>
+        </Reveal>
       </Section>
 
       {/* Testimonials */}
@@ -247,15 +290,45 @@ export default function HomePage() {
         </div>
       </Section>
 
-      {/* Final CTA */}
-      <FinalCTA
-        eyebrow="The studio is open"
-        title="Pick a day. Make the work."
-        body="The lights are on, the cyc is clean, and the gear is charged. Book a session, or request a quote for gear."
-      >
-        <BookingCTA page="home" location="final" size="lg" />
-        <EstimateCTA page="home" location="final" variant="outline" size="lg" />
-      </FinalCTA>
+      {/* Come visit — location */}
+      <Location />
+
+      {/* Gateway — two clear, equally-weighted paths */}
+      <Section tone="dark" className="grain" containerSize="wide">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <p className="eyebrow">Two ways to create</p>
+          <h2 className="font-display mt-3 text-display-lg">Where do you want to start?</h2>
+          <p className="measure mx-auto mt-4 text-lg text-muted">
+            Book the studio for a shoot at 209 Kalamath, or request an estimate for gear you take anywhere.
+          </p>
+        </Reveal>
+        <div className="mx-auto mt-12 grid max-w-4xl gap-5 md:grid-cols-2">
+          <Reveal>
+            <div className="flex h-full flex-col rounded-card border border-hairline bg-panel p-8">
+              <p className="eyebrow">Shoot here</p>
+              <h3 className="font-display mt-3 text-display-md">Book the studio.</h3>
+              <p className="mt-3 flex-1 text-muted">
+                A custom-built studio with a real cyclorama and a starter light &amp; grip kit — hourly to full-day.
+              </p>
+              <div className="mt-6">
+                <BookingCTA page="home" location="gateway-studio" size="lg" />
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="flex h-full flex-col rounded-card border border-hairline bg-panel p-8">
+              <p className="eyebrow">Take it anywhere</p>
+              <h3 className="font-display mt-3 text-display-md">Rent the gear.</h3>
+              <p className="mt-3 flex-1 text-muted">
+                Cameras, lighting, and grip from the top brands — pickup or delivery within 500 miles of Denver.
+              </p>
+              <div className="mt-6">
+                <EstimateCTA page="home" location="gateway-gear" size="lg" label="Request a Gear Rental Estimate" />
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </Section>
     </>
   );
 }
