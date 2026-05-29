@@ -33,7 +33,7 @@ export const FAQS: Faq[] = [
   {
     q: "What equipment is included with a studio rental?",
     a: "Every booking includes the full 2,400 ft² space, 1,900 ft² shooting floor, real cyclorama, a starter strobe or LED lighting kit, a working grip & stand package, tether station (Capture One, Lightroom, Phocus), backdrops, kitchen, make-up station, changing room, outdoor deck, free parking, and load-in ramp. Premium lighting, modifiers, cameras, and lenses — Phase One XF IQ4 150MP, Profoto B1X / B10X Plus / D2 / Pro8a kits, premium Canon / Nikon / Sony / Fuji bodies and lenses, plus on-call assistants and digital techs — are available on-site as add-ons at member-friendly rates.",
-    tags: ["gear", "studio"],
+    tags: ["studio", "pricing"],
   },
   {
     q: "Does photospace offer studio memberships?",
@@ -63,7 +63,7 @@ export const FAQS: Faq[] = [
   {
     q: "Is lighting equipment included with the studio rental?",
     a: "A starter strobe or LED kit and a working grip package come with every booking — no setup fees, and the same rate 24/7 with no evening or weekend surcharge. Premium Profoto kits (B1X, B10X Plus, D2, Pro8a), additional continuous lighting, and lighting modifiers are available as on-site add-ons at member-friendly rates.",
-    tags: ["gear", "studio", "pricing"],
+    tags: ["studio", "pricing"],
   },
   {
     q: "Is photospace designed for content creators and brand teams?",
@@ -83,12 +83,32 @@ export const FAQS: Faq[] = [
   {
     q: "Do I need a rental account to rent gear on location?",
     a: "Yes. To take equipment on location you register for a rental account once — a quick step that includes a driver's license scan and either a certificate of insurance on file or a credit-card hold for the replacement value of the rental. Renting just the studio doesn't require this.",
-    tags: ["gear", "booking", "policy"],
+    tags: ["gear", "policy"],
+  },
+  {
+    q: "How are gear rentals billed — what's a 3-day rental week?",
+    a: "We rent on a 3-day rental week: three, four, five, six, and seven days are all billed as a single 3-day rental, so a full week costs the same as three days. Daily rates are listed on every category page, and longer or recurring rentals are quoted on request.",
+    tags: ["gear", "pricing"],
+  },
+  {
+    q: "How do I get a gear rental quote?",
+    a: "Send your gear list (or a brief) and your shoot dates through the request-an-estimate form, and we'll confirm availability and send a written quote — usually the same business day. Estimates are free and open to anyone; a rental account is only needed once you're ready to take the gear out.",
+    tags: ["gear"],
+  },
+  {
+    q: "Can I rent gear without booking the studio?",
+    a: "Yes. The gear-rental house is completely separate from the studio — pick up (or have delivered) cameras, lenses, lighting, grip, and production supplies and take them anywhere. No studio booking required.",
+    tags: ["gear"],
   },
   {
     q: "Do you deliver gear, or is it pickup only?",
-    a: "Both. Pick up at the Kalamath St. shop Monday–Friday, 8:30am–5:30pm by appointment, or schedule delivery for an additional fee. We don't ship, but we deliver anywhere within 500 miles of downtown Denver, and out-of-town crews can have gear staged on arrival.",
+    a: "Both. Pick up at the Kalamath St. shop Monday–Friday, 8:30am–5:30pm by appointment, or schedule delivery for a fee. We don't ship, but we deliver anywhere within 500 miles of downtown Denver, and out-of-town crews can have gear staged on arrival. Off-hours pickup and drop-off can be arranged for a fee.",
     tags: ["gear", "location"],
+  },
+  {
+    q: "What happens if rented gear is damaged or lost?",
+    a: "That's what your rental account covers — a certificate of insurance on file, or a credit-card hold for the replacement value of the gear. Bring everything back in good shape and the hold is released. If you're unsure about coverage, just ask before your shoot.",
+    tags: ["gear", "policy"],
   },
 ];
 

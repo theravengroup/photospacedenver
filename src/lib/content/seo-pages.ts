@@ -37,7 +37,7 @@ export const SEO_LANDING: SeoLanding[] = [
       { heading: "Easy in, easy out", body: "Free parking, a load-in ramp, a working kitchen, and a client lounge. Book a session 24/7 at the same rate, or come by for a free 20-minute tour first." },
     ],
     highlights: ["1,900 ft² shooting floor", "Real cyclorama wall", "Starter light & grip included", "$100/hr · 2-hr minimum", "24/7 access"],
-    faqTags: ["studio", "booking", "pricing", "gear"],
+    faqTags: ["studio", "booking", "pricing"],
     related: ["cyclorama-wall-denver", "commercial-photo-studio-denver", "product-photography-studio-denver"],
     primaryCta: "book",
     seo: {
@@ -60,7 +60,7 @@ export const SEO_LANDING: SeoLanding[] = [
       { heading: "Scales with the production", body: "From a one-person interview to a multi-look brand film, the 1,900 ft² floor and 8 dedicated circuits handle the load. Add on-call assistants and digital techs as needed." },
     ],
     highlights: ["Continuous LED lighting", "Real sound dampening", "Client monitor lounge", "Craft-service kitchen", "12-hour-day ready"],
-    faqTags: ["video", "studio", "booking", "gear"],
+    faqTags: ["video", "studio", "booking"],
     related: ["podcast-studio-denver", "commercial-photo-studio-denver", "content-creator-studio-denver"],
     primaryCta: "book",
     seo: {
@@ -83,7 +83,7 @@ export const SEO_LANDING: SeoLanding[] = [
       { heading: "Clean every time", body: "A repaint is $150 if a shoot marks it up, but you'll start on a clean wall. Free 20-minute tours if you want to see it before you book." },
     ],
     highlights: ["20' × 17' × 15' cyc", "Seamless infinity cove", "Repainted between shoots", "Full modifier wall", "8 × 20-amp circuits"],
-    faqTags: ["studio", "booking", "gear"],
+    faqTags: ["studio", "booking"],
     related: ["photo-studio-rental-denver", "product-photography-studio-denver", "commercial-photo-studio-denver"],
     primaryCta: "tour",
     seo: {
@@ -106,7 +106,7 @@ export const SEO_LANDING: SeoLanding[] = [
       { heading: "Batch a catalog in a day", body: "The 1,900 ft² floor and easy load-in make multi-setup product days efficient. Book a half-day for a launch or a full day for a full catalog." },
     ],
     highlights: ["Working stylist kitchen", "Repeatable lighting", "Tabletop & flat-lay setups", "Capture One tethering", "Batch-friendly floor"],
-    faqTags: ["studio", "booking", "gear", "commercial"],
+    faqTags: ["studio", "booking", "commercial"],
     related: ["commercial-photo-studio-denver", "content-creator-studio-denver", "photo-studio-rental-denver"],
     primaryCta: "book",
     seo: {

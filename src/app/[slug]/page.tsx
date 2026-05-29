@@ -236,7 +236,7 @@ function GearCategoryView({ c }: { c: GearCategory }) {
   ];
 
   const related = GEAR_CATEGORIES.filter((x) => x.seoSlug !== c.seoSlug);
-  const faqs = faqsByTag("gear", "location", "booking").slice(0, 6);
+  const faqs = faqsByTag("gear").slice(0, 6);
 
   return (
     <>

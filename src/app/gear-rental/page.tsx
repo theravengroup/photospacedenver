@@ -145,7 +145,7 @@ export default function GearRentalPage() {
       <Section tone="light">
         <SectionHeading eyebrow="FAQ" title="Rental questions." />
         <div className="mt-8">
-          <FaqList faqs={faqsByTag("gear", "location", "booking")} />
+          <FaqList faqs={faqsByTag("gear")} />
         </div>
       </Section>
 
