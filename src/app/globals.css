@@ -26,6 +26,10 @@
   --color-bronze: #9c6e47;
   --color-studio-red: #b23a2e;   /* used sparingly */
 
+  /* --- Brand green — photospace logo / gear identity --- */
+  --color-brand-green: #97b800;  /* lime-green from the photospace wordmark */
+  --color-brand-green-dark: #7a9500; /* hover / pressed state */
+
   /* --- Typography --- */
   --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;

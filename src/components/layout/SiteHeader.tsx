@@ -1,10 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
-import { NAV_PRIMARY, BOOKING, CTA_LABELS, type NavItem } from "@/lib/content/site-config";
+import { NAV_PRIMARY, CTA_LABELS, type NavItem } from "@/lib/content/site-config";
 import { Button } from "@/components/ui/Button";
+
+const BookingModal = dynamic(
+  () => import("@/components/ui/BookingModal").then((m) => m.BookingModal),
+  { ssr: false }
+);
 
 function Chevron() {
   return (
@@ -55,6 +61,7 @@ function DesktopItem({ item }: { item: NavItem }) {
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -84,7 +91,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Button href={BOOKING.bookPath} size="sm" className="hidden lg:inline-flex">
+          <Button onClick={() => setBookingOpen(true)} size="sm" className="hidden lg:inline-flex">
             {CTA_LABELS.checkAvailability}
           </Button>
           <button
@@ -131,7 +138,7 @@ export function SiteHeader() {
             </div>
           ))}
           <div className="flex gap-3 pt-5">
-            <Button href={BOOKING.bookPath} size="md" className="flex-1">
+            <Button onClick={() => setBookingOpen(true)} size="md" className="flex-1">
               {CTA_LABELS.bookStudio}
             </Button>
             <Button href="/memberships" variant="outline" size="md" className="flex-1">
@@ -140,6 +147,8 @@ export function SiteHeader() {
           </div>
         </nav>
       </div>
+
+      {bookingOpen && <BookingModal onClose={() => setBookingOpen(false)} />}
     </header>
   );
 }

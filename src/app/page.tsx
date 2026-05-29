@@ -93,7 +93,7 @@ export default function HomePage() {
                 sizes="(min-width: 1024px) 44vw, 100vw"
               />
               {/* Location badge — reinforces "take it anywhere" */}
-              <span className="absolute left-5 top-4 flex items-center gap-1.5 rounded-full bg-tungsten px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-ink shadow-lg">
+              <span className="absolute left-5 top-4 flex items-center gap-1.5 rounded-full bg-[var(--color-brand-green)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-white shadow-lg">
                 <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="shrink-0 fill-current"><path d="M1 5h8M6 2l3 3-3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
                 On location · anywhere
               </span>
