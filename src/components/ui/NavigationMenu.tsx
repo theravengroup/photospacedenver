@@ -87,7 +87,7 @@ function NavigationMenuViewport({
     <div className="absolute left-1/2 top-full flex -translate-x-1/2 justify-center">
       <NavigationMenuPrimitive.Viewport
         className={cn(
-          "relative mt-3 origin-top overflow-hidden rounded-card border border-hairline bg-ink/95 text-bone shadow-2xl backdrop-blur-xl",
+          "relative mt-3 origin-top overflow-hidden rounded-card border border-hairline glass text-bone shadow-2xl",
           "h-[var(--radix-navigation-menu-viewport-height)] w-[var(--radix-navigation-menu-viewport-width)]",
           "transition-[width,height] duration-300 ease-out",
           "data-[state=open]:animate-[nav-in_220ms_ease-out] data-[state=closed]:animate-[nav-out_180ms_ease-in]",

@@ -48,7 +48,7 @@ export function BookingModal({ onClose }: { onClose: () => void }) {
       role="dialog"
       aria-labelledby="booking-modal-title"
     >
-      <div className="flex w-full max-w-3xl flex-col overflow-hidden rounded-t-2xl border border-hairline bg-ink sm:rounded-2xl">
+      <div className="flex w-full max-w-3xl flex-col overflow-hidden rounded-t-2xl border border-hairline glass sm:rounded-2xl">
 
         {/* Header */}
         <div className="flex items-center justify-between border-b border-hairline px-6 py-4">

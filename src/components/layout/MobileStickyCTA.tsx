@@ -6,7 +6,7 @@ const ITEM = "flex flex-col items-center justify-center gap-1 py-2.5 text-xs fon
 /** Persistent Book · Tour · Call bar, mobile only. */
 export function MobileStickyCTA() {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-hairline bg-ink/95 backdrop-blur lg:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-hairline glass lg:hidden">
       <div
         className="grid grid-cols-3 pb-[max(0.25rem,env(safe-area-inset-bottom))]"
         style={{ color: "var(--color-bone)" }}

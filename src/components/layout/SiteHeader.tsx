@@ -29,7 +29,7 @@ export function SiteHeader() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-300 ease-cinematic",
-        scrolled || open ? "border-b border-hairline bg-ink/85 backdrop-blur" : "border-b border-transparent",
+        scrolled || open ? "border-b border-hairline glass" : "border-b border-transparent",
       )}
     >
       <div className="mx-auto flex h-16 w-full max-w-[88rem] items-center justify-between px-5 sm:h-20 sm:px-8">
