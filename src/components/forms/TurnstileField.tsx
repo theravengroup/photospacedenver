@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from "react";
 /**
  * Cloudflare Turnstile widget. Renders explicitly into a ref'd div and mirrors
  * the token into a hidden input named "cf-turnstile-response" so it rides along
- * in FormData. If NEXT_PUBLIC_TURNSTILE_SITE_KEY is unset (local dev / before
+ * in FormData. If NEXT_PUBLIC_TURNSTILE_KEY is unset (local dev / before
  * keys are provisioned) it renders nothing and the server skips verification.
  */
-const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_KEY;
 const SCRIPT_ID = "cf-turnstile-script";
 const SCRIPT_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
