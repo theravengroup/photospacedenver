@@ -87,7 +87,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: "Do you deliver gear, or is it pickup only?",
-    a: "Both. Pick up at the Kalamath St. shop Monday–Friday, 8:30am–5:30pm by appointment, or schedule local Denver-metro delivery for an additional fee. Out-of-town crews can have gear staged on arrival, and equipment can be shipped.",
+    a: "Both. Pick up at the Kalamath St. shop Monday–Friday, 8:30am–5:30pm by appointment, or schedule delivery for an additional fee. We don't ship, but we deliver anywhere within 500 miles of downtown Denver, and out-of-town crews can have gear staged on arrival.",
     tags: ["gear", "location"],
   },
 ];

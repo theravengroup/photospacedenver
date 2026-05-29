@@ -104,7 +104,7 @@ export default function HomePage() {
               <p className="mt-3 text-muted">
                 A deep rental inventory you pick up and take on location — cameras &amp; lenses, flash
                 &amp; continuous lighting, modifiers, grip, video, audio, and production supplies.
-                No studio booking required. Pickup at the shop, or we ship anywhere.
+                No studio booking required. Pick up at the shop, or we deliver anywhere within 500 miles of Denver.
               </p>
               <ul className="mt-5 space-y-2 text-sm text-muted">
                 <li><span className="mr-2 text-tungsten">&bull;</span>Phase One · Canon · Nikon · Fuji · Blackmagic</li>
@@ -216,7 +216,7 @@ export default function HomePage() {
             <SectionHeading
               eyebrow="Gear rental · take it anywhere"
               title="Gear from all the top brands."
-              intro="A deep rental inventory — cameras & lenses, flash & continuous lighting, modifiers, grip, video, audio, and production supplies. Pick up at the shop or we ship anywhere. No studio booking required."
+              intro="A deep rental inventory — cameras & lenses, flash & continuous lighting, modifiers, grip, video, audio, and production supplies. Pick up at the shop, or we deliver within 500 miles of Denver. No studio booking required."
             />
             <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
               {GEAR_BRANDS.slice(0, 14).map((b) => (
