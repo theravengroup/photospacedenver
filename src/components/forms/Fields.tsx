@@ -1,5 +1,5 @@
 const FIELD =
-  "w-full rounded-card border border-hairline bg-transparent px-4 py-2.5 text-base text-foreground outline-none transition-colors focus:border-tungsten";
+  "w-full rounded-card border border-hairline bg-transparent px-4 py-2.5 text-base text-current outline-none transition-colors focus:border-tungsten";
 
 function Label({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (
@@ -123,7 +123,7 @@ export function RadioGroup({
       </legend>
       <div className="space-y-2">
         {options.map((o, i) => (
-          <label key={o} className="flex items-start gap-3 text-sm text-foreground">
+          <label key={o} className="flex items-start gap-3 text-sm text-current">
             {/* required on the first radio makes the whole same-name group required */}
             <input
               type="radio"

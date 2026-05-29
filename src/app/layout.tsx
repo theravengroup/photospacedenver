@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     template: "%s · photospace Denver",
   },
   description:
-    "Denver's photo & video studio and gear-rental house since 2008. A 1,900 ft² shooting floor with a real cyclorama, a starter light & grip kit, and 24/7 access — plus camera, lighting, and grip rental from the top brands, and studio memberships.",
+    "Denver's photo & video studio & gear-rental house since 2008 — a 1,900 ft² cyclorama studio with 24/7 access, plus camera, lighting & grip rental from top brands.",
   applicationName: SITE.name,
   authors: [{ name: SITE.name }],
   creator: SITE.name,
@@ -74,6 +74,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-bone focus:outline focus:outline-2 focus:outline-tungsten"
+        >
+          Skip to content
+        </a>
         <SiteHeader />
         <main id="main" className="flex-1">{children}</main>
         <SiteFooter />

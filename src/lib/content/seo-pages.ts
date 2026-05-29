@@ -180,7 +180,7 @@ export const SEO_LANDING: SeoLanding[] = [
     related: ["video-studio-rental-denver", "content-creator-studio-denver", "commercial-photo-studio-denver"],
     primaryCta: "tour",
     seo: {
-      title: "Podcast & Interview Studio Denver — Multi-Camera, Sound-Dampened",
+      title: "Podcast & Interview Studio Denver — Multi-Camera Setup",
       description:
         "A Denver podcast and interview studio — sound-dampened, controllable light, room for multi-camera setups, and a comfortable guest lounge. Book a tour.",
       keywords: ["podcast studio Denver", "interview studio Denver", "podcast recording studio Denver", "video podcast studio Colorado"],

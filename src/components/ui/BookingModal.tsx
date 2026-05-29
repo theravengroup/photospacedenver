@@ -23,15 +23,19 @@ const STEPS = [
 
 export function BookingModal({ onClose }: { onClose: () => void }) {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
 
-  // Close on Escape
+  // Move focus into the dialog on open, restore it on close, and close on Escape.
   useEffect(() => {
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus();
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", handler);
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", handler);
       document.body.style.overflow = "";
+      previouslyFocused?.focus?.();
     };
   }, [onClose]);
 
@@ -42,14 +46,15 @@ export function BookingModal({ onClose }: { onClose: () => void }) {
       onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}
       aria-modal="true"
       role="dialog"
-      aria-label="Book the studio"
+      aria-labelledby="booking-modal-title"
     >
       <div className="flex w-full max-w-3xl flex-col overflow-hidden rounded-t-2xl border border-hairline bg-ink sm:rounded-2xl">
 
         {/* Header */}
         <div className="flex items-center justify-between border-b border-hairline px-6 py-4">
-          <h2 className="font-display text-display-md text-bone">Reserve the studio</h2>
+          <h2 id="booking-modal-title" className="font-display text-display-md text-bone">Reserve the studio</h2>
           <button
+            ref={closeRef}
             onClick={onClose}
             aria-label="Close"
             className="flex h-8 w-8 items-center justify-center rounded-full text-muted transition-colors hover:bg-white/10 hover:text-bone"

@@ -21,6 +21,7 @@ export function organizationSchema() {
     alternateName: SITE.alternateName,
     legalName: SITE.legalName,
     url: SITE.url,
+    logo: absoluteUrl("/images/brand/photospace-logo.png"),
     email: SITE.contact.email,
     telephone: SITE.contact.phone,
     foundingDate: String(SITE.foundedYear),

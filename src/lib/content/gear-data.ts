@@ -37,9 +37,9 @@ export const GEAR_CATEGORIES: GearCategory[] = [
     intro:
       "Medium format through mirrorless and cinema — pro bodies and the glass to match, ready to shoot. Body-only rentals include a battery and charger; lenses ship with a UV filter. Pick up at the Kalamath St. shop or have it delivered across the Denver metro.",
     seo: {
-      title: "Camera & Lens Rental in Denver — Phase One, Canon, Nikon, Fuji",
+      title: "Camera & Lens Rental in Denver — Phase One, Canon, Nikon",
       description:
-        "Rent cameras and lenses in Denver — Phase One IQ4 150MP, Fujifilm GFX, Canon R5, Nikon Z8, Blackmagic cinema, plus RF/Z/GF and Xeen cine glass. Pickup or Denver-metro delivery.",
+        "Rent cameras and lenses in Denver — Phase One IQ4 150MP, Fujifilm GFX, Canon R5, Nikon Z8, Blackmagic cinema, plus RF/Z/GF and Xeen cine glass.",
       keywords: ["camera rental Denver", "lens rental Denver", "Phase One rental Denver", "cinema camera rental Denver"],
     },
     brands: ["Phase One", "Canon", "Nikon", "Fujifilm", "Blackmagic", "GoPro", "DJI", "Mevo"],
@@ -236,7 +236,7 @@ export const GEAR_CATEGORIES: GearCategory[] = [
     intro:
       "Color-accurate continuous and LED for video and hybrid shoots — from Arri SkyPanels and Nanlux point sources to Astera tubes, Kino Flo soft fixtures, and Aputure RGBWW. High output, dialable color, and the modifiers to shape it.",
     seo: {
-      title: "Continuous & LED Lighting Rental in Denver — Arri, Nanlux, Aputure",
+      title: "Continuous & LED Lighting Rental in Denver — Arri, Aputure",
       description:
         "Rent continuous LED lighting in Denver — Arri SkyPanel, Nanlux Dyno/Evoke, Creamsource, Astera tubes, Kino Flo, LiteMat, and Aputure. Pickup or Denver-metro delivery.",
       keywords: ["continuous lighting rental Denver", "LED lighting rental Denver", "Arri SkyPanel rental Denver", "video lighting rental Denver"],
@@ -644,7 +644,7 @@ export const GEAR_CATEGORIES: GearCategory[] = [
     intro:
       "The in-between gear that makes a shoot work — DJI Ronin gimbals, Edelkrone sliders, Manfrotto fluid heads and tripods, SmallHD monitors, matte boxes, Zoom/Rode/Sennheiser audio, wireless lavs, and CFexpress/SD/CFast media with readers.",
     seo: {
-      title: "Photo & Video Accessory Rental in Denver — Gimbals, Sliders, Audio",
+      title: "Photo & Video Accessory Rental in Denver — Gimbals & Audio",
       description:
         "Rent photo and video accessories in Denver — DJI Ronin gimbals, Edelkrone sliders, Manfrotto tripods, SmallHD monitors, Zoom/Rode/Sennheiser audio, and media.",
       keywords: ["gimbal rental Denver", "slider rental Denver", "audio rental Denver", "monitor rental Denver"],

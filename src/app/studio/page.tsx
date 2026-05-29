@@ -22,7 +22,7 @@ import { faqsByTag } from "@/lib/content/faqs";
 export const metadata = pageMeta({
   title: "Photo & Video Studio Rental in Denver — photospace",
   description:
-    "Rent photospace Denver's 1,900 ft² studio — a real cyclorama, a starter light & grip kit, a calibrated tether station, and 24/7 access. $100/hr, half-day $485, full-day $925.",
+    "Rent photospace Denver's 1,900 ft² studio — a real cyclorama, a starter light & grip kit, a calibrated tether station, and 24/7 access. From $100/hr.",
   path: "/studio",
   keywords: ["studio rental Denver", "photo studio Denver", "video studio Denver", "cyclorama studio Denver"],
 });
