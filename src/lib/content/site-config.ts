@@ -192,6 +192,7 @@ export const FOOTER_COLUMNS: { heading: string; links: NavItem[] }[] = [
       { label: "Continuous Lighting", href: "/continuous-lighting-rental-denver" },
       { label: "Grip & Electrical", href: "/grip-equipment-rental-denver" },
       { label: "Request a Quote", href: "/request-estimate" },
+      { label: "Rental Account", href: "/register" },
     ],
   },
   {

@@ -12,13 +12,16 @@ export function InquiryForm({
   submitLabel,
   successTitle,
   successBody,
+  validate,
   children,
 }: {
-  type: "estimate" | "membership" | "contact";
+  type: "estimate" | "membership" | "contact" | "coi" | "registration";
   page: string;
   submitLabel: string;
   successTitle: string;
   successBody: string;
+  /** Optional pre-submit check (e.g. required uploads). Return an error string to block, or null to proceed. */
+  validate?: (payload: Record<string, string>) => string | null;
   children: React.ReactNode;
 }) {
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -27,10 +30,18 @@ export function InquiryForm({
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    setStatus("sending");
-    setError("");
     const payload = Object.fromEntries(new FormData(form)) as Record<string, string>;
     payload.type = type;
+
+    const validationError = validate?.(payload);
+    if (validationError) {
+      setStatus("error");
+      setError(validationError);
+      return;
+    }
+
+    setStatus("sending");
+    setError("");
     try {
       await submitInquiry(payload);
       setStatus("ok");
@@ -51,7 +62,7 @@ export function InquiryForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="relative space-y-6" data-page={page} noValidate>
+    <form onSubmit={onSubmit} className="relative space-y-6" data-page={page}>
       <Honeypot />
       {children}
       <TurnstileField />

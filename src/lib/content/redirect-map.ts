@@ -53,15 +53,13 @@ export const REDIRECTS: Redirect[] = [
   { from: "/estimate", to: "/request-estimate" },
   { from: "/request-estimate", to: "/request-estimate" },
   { from: "/booking", to: "/request-estimate" },
-  { from: "/register", to: "/book" }, // TODO(confirm): account flow
-  { from: "/registration-conversation", to: "/book" },
-  { from: "/registered", to: "/thank-you" },
+  { from: "/registration-conversation", to: "/register" },
+  { from: "/registered", to: "/register" },
   { from: "/update-information", to: "/contact" },
 
   // Policies / legal (anchors handled on /policies)
   { from: "/policies", to: "/policies" },
   { from: "/insurance", to: "/policies#insurance" },
-  { from: "/no-insurance", to: "/policies#insurance" },
   { from: "/liability-waiver", to: "/policies#liability" },
   { from: "/privacy-statement-us", to: "/policies#privacy" },
   { from: "/disclaimer", to: "/policies#disclaimer" },

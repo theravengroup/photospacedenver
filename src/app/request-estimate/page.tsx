@@ -38,7 +38,13 @@ export default function RequestEstimatePage() {
             <h2 className="font-display text-display-md">What happens next</h2>
             <ol className="mt-5 space-y-4 text-sm text-muted">
               <li><span className="text-tungsten">1.</span> We confirm availability for your dates and send a written estimate.</li>
-              <li><span className="text-tungsten">2.</span> First-time on-location renters register an account once (license + insurance or a card hold for replacement value).</li>
+              <li>
+                <span className="text-tungsten">2.</span> First-time on-location renters{" "}
+                <Link href="/register" className="text-tungsten hover:underline">register an account once</Link>{" "}
+                (license + a{" "}
+                <Link href="/submit-coi" className="text-tungsten hover:underline">Certificate of Insurance</Link>{" "}
+                or a <Link href="/no-insurance" className="text-tungsten hover:underline">card hold</Link> for replacement value).
+              </li>
               <li><span className="text-tungsten">3.</span> Approve the estimate and we schedule pickup or Denver-metro delivery.</li>
             </ol>
             <p className="mt-6 text-xs text-muted">

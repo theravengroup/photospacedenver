@@ -90,7 +90,7 @@ export function SelectField({
   );
 }
 
-export function Checkbox({ label, name, required }: { label: string; name: string; required?: boolean }) {
+export function Checkbox({ label, name, required }: { label: React.ReactNode; name: string; required?: boolean }) {
   return (
     <label className="flex items-start gap-3 text-sm">
       <input

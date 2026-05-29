@@ -12,7 +12,14 @@ import { verifyTurnstile } from "@/lib/forms/turnstile";
 
 type Payload = Record<string, string> & { type?: string; name?: string; email?: string; company_website?: string };
 
-const LABELS: Record<string, string> = { estimate: "estimate request", membership: "membership application", contact: "contact" };
+const LABELS: Record<string, string> = {
+  estimate: "estimate request",
+  membership: "membership application",
+  contact: "contact",
+  coi: "Certificate of Insurance",
+  registration: "rental account registration",
+  card_hold: "replacement-value card hold",
+};
 
 export async function POST(req: Request) {
   let data: Payload | null = null;
