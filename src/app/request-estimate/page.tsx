@@ -42,7 +42,7 @@ export default function RequestEstimatePage() {
                 <span className="text-tungsten">2.</span> First-time on-location renters{" "}
                 <Link href="/register" className="text-tungsten hover:underline">register an account once</Link>{" "}
                 (license + a{" "}
-                <Link href="/submit-coi" className="text-tungsten hover:underline">Certificate of Insurance</Link>{" "}
+                <Link href="/insurance" className="text-tungsten hover:underline">Certificate of Insurance</Link>{" "}
                 or a <Link href="/no-insurance" className="text-tungsten hover:underline">card hold</Link> for replacement value).
               </li>
               <li><span className="text-tungsten">3.</span> Approve the estimate and we schedule pickup or Denver-metro delivery.</li>

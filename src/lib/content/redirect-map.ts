@@ -56,10 +56,10 @@ export const REDIRECTS: Redirect[] = [
   { from: "/registration-conversation", to: "/register" },
   { from: "/registered", to: "/register" },
   { from: "/update-information", to: "/contact" },
+  { from: "/submit-coi", to: "/insurance" },
 
   // Policies / legal (anchors handled on /policies)
   { from: "/policies", to: "/policies" },
-  { from: "/insurance", to: "/policies#insurance" },
   { from: "/liability-waiver", to: "/policies#liability" },
   { from: "/privacy-statement-us", to: "/policies#privacy" },
   { from: "/disclaimer", to: "/policies#disclaimer" },

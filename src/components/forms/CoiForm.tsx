@@ -8,7 +8,7 @@ export function CoiForm() {
   return (
     <InquiryForm
       type="coi"
-      page="submit-coi"
+      page="insurance"
       submitLabel="Submit Certificate"
       successTitle="Certificate received."
       successBody="Thanks — we'll match it to your account and confirm. If anything's missing we'll be in touch."

@@ -41,7 +41,7 @@ export default function NoInsurancePage() {
               <li>The hold is released when gear is returned in good condition.</li>
               <li>
                 Have coverage instead? Submit a{" "}
-                <Link href="/submit-coi" className="text-tungsten hover:underline">
+                <Link href="/insurance" className="text-tungsten hover:underline">
                   Certificate of Insurance
                 </Link>
                 .

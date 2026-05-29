@@ -193,6 +193,7 @@ export const FOOTER_COLUMNS: { heading: string; links: NavItem[] }[] = [
       { label: "Grip & Electrical", href: "/grip-equipment-rental-denver" },
       { label: "Request a Quote", href: "/request-estimate" },
       { label: "Rental Account", href: "/register" },
+      { label: "Insurance", href: "/insurance" },
     ],
   },
   {

@@ -41,7 +41,7 @@ export default function RegisterPage() {
               <li>References are ideally other rental houses or clients you&rsquo;ve worked with.</li>
               <li>
                 For each on-location rental you&rsquo;ll either submit a{" "}
-                <Link href="/submit-coi" className="text-tungsten hover:underline">
+                <Link href="/insurance" className="text-tungsten hover:underline">
                   Certificate of Insurance
                 </Link>{" "}
                 or authorize a{" "}

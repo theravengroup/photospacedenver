@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/faq", priority: 0.6, freq: "monthly" },
     { path: "/studio-facts", priority: 0.5, freq: "monthly" },
     { path: "/request-estimate", priority: 0.5, freq: "yearly" },
+    { path: "/insurance", priority: 0.6, freq: "yearly" },
     { path: "/policies", priority: 0.3, freq: "yearly" },
   ];
 

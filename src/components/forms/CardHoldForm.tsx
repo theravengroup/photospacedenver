@@ -199,7 +199,7 @@ export function CardHoldForm() {
         <h3 className="font-display text-display-md">Card holds aren&rsquo;t available online yet.</h3>
         <p className="measure mt-3 text-muted">
           Please submit a{" "}
-          <Link href="/submit-coi" className="text-tungsten hover:underline">
+          <Link href="/insurance" className="text-tungsten hover:underline">
             Certificate of Insurance
           </Link>{" "}
           instead, or call us and we&rsquo;ll take the hold over the phone.
