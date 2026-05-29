@@ -67,12 +67,14 @@ const FRAMES = [
   },
 ];
 
+/** Real "shot here" gallery — campaigns and editorials photographed on the floor at photospace. */
 const ARCHIVE = [
-  { src: "/images/portfolio/fashion-01.jpg", alt: "Fashion editorial shot at photospace" },
-  { src: "/images/portfolio/hiro-01.jpg", alt: "Portrait campaign shot at photospace" },
-  { src: "/images/portfolio/fashion-02.jpg", alt: "Lookbook image shot at photospace" },
-  { src: "/images/portfolio/fashion-04.jpg", alt: "Editorial frame shot at photospace" },
-];
+  "001", "002", "003", "004", "005", "006", "008", "009", "010",
+  "012", "013", "014", "015", "016", "017", "018", "019", "020",
+].map((n) => ({
+  src: `/images/shot-at-photospace/${n}-andrew-cope.webp`,
+  alt: "Work shot at photospace",
+}));
 
 export default function StudioPage() {
   return (
@@ -188,10 +190,10 @@ export default function StudioPage() {
           title="Shot here."
           intro="A small sample of the campaigns, editorials, and shoots booked, lit, and shot on this floor — and every one of them was shot at photospace."
         />
-        <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {ARCHIVE.map((img, i) => (
-            <div key={img.src} className={`relative overflow-hidden rounded-card border border-hairline ${i % 2 === 0 ? "aspect-[4/5]" : "aspect-[4/5] lg:mt-8"}`}>
-              <Image src={img.src} alt={img.alt} fill className="object-cover" sizes="(min-width: 1024px) 22vw, 45vw" />
+        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          {ARCHIVE.map((img) => (
+            <div key={img.src} className="relative aspect-[4/5] overflow-hidden rounded-card border border-hairline">
+              <Image src={img.src} alt={img.alt} fill className="object-cover" sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw" />
             </div>
           ))}
         </div>
