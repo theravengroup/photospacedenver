@@ -54,6 +54,7 @@ export default function StudioPricingPage() {
   return (
     <>
       <PageHero
+        image="/images/space/lounge.jpg"
         eyebrow="Studio rental · pricing"
         title="Simple pricing. Nothing hidden."
         lede="No setup fees, same rate 24/7 — no evening or weekend surcharge. A starter light and grip kit comes with the room; premium lighting, cameras, and lenses are à la carte add-ons, discounted for members."

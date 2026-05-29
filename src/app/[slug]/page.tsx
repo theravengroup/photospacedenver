@@ -91,7 +91,7 @@ function StudioSeoView({ page, slug }: { page: SeoLanding; slug: string }) {
 
   return (
     <>
-      <PageHero eyebrow={page.eyebrow} title={page.h1} lede={page.lede} breadcrumbs={breadcrumbs}>
+      <PageHero image="/images/space/stage.jpg" eyebrow={page.eyebrow} title={page.h1} lede={page.lede} breadcrumbs={breadcrumbs}>
         <PrimaryCta kind={page.primaryCta} page={slug} />
         {page.primaryCta !== "tour" && <TourCTA page={slug} location="hero" variant="outline" />}
       </PageHero>
@@ -241,6 +241,7 @@ function GearCategoryView({ c }: { c: GearCategory }) {
   return (
     <>
       <PageHero
+        image="/images/gear/gear.jpg"
         eyebrow={`Gear Rental · ${c.title}`}
         title={`${c.title} rental in Denver`}
         lede={c.intro ?? c.blurb}

@@ -44,6 +44,7 @@ export default function MembershipsPage() {
   return (
     <>
       <PageHero
+        image="/images/space/entry.jpg"
         eyebrow="Memberships"
         title="Create more. Pay less."
         lede="Three commitment levels, designed around how you actually shoot — recurring studio access at member rates, plus discounted camera, lens, and lighting add-ons."

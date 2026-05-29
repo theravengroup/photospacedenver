@@ -62,6 +62,7 @@ export default function GearRentalPage() {
   return (
     <>
       <PageHero
+        image="/images/gear/gear.jpg"
         eyebrow="Gear Rental"
         title="Camera, lighting & grip rental in Denver."
         lede="A full rental house — medium format through cinema, Profoto strobes, Arri and Nanlux continuous, modifiers, grip, and production supplies. Picked up at our shop or delivered across the Denver metro."
