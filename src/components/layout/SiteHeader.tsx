@@ -4,59 +4,14 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
-import { NAV_PRIMARY, CTA_LABELS, type NavItem } from "@/lib/content/site-config";
+import { NAV_PRIMARY, CTA_LABELS } from "@/lib/content/site-config";
 import { Button } from "@/components/ui/Button";
+import { MegaMenu } from "@/components/layout/MegaMenu";
 
 const BookingModal = dynamic(
   () => import("@/components/ui/BookingModal").then((m) => m.BookingModal),
   { ssr: false }
 );
-
-function Chevron() {
-  return (
-    <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="opacity-60">
-      <path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function DesktopItem({ item }: { item: NavItem }) {
-  if (!item.children) {
-    return (
-      <Link
-        href={item.href}
-        className="px-3 py-2 text-sm text-bone/80 transition-colors hover:text-bone"
-      >
-        {item.label}
-      </Link>
-    );
-  }
-  return (
-    <div className="group relative">
-      <Link
-        href={item.href}
-        className="inline-flex items-center gap-1.5 px-3 py-2 text-sm text-bone/80 transition-colors hover:text-bone"
-      >
-        {item.label}
-        <Chevron />
-      </Link>
-      <div className="invisible absolute left-0 top-full translate-y-1 pt-3 opacity-0 transition-all duration-200 ease-cinematic group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
-        <div className="w-72 rounded-card border border-hairline bg-ink/95 p-2 shadow-2xl backdrop-blur">
-          {item.children.map((c) => (
-            <Link
-              key={c.href}
-              href={c.href}
-              className="block rounded px-3 py-2 transition-colors hover:bg-white/5"
-            >
-              <span className="block text-sm text-bone">{c.label}</span>
-              {c.blurb && <span className="mt-0.5 block text-xs text-muted">{c.blurb}</span>}
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -84,11 +39,7 @@ export function SiteHeader() {
           <span className="hidden text-[0.625rem] uppercase tracking-[0.22em] text-tungsten sm:inline">Denver</span>
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
-          {NAV_PRIMARY.map((item) => (
-            <DesktopItem key={item.href} item={item} />
-          ))}
-        </nav>
+        <MegaMenu className="hidden lg:flex" />
 
         <div className="flex items-center gap-3">
           <Button onClick={() => setBookingOpen(true)} size="sm" className="hidden lg:inline-flex">
