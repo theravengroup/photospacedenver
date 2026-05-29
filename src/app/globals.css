@@ -181,6 +181,12 @@ body {
   animation-play-state: paused;
 }
 
+/* Soft fade on a marquee's left/right edges so frames enter and leave gracefully */
+.mask-fade-x {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+
 /* =========================================================
    Reduced motion
    ========================================================= */

@@ -8,6 +8,7 @@ import { SpecList } from "@/components/sections/SpecList";
 import { IncludedGrid } from "@/components/sections/IncludedGrid";
 import { UseCaseGrid } from "@/components/sections/UseCaseGrid";
 import { Testimonials } from "@/components/sections/Testimonials";
+import { ShotHereGallery } from "@/components/sections/ShotHereGallery";
 import { FaqList } from "@/components/sections/FaqList";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { BookingCTA, TourCTA } from "@/components/cta/Ctas";
@@ -184,20 +185,7 @@ export default function StudioPage() {
       </Section>
 
       {/* From the archive — shot here */}
-      <Section tone="light" containerSize="wide">
-        <SectionHeading
-          eyebrow="From the archive"
-          title="Shot here."
-          intro="A small sample of the campaigns, editorials, and shoots booked, lit, and shot on this floor — and every one of them was shot at photospace."
-        />
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {ARCHIVE.map((img) => (
-            <div key={img.src} className="relative aspect-[4/5] overflow-hidden rounded-card border border-hairline">
-              <Image src={img.src} alt={img.alt} fill className="object-cover" sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw" />
-            </div>
-          ))}
-        </div>
-      </Section>
+      <ShotHereGallery shots={ARCHIVE} />
 
       {/* Testimonials */}
       <Section tone="dark" containerSize="wide">
