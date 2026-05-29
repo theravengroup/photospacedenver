@@ -9,7 +9,7 @@ import { MembershipCards } from "@/components/sections/MembershipCards";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { FaqList } from "@/components/sections/FaqList";
 import { Location } from "@/components/sections/Location";
-import { BookingCTA, EstimateCTA } from "@/components/cta/Ctas";
+import { BookingCTA, EstimateCTA, TourCTA } from "@/components/cta/Ctas";
 import { Button } from "@/components/ui/Button";
 import { SITE } from "@/lib/content/site-config";
 import { GEAR_BRANDS, GEAR_CATEGORIES } from "@/lib/content/gear-data";
@@ -163,8 +163,8 @@ export default function HomePage() {
               intro="Custom-built from the ground up by photographers and videographers — a real cyclorama, controllable daylight, a working kitchen and lounge, and the power to run a serious set."
             />
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button href="/studio" variant="outline">Tour the studio</Button>
               <BookingCTA page="home" location="studio-highlight" />
+              <TourCTA page="home" location="studio-highlight" variant="outline" />
             </div>
           </Reveal>
           <Reveal delay={0.1}>

@@ -34,7 +34,7 @@ export const RENTAL_WEEK = {
   label: "How rentals are billed",
   statement: "We rent on a 3-day rental week.",
   detail:
-    "Three, four, five, six, and seven days are all billed as a single 3-day rental — so a full week costs the same as three.",
+    "Three, four, five, six, and seven days are all billed as a single 3-day rental — so a full week costs the same as three days.",
 };
 
 export const GEAR_CATEGORIES: GearCategory[] = [

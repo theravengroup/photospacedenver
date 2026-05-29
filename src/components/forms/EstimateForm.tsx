@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Field, TextArea, SelectField, RadioGroup, AddressGroup, Honeypot } from "./Fields";
 import { TurnstileField } from "./TurnstileField";
@@ -17,6 +18,9 @@ export function EstimateForm() {
   const [error, setError] = useState("");
   const [rentalType, setRentalType] = useState("");
   const [fulfillment, setFulfillment] = useState("");
+  const [rentalAccount, setRentalAccount] = useState("");
+
+  const needsRentalAccount = rentalAccount === "No";
 
   const showStudioDates = rentalType === RENTAL.studio || rentalType === RENTAL.studioGear;
   const showGearList = rentalType === RENTAL.studioGear || rentalType === RENTAL.equipment;
@@ -37,6 +41,7 @@ export function EstimateForm() {
       form.reset();
       setRentalType("");
       setFulfillment("");
+      setRentalAccount("");
     } catch (err) {
       setStatus("error");
       setError(err instanceof Error ? err.message : "Something went wrong.");
@@ -60,11 +65,28 @@ export function EstimateForm() {
 
       <div className="grid gap-5 sm:grid-cols-2">
         <SelectField label="Are you a photospace member?" name="member" required options={["No", "Yes"]} />
-        <SelectField label="Do you have a rental account?" name="rental_account" required options={["No", "Yes"]} />
+        <SelectField label="Do you have a rental account?" name="rental_account" required options={["No", "Yes"]} onChange={setRentalAccount} />
       </div>
       <p className="-mt-3 text-xs text-muted">
         Membership and a rental account are separate — a rental account is a one-time setup for taking gear out.
       </p>
+
+      {needsRentalAccount && (
+        <div role="status" className="flex items-start gap-3 rounded-card border border-tungsten/30 bg-tungsten/5 p-4">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden className="mt-0.5 shrink-0 text-tungsten">
+            <circle cx="9" cy="9" r="7.25" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M9 8v4M9 5.5h.01" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+          <p className="text-sm leading-relaxed">
+            <span className="font-medium text-ink">Estimates are free and open to anyone</span> — request away. To
+            actually rent gear and take it on location, you&rsquo;ll need a one-time rental account.{" "}
+            <Link href="/register" className="font-medium text-tungsten underline-offset-2 hover:underline">
+              Set up your rental account &rarr;
+            </Link>{" "}
+            You can finish this estimate now and register before pickup.
+          </p>
+        </div>
+      )}
 
       <RadioGroup
         label="For equipment, how will you cover replacement value?"

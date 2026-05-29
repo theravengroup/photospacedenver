@@ -28,9 +28,34 @@ const breadcrumbs = [
 ];
 
 const RENT_STEPS = [
-  { title: "Register once", body: "First-time on-location renters set up a rental account — a driver's license scan and either a certificate of insurance or a card hold for replacement value." },
-  { title: "Request a quote", body: "Send your gear list (or a brief) and shoot dates. We confirm availability and send a written quote — usually the same business day." },
-  { title: "Pick up or we deliver", body: "Pick up at the Kalamath St. shop Mon–Fri, 8:30am–5:30pm by appointment, or schedule Denver-metro delivery. Out-of-town crews: we stage on arrival." },
+  {
+    title: "Register once",
+    body: (
+      <>
+        First-time on-location renters set up a rental account — a driver&rsquo;s license scan and{" "}
+        <strong className="font-medium text-ink">either a Certificate of Insurance or a card authorization</strong>{" "}
+        for the replacement value of the gear.{" "}
+        <Link href="/register" className="text-tungsten underline-offset-2 hover:underline">Set up your rental account &rarr;</Link>
+      </>
+    ),
+  },
+  {
+    title: "Request a quote",
+    body: (
+      <>
+        Send your gear list (or a brief) and shoot dates. We confirm availability and send a written quote — usually the same business day.{" "}
+        <Link href="/request-estimate" className="text-tungsten underline-offset-2 hover:underline">Request a quote &rarr;</Link>
+      </>
+    ),
+  },
+  {
+    title: "Pick up or we deliver",
+    body: (
+      <>
+        Pick up at the Kalamath St. shop Mon–Fri, 8:30am–5:30pm by appointment, or we deliver within 500 miles of Denver. Out-of-town crews: we stage on arrival. Off-hours pickup and drop-off can be arranged for a fee.
+      </>
+    ),
+  },
 ];
 
 export default function GearRentalPage() {
@@ -117,7 +142,7 @@ export default function GearRentalPage() {
         </div>
       </Section>
 
-      <Section tone="light" className="!pt-0">
+      <Section tone="light">
         <SectionHeading eyebrow="FAQ" title="Rental questions." />
         <div className="mt-8">
           <FaqList faqs={faqsByTag("gear", "location", "booking")} />

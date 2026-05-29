@@ -1,4 +1,4 @@
-export type Step = { title: string; body: string };
+export type Step = { title: string; body: React.ReactNode };
 
 /** Numbered "how it works" steps. */
 export function Steps({ steps }: { steps: Step[] }) {

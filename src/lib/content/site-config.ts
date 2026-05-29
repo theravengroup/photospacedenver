@@ -102,7 +102,7 @@ export const BOOKING = {
 export const CTA_LABELS = {
   checkAvailability: "Check Availability",
   bookStudio: "Book the Studio",
-  bookTour: "Book a Studio Tour",
+  bookTour: "Book a Free Tour",
   viewMemberships: "View Memberships",
   requestEstimate: "Request a Quote",
   compareOptions: "Compare Rental Options",

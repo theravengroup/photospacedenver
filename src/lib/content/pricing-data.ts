@@ -144,7 +144,7 @@ export const LIGHTING_KITS = {
     { name: "Video — Level One", label: "3-light LED", price: 135, contents: "3× Fiilex P360 head, 3× barndoor, 3× diffuser, 3× standard umbrella" },
     { name: "Video — Level Two", label: "Panel kit", price: 225, contents: "2× Astra LED panel, 2× Chimera softbox" },
     { name: "Video — Level Three", label: "High output", price: 375, contents: "2× Nanlux Dyno 650c" },
-    { name: "Video — Pro", label: "Pro output kit", price: 375, contents: "2× Nanlux Dyno 650c, 2× Nanlux TK-280B" },
+    { name: "Video — Pro", label: "Pro output kit", price: 575, contents: "2× Nanlux Dyno 650c, 2× Nanlux TK-280B" },
   ],
 };
 

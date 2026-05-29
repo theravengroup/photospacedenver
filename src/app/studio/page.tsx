@@ -203,7 +203,7 @@ export default function StudioPage() {
       </Section>
 
       {/* FAQ */}
-      <Section tone="light" className="!pt-0">
+      <Section tone="light">
         <SectionHeading eyebrow="FAQ" title="Studio questions, answered." />
         <div className="mt-8">
           <FaqList faqs={faqsByTag("studio", "booking", "video")} />
@@ -216,7 +216,7 @@ export default function StudioPage() {
         body="The lights are on. The cyc is clean. The espresso is hot. Reserve your time and walk in ready — or come by for a free 20-minute tour first."
       >
         <BookingCTA page="studio" location="final" size="lg" />
-        <TourCTA page="studio" location="final" variant="outline" size="lg" />
+        <TourCTA page="studio" location="final" variant="ghost" size="lg" />
       </FinalCTA>
 
       <JsonLd

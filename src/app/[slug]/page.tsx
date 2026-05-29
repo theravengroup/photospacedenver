@@ -127,7 +127,7 @@ function StudioSeoView({ page, slug }: { page: SeoLanding; slug: string }) {
 
       <FinalCTA eyebrow="Ready to shoot" title="Book the space — or see it first." body="Reserve a session 24/7, or come by for a free 20-minute tour.">
         <PrimaryCta kind={page.primaryCta} page={slug} location="final" size="lg" />
-        {page.primaryCta !== "tour" && <TourCTA page={slug} location="final" variant="outline" size="lg" />}
+        {page.primaryCta !== "tour" && <TourCTA page={slug} location="final" variant="ghost" size="lg" />}
       </FinalCTA>
 
       <JsonLd

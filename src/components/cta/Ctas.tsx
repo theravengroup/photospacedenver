@@ -3,8 +3,10 @@
  * destination, and tracking type/event. Pass `page`/`service` for analytics
  * context and `variant`/`size` to fit the layout.
  *
- * BookingCTA opens the Acuity scheduler in a modal (with the 3-step how-it-works
- * above the iframe) rather than navigating to /book.
+ * BookingCTA and TourCTA both open the Acuity scheduler in a modal (with a
+ * 3-step how-it-works above the iframe) — booking-framed vs. free-tour-framed —
+ * rather than navigating to /book. Persistent nav (mega-menu, footer, mobile
+ * bar) still routes to the /book page, which hosts the same live scheduler.
  */
 "use client";
 
@@ -45,16 +47,20 @@ export function BookingCTA({ page, service, location, label, variant = "primary"
 }
 
 export function TourCTA({ page, service, location, label, variant = "outline", size = "md", className }: Ctx) {
+  const [open, setOpen] = useState(false);
   return (
-    <Button
-      href={BOOKING.bookPath}
-      variant={variant}
-      size={size}
-      className={className}
-      tracking={{ type: "book_tour", event: ANALYTICS_EVENTS.clickBookTour, page, service, location }}
-    >
-      {label ?? CTA_LABELS.bookTour}
-    </Button>
+    <>
+      <Button
+        variant={variant}
+        size={size}
+        className={className}
+        tracking={{ type: "book_tour", event: ANALYTICS_EVENTS.clickBookTour, page, service, location }}
+        onClick={() => setOpen(true)}
+      >
+        {label ?? CTA_LABELS.bookTour}
+      </Button>
+      {open && <BookingModal variant="tour" onClose={() => setOpen(false)} />}
+    </>
   );
 }
 

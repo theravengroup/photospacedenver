@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { InquiryForm } from "@/components/forms/InquiryForm";
 import { Field, TextArea } from "@/components/forms/Fields";
 
@@ -50,7 +51,9 @@ function MultiDayModal({ page, onClose }: { page: string; onClose: () => void })
     };
   }, [onClose]);
 
-  return (
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     <div
       ref={overlayRef}
       className="fixed inset-0 z-[210] flex justify-center overflow-y-auto bg-ink/80 p-4 backdrop-blur-sm sm:p-6"
@@ -104,6 +107,7 @@ function MultiDayModal({ page, onClose }: { page: string; onClose: () => void })
           </InquiryForm>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
