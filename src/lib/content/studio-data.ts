@@ -28,7 +28,7 @@ export const STUDIO = {
     { label: "Cyclorama wall", value: "20' w × 17' d × 15' h" },
     { label: "Power", value: "8 × 20-amp dedicated circuits" },
     { label: "Daylight", value: "Giant windows, individually controllable blinds" },
-    { label: "Access", value: "24/7 keyless entry (UniFi)" },
+    { label: "Access", value: "24/7 keyless entry" },
     { label: "Parking", value: "Free street parking + load-in ramp" },
   ] satisfies Spec[],
 
@@ -74,7 +74,7 @@ export const STUDIO = {
     { name: "Free parking", detail: "Unlimited on side streets; 2-hr on Kalamath" },
     { name: "Sound dampening" },
     { name: "5-zone mini-split HVAC" },
-    { name: "24/7 keyless access", detail: "UniFi door access; codes active around your booking" },
+    { name: "24/7 keyless access", detail: "Keyless door access — codes active around your booking" },
   ] satisfies Amenity[],
 
   tetherSoftware: ["Capture One", "Lightroom", "Phocus", "DaVinci Resolve", "Photoshop"],

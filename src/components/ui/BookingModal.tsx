@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { BOOKING } from "@/lib/content/site-config";
 
 const STEPS = [
@@ -84,6 +85,15 @@ export function BookingModal({ onClose }: { onClose: () => void }) {
             className="h-full w-full border-0"
             scrolling="yes"
           />
+        </div>
+
+        {/* Multi-day bookings are by request, not self-serve */}
+        <div className="border-t border-hairline px-6 py-4 text-sm text-muted">
+          Shooting more than one day? Multi-day bookings can&rsquo;t be booked here directly —{" "}
+          <Link href="/request-estimate" onClick={onClose} className="font-medium text-tungsten hover:underline">
+            request your dates
+          </Link>{" "}
+          and we&rsquo;ll confirm availability.
         </div>
 
       </div>

@@ -33,7 +33,7 @@ export default function HomePage() {
           <p className="eyebrow">Denver, Colorado · Est. {SITE.foundedYear}</p>
           <h1 className="font-display mt-5 tracking-tight leading-[1.22] text-[clamp(1.55rem,7.5vw,5.5rem)]">
             A <span className="text-tungsten underline decoration-tungsten decoration-2 underline-offset-[0.16em]">studio</span> for shooting <span className="text-tungsten underline decoration-tungsten decoration-2 underline-offset-[0.16em]">here</span>.<br />
-            <span className="text-tungsten underline decoration-tungsten decoration-dotted decoration-2 underline-offset-[0.16em]">Gear</span> for shooting <span className="text-tungsten underline decoration-tungsten decoration-dotted decoration-2 underline-offset-[0.16em]">anywhere</span>.
+            <span className="text-[var(--color-brand-green)] underline decoration-[var(--color-brand-green)] decoration-2 underline-offset-[0.16em]">Gear</span> for shooting <span className="text-[var(--color-brand-green)] underline decoration-[var(--color-brand-green)] decoration-2 underline-offset-[0.16em]">anywhere</span>.
           </h1>
           <p className="mt-8 leading-[1.35] text-muted text-[clamp(1rem,2.5vw,1.5rem)]">
             Since {SITE.foundedYear}, <strong className="font-semibold text-bone">photospace</strong> has
@@ -158,7 +158,7 @@ export default function HomePage() {
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal>
             <SectionHeading
-              eyebrow="Studio rental · 209 Kalamath St"
+              eyebrow="209 Kalamath St"
               title="This is not a converted warehouse."
               intro="Custom-built from the ground up by photographers and videographers — a real cyclorama, controllable daylight, a working kitchen and lounge, and the power to run a serious set."
             />
