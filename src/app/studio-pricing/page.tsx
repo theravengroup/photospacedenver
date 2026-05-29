@@ -13,6 +13,7 @@ import { breadcrumbSchema } from "@/lib/schema";
 import {
   ACUITY_LADDER,
   LIGHTING_KITS,
+  STUDIO_CREW,
   SERVICE_PRICING,
   MEMBERSHIP_TERMS,
   TOUR,
@@ -92,7 +93,8 @@ export default function StudioPricingPage() {
             <RateRows
               rows={[
                 { name: "Overtime (full day)", price: FEES.overtimeHourly, unit: "/hr" },
-                { name: "Cyclorama repaint", price: FEES.cycRepaint, unit: " + paint" },
+                { name: "Cyclorama repaint — white", price: FEES.cycRepaint, unit: "" },
+                { name: "Cyclorama repaint — custom color (paint 48h ahead)", price: FEES.cycRepaintCustom, unit: "" },
                 { name: "Event venue (7am–midnight)", price: SERVICE_PRICING.eventVenue.price, unit: SERVICE_PRICING.eventVenue.unit },
               ]}
             />
@@ -161,22 +163,20 @@ export default function StudioPricingPage() {
                 <span className="h-px flex-1 bg-hairline block" />
               </h3>
               <div className="space-y-3">
-                <div className="rounded-card border border-hairline bg-ink/50 p-5">
-                  <div className="flex items-baseline justify-between gap-4">
-                    <span className="font-medium text-bone">On-call Assistant</span>
-                    <span className="shrink-0 text-sm text-muted">Add at checkout</span>
+                {STUDIO_CREW.map((c) => (
+                  <div key={`${c.name}-${c.label}`} className="rounded-card border border-hairline bg-ink/50 p-5">
+                    <div className="flex items-baseline justify-between gap-4">
+                      <div>
+                        <span className="font-medium text-bone">{c.name}</span>
+                        <span className="ml-2 text-xs uppercase tracking-[0.14em] text-tungsten">{c.label}</span>
+                      </div>
+                      <span className="shrink-0 font-display text-xl text-tungsten">{usd(c.price)}</span>
+                    </div>
+                    <p className="mt-1.5 text-xs text-muted">{c.blurb}</p>
                   </div>
-                  <p className="mt-1.5 text-xs text-muted">Helps build sets and set up lighting for your shoot.</p>
-                </div>
-                <div className="rounded-card border border-hairline bg-ink/50 p-5">
-                  <div className="flex items-baseline justify-between gap-4">
-                    <span className="font-medium text-bone">Digital Tech</span>
-                    <span className="shrink-0 text-sm text-muted">Add at checkout</span>
-                  </div>
-                  <p className="mt-1.5 text-xs text-muted">Manages all aspects of a tethered shoot — Capture One, Lightroom, Phocus.</p>
-                </div>
+                ))}
               </div>
-              <p className="mt-3 text-xs text-muted">Pricing shown during booking. Add crew after selecting your time block.</p>
+              <p className="mt-3 text-xs text-muted">Add crew after selecting your time block.</p>
             </div>
           </div>
         </div>

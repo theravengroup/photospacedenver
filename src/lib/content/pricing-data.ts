@@ -148,6 +148,13 @@ export const LIGHTING_KITS = {
   ],
 };
 
+/** On-call studio crew — added at checkout after a time block is selected. */
+export const STUDIO_CREW = [
+  { name: "Digital Tech", label: "2–5 hours", price: 575, blurb: "Manages every part of a tethered shoot — Capture One, Lightroom, Phocus." },
+  { name: "Digital Tech", label: "6–10 hours", price: 875, blurb: "Manages every part of a tethered shoot — Capture One, Lightroom, Phocus." },
+  { name: "Grip / Light Tech", label: "6–10 hours", price: 675, blurb: "An assistant to build sets and light your shoot." },
+];
+
 /** ShootPod mobile studio + event-venue pricing. */
 export const SERVICE_PRICING = {
   shootPod: {
@@ -166,7 +173,8 @@ export const FEES = {
   cardFeePct: 3, // TODO(confirm): policies say 3%, estimate form said 3.5%.
   achFeePct: 1,
   overtimeHourly: 65,
-  cycRepaint: 150,
+  cycRepaint: 175, // white repaint (owner-updated 2026-05-29; was $150)
+  cycRepaintCustom: 600, // custom color — client provides paint 48h ahead
   depositPctOver3k: 50,
   minimumRental: 100,
   multiDay: {
