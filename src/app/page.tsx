@@ -31,9 +31,9 @@ export default function HomePage() {
       <Section tone="dark" className="grain pt-32 sm:pt-44" containerSize="wide">
         <Reveal>
           <p className="eyebrow">Denver, Colorado · Est. {SITE.foundedYear}</p>
-          <h1 className="font-display mt-5 tracking-tight leading-[1.03] text-[clamp(1.55rem,7.5vw,5.5rem)]">
-            A <span className="text-tungsten underline decoration-2 underline-offset-[0.2em]">studio</span> for shooting <span className="text-tungsten underline decoration-2 underline-offset-[0.2em]">here</span>.<br />
-            <span className="rounded bg-tungsten/15 px-[0.18em] text-tungsten [box-decoration-break:clone] [-webkit-box-decoration-break:clone]">Gear</span> for shooting <span className="rounded bg-tungsten/15 px-[0.18em] text-tungsten [box-decoration-break:clone] [-webkit-box-decoration-break:clone]">anywhere</span>.
+          <h1 className="font-display mt-5 tracking-tight leading-[1.22] text-[clamp(1.55rem,7.5vw,5.5rem)]">
+            A <span className="text-tungsten underline decoration-tungsten decoration-2 underline-offset-[0.16em]">studio</span> for shooting <span className="text-tungsten underline decoration-tungsten decoration-2 underline-offset-[0.16em]">here</span>.<br />
+            <span className="text-tungsten underline decoration-tungsten decoration-dotted decoration-2 underline-offset-[0.16em]">Gear</span> for shooting <span className="text-tungsten underline decoration-tungsten decoration-dotted decoration-2 underline-offset-[0.16em]">anywhere</span>.
           </h1>
           <p className="mt-8 leading-[1.35] text-muted text-[clamp(1rem,2.5vw,1.5rem)]">
             Since {SITE.foundedYear}, <strong className="font-semibold text-bone">photospace</strong> has
