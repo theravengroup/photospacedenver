@@ -22,7 +22,7 @@ export function PricingCards({ page }: { page?: string }) {
           <div
             key={t.id}
             className={cn(
-              "flex flex-col rounded-card border p-7",
+              "flex flex-col rounded-card border p-7 bg-panel",
               t.featured ? "border-tungsten" : "border-hairline",
             )}
           >

@@ -10,8 +10,8 @@ export function MembershipCards({ page }: { page?: string }) {
         <div
           key={t.id}
           className={cn(
-            "flex flex-col rounded-card border p-7",
-            t.featured ? "border-tungsten bg-panel" : "border-hairline",
+            "flex flex-col rounded-card border p-7 bg-panel",
+            t.featured ? "border-tungsten" : "border-hairline",
           )}
         >
           <div className="flex h-6 items-center">

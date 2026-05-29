@@ -44,7 +44,7 @@ export default function HomePage() {
         <Reveal delay={0.1} className="mt-12 grid gap-5 lg:grid-cols-2">
 
           {/* 01 — Studio Rental: shoot HERE, at this address */}
-          <div className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-bone/[0.04] transition-colors hover:border-tungsten/40">
+          <div className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-panel transition-colors hover:border-tungsten/40">
             <div className="relative aspect-[16/10] overflow-hidden">
               <Image
                 src="/images/space/stage.jpg"
@@ -82,7 +82,7 @@ export default function HomePage() {
           </div>
 
           {/* 02 — Gear Rental: take it anywhere, on location */}
-          <div className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-bone/[0.04] transition-colors hover:border-tungsten/40">
+          <div className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-panel transition-colors hover:border-tungsten/40">
             <div className="relative aspect-[16/10] overflow-hidden">
               <Image
                 src="/images/gear/gear.jpg"
