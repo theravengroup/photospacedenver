@@ -4,7 +4,7 @@ const FIELD =
 function Label({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-sm text-muted">
+      <span className="mb-1.5 block text-base text-muted">
         {label}
         {required && <span className="text-tungsten"> *</span>}
       </span>
@@ -92,7 +92,7 @@ export function SelectField({
 
 export function Checkbox({ label, name, required }: { label: React.ReactNode; name: string; required?: boolean }) {
   return (
-    <label className="flex items-start gap-3 text-sm">
+    <label className="flex items-start gap-3 text-base">
       <input
         type="checkbox"
         name={name}
@@ -117,13 +117,13 @@ export function RadioGroup({
 }) {
   return (
     <fieldset>
-      <legend className="mb-2 block text-sm text-muted">
+      <legend className="mb-2 block text-base text-muted">
         {label}
         {required && <span className="text-tungsten"> *</span>}
       </legend>
       <div className="space-y-2">
         {options.map((o, i) => (
-          <label key={o} className="flex items-start gap-3 text-sm text-current">
+          <label key={o} className="flex items-start gap-3 text-base text-current">
             {/* required on the first radio makes the whole same-name group required */}
             <input
               type="radio"
@@ -144,7 +144,7 @@ export function RadioGroup({
 export function AddressGroup({ label, prefix, required }: { label: string; prefix: string; required?: boolean }) {
   return (
     <fieldset className="space-y-3">
-      <legend className="mb-1 block text-sm text-muted">
+      <legend className="mb-1 block text-base text-muted">
         {label}
         {required && <span className="text-tungsten"> *</span>}
       </legend>

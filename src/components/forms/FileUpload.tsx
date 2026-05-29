@@ -12,7 +12,7 @@ import { upload } from "@vercel/blob/client";
 type UploadState = "idle" | "uploading" | "done" | "error";
 
 const FIELD =
-  "w-full rounded-card border border-hairline bg-transparent px-4 py-2.5 text-sm text-current file:mr-4 file:rounded-full file:border-0 file:bg-panel file:px-4 file:py-1.5 file:text-sm file:text-current outline-none transition-colors focus:border-tungsten";
+  "w-full rounded-card border border-hairline bg-transparent px-4 py-2.5 text-base text-current file:mr-4 file:rounded-full file:border-0 file:bg-panel file:px-4 file:py-1.5 file:text-sm file:text-current outline-none transition-colors focus:border-tungsten";
 
 export function FileUpload({
   label,

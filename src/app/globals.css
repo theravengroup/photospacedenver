@@ -133,6 +133,15 @@ body {
   font-optical-sizing: auto;
 }
 
+/* Typography hygiene — balanced headings, and never a single-word orphan on a
+   wrap. Works at every viewport (pairs with the clamp()-based display scale). */
+h1, h2, h3, h4, .font-display, .text-balance {
+  text-wrap: balance;
+}
+p, li, dt, dd, blockquote, figcaption {
+  text-wrap: pretty;
+}
+
 .text-muted { color: var(--muted); }
 .border-hairline { border-color: var(--hairline); }
 

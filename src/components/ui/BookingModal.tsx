@@ -42,13 +42,13 @@ export function BookingModal({ onClose }: { onClose: () => void }) {
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[200] flex items-end justify-center bg-ink/80 backdrop-blur-sm sm:items-center"
+      className="fixed inset-0 z-[200] flex justify-center overflow-y-auto bg-ink/80 p-4 backdrop-blur-sm sm:p-6"
       onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}
       aria-modal="true"
       role="dialog"
       aria-labelledby="booking-modal-title"
     >
-      <div className="flex w-full max-w-3xl flex-col overflow-hidden rounded-t-2xl border border-hairline glass-overlay sm:rounded-2xl">
+      <div className="my-auto flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-hairline glass-overlay">
 
         {/* Header */}
         <div className="flex items-center justify-between border-b border-hairline px-6 py-4">
