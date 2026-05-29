@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Honeypot } from "./Fields";
-
-type Status = "idle" | "sending" | "ok" | "error";
+import { TurnstileField } from "./TurnstileField";
+import { submitInquiry, type FormStatus } from "@/lib/forms/submit";
 
 export function InquiryForm({
   type,
@@ -21,7 +21,7 @@ export function InquiryForm({
   successBody: string;
   children: React.ReactNode;
 }) {
-  const [status, setStatus] = useState<Status>("idle");
+  const [status, setStatus] = useState<FormStatus>("idle");
   const [error, setError] = useState("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -32,13 +32,7 @@ export function InquiryForm({
     const payload = Object.fromEntries(new FormData(form)) as Record<string, string>;
     payload.type = type;
     try {
-      const res = await fetch("/api/inquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const json = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
-      if (!res.ok || !json.ok) throw new Error(json.error || "Something went wrong. Please try again or call us.");
+      await submitInquiry(payload);
       setStatus("ok");
       form.reset();
     } catch (err) {
@@ -60,6 +54,7 @@ export function InquiryForm({
     <form onSubmit={onSubmit} className="relative space-y-6" data-page={page} noValidate>
       <Honeypot />
       {children}
+      <TurnstileField />
       <div className="flex flex-wrap items-center gap-4">
         <Button type="submit" size="lg" disabled={status === "sending"} tracking={{ type: `submit_${type}`, page, location: "form" }}>
           {status === "sending" ? "Sending…" : submitLabel}

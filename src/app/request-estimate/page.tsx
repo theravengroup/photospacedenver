@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { PageHero } from "@/components/sections/PageHero";
 import { Section } from "@/components/ui/Section";
-import { InquiryForm } from "@/components/forms/InquiryForm";
-import { Field, TextArea, SelectField } from "@/components/forms/Fields";
+import { EstimateForm } from "@/components/forms/EstimateForm";
 import { JsonLd } from "@/components/JsonLd";
 import { pageMeta } from "@/lib/content/metadata";
 import { breadcrumbSchema } from "@/lib/schema";
@@ -33,33 +32,7 @@ export default function RequestEstimatePage() {
 
       <Section tone="light" containerSize="wide">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr]">
-          <InquiryForm
-            type="estimate"
-            page="request-estimate"
-            submitLabel="Request a Quote"
-            successTitle="Quote request received."
-            successBody="Thanks — we'll review availability and follow up with a written quote, usually the same business day."
-          >
-            <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Name" name="name" required autoComplete="name" />
-              <Field label="Email" name="email" type="email" required autoComplete="email" />
-              <Field label="Phone" name="phone" type="tel" autoComplete="tel" />
-              <SelectField
-                label="What do you need?"
-                name="rental_type"
-                required
-                options={["Studio only", "Studio + gear", "Gear only", "Multi-day / custom"]}
-              />
-              <Field label="Start date" name="start_date" type="date" />
-              <Field label="End date" name="end_date" type="date" />
-            </div>
-            <SelectField label="Pickup or delivery?" name="fulfillment" options={["Pickup at the shop", "Denver-metro delivery", "Not sure yet"]} />
-            <TextArea
-              label="Gear list / brief"
-              name="details"
-              placeholder="The gear you need (or a brief), shoot dates, and any unknowns."
-            />
-          </InquiryForm>
+          <EstimateForm />
 
           <aside className="rounded-card border border-hairline p-7">
             <h2 className="font-display text-display-md">What happens next</h2>

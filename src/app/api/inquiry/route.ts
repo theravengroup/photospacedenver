@@ -1,4 +1,5 @@
 import { SITE } from "@/lib/content/site-config";
+import { verifyTurnstile } from "@/lib/forms/turnstile";
 
 /**
  * Receives estimate / membership / contact form submissions and emails them.
@@ -24,6 +25,11 @@ export async function POST(req: Request) {
   // Honeypot: real users never fill this hidden field.
   if (data.company_website) return Response.json({ ok: true });
 
+  // Cloudflare Turnstile (skipped automatically when TURNSTILE_SECRET_KEY is unset).
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const turnstile = await verifyTurnstile(data["cf-turnstile-response"], ip);
+  if (!turnstile.ok) return Response.json({ ok: false, error: turnstile.error }, { status: 403 });
+
   const { type = "contact", name, email } = data;
   if (!name?.trim() || !email?.trim()) {
     return Response.json({ ok: false, error: "Name and email are required." }, { status: 422 });
@@ -33,8 +39,9 @@ export async function POST(req: Request) {
   }
 
   const subject = `New ${LABELS[type] ?? "inquiry"} — ${name}`;
+  const HIDDEN = new Set(["company_website", "cf-turnstile-response"]);
   const body = Object.entries(data)
-    .filter(([k, v]) => k !== "company_website" && v)
+    .filter(([k, v]) => !HIDDEN.has(k) && v)
     .map(([k, v]) => `${k}: ${v}`)
     .join("\n");
 
