@@ -13,6 +13,16 @@ Format:
 
 ---
 
+## 2026-05-30 — Phase 1.2: initial DB migration + integration smoke endpoint
+- area: phase-1 scaffolding
+- new: `supabase/migrations/20260530000001_init_booking.sql` — v1 schema (7 tables: bookings · holds · coupons · coupon_redemptions · manual_blocks · member_buckets · audit_log), all with RLS enabled + deny-anon stub policies (real customer-aware policies land in 1.3 with Auth). Indexes for availability + per-user coupon enforcement + member bucket lookups. `bookings.updated_at` auto-trigger.
+- new: `src/app/api/_booking/healthcheck` — GET endpoint gated by `BOOKING_HEALTHCHECK_TOKEN`. Runs one Supabase HEAD query + one GCal FreeBusy call and returns 200 only if both connect. Internal-only (no UI surface).
+- env added: `BOOKING_HEALTHCHECK_TOKEN` (Production). Local copy stashed at `.claude/booking-healthcheck-token` (gitignored).
+- build + lint: ✅ green.
+- pending Dan: **apply the migration** — either (a) Supabase CLI: `npx supabase link --project-ref yntydittiviajizolmqu && npx supabase db push`, or (b) open Supabase → SQL Editor → New query → paste the .sql file → Run.
+- after migration applied: curl the healthcheck → both subsystems should report `ok:true` → that proves Phase 1 wiring works end-to-end.
+- features flipped: none (still no end-to-end booking behavior — pricing/availability/holds come in Phase 2).
+
 ## 2026-05-29 — Phase 1.1: SDKs + client wrappers (scaffolding only)
 - area: phase-1 scaffolding
 - deps added: `@supabase/supabase-js` 2.106, `@supabase/ssr` 0.10, `googleapis` 173, `server-only` (build-time guard).
