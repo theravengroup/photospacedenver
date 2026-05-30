@@ -279,25 +279,30 @@ function SlotPanel({
       )}
 
       {date && loading && (
-        <div className="space-y-5">
-          {[1, 2, 3].map((row) => (
-            <div key={row}>
-              <div className="h-3 w-24 rounded bg-hairline/40 animate-pulse mb-3" />
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-10 rounded-full bg-hairline/40 animate-pulse"
-                  />
-                ))}
+        <>
+          <span className="sr-only" role="status" aria-live="polite">
+            Loading available times for {date.toDateString()}.
+          </span>
+          <div className="space-y-5" aria-hidden>
+            {[1, 2, 3].map((row) => (
+              <div key={row}>
+                <div className="h-3 w-24 rounded bg-hairline/40 animate-pulse mb-3" />
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="h-10 rounded-full bg-hairline/40 animate-pulse"
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </>
       )}
 
       {date && !loading && err && (
-        <p className="text-base text-amber-400">{err}</p>
+        <p className="text-base text-amber-400" role="alert">{err}</p>
       )}
 
       {date && !loading && !err && bookable.length === 0 && (

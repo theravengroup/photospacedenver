@@ -34,9 +34,13 @@ export function PriceSummary({ state }: { state: WizardState }) {
 
   return (
     <>
-      {/* Desktop: sticky right rail */}
+      {/* Desktop: sticky right rail. aria-live="polite" so screen readers
+          announce price changes as the customer modifies their selection,
+          without interrupting the current focus context. */}
       <aside
         aria-label="Booking summary"
+        aria-live="polite"
+        aria-atomic="false"
         className="hidden lg:block w-full max-w-sm sticky top-24 self-start"
       >
         <SummaryBody state={state} />

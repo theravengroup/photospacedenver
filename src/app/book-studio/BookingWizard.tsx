@@ -257,9 +257,18 @@ export function BookingWizard() {
         <MemberSignIn preview={state.member} />
         <Stepper current={currentStep} visibleSteps={visibleSteps} onJumpBack={goto} />
 
-        {/* Step container — keyed by current step so React re-runs the fade-in
-            animation on every step transition. */}
-        <div key={currentStep} className="book-step-enter">
+        {/* Step container — keyed by current step so React re-runs the
+            fade-in animation on every step transition.
+            tabIndex=-1 + aria-live="polite" together let screen readers
+            announce the new step (via the heading inside) while keyboard
+            users get a stable focus container they can re-orient to. */}
+        <div
+          key={currentStep}
+          tabIndex={-1}
+          aria-live="polite"
+          aria-atomic="false"
+          className="book-step-enter focus:outline-none"
+        >
           {currentStep === "service" && (
             <ServiceStep state={state} onChange={set} onContinue={fromService} />
           )}
