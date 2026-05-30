@@ -41,7 +41,9 @@ type DurationGroup = {
   options: HourOption[];
 };
 
-/** The four duration groups, in natural reading order (short → long). */
+/** The four duration groups, in natural reading order (short → long).
+ *  Paired below into 2 rows: [QUICK | HALF DAY], [LONGER | FULL DAY] — so
+ *  each flat-rate option sits visually beside its hourly ladder. */
 const GROUPS: DurationGroup[] = [
   {
     id: "quick",
@@ -80,6 +82,12 @@ const GROUPS: DurationGroup[] = [
     icon: Sunset,
     options: [{ label: "10–12h", hours: 12, priceCents: 92500 }],
   },
+];
+
+/** Group pairs for the 2-row layout. [hourly, flat]. */
+const GROUP_PAIRS: [DurationGroup, DurationGroup][] = [
+  [GROUPS[0], GROUPS[1]], // QUICK | HALF DAY
+  [GROUPS[2], GROUPS[3]], // LONGER | FULL DAY
 ];
 
 function dollars(cents: number): string {
@@ -142,7 +150,13 @@ export function ServiceStep({
       />
 
       {/* The main length picker. One consistent chip; categories carry the
-          rate-model context. */}
+          rate-model context. Groups paired by row — each row has an hourly
+          ladder on the left and its flat-rate counterpart on the right,
+          separated by a vertical hairline divider. Parent grid uses
+          `[auto_auto]` columns so the dividers align across both rows
+          (Row 1's hourly = QUICK (3 chips); Row 2's hourly = LONGER
+          (4 chips) — without a shared parent grid the divider positions
+          would differ). */}
       <section className="space-y-6">
         <div className="flex items-center gap-3">
           <h2 className="text-xs uppercase tracking-[0.16em] text-muted font-medium">
@@ -151,61 +165,11 @@ export function ServiceStep({
           <span className="h-px flex-1 bg-hairline" aria-hidden />
         </div>
 
-        {GROUPS.map((group) => {
-          const GroupIcon = group.icon;
-          return (
-            <div key={group.id} className="space-y-3">
-              <div className="flex items-baseline gap-2">
-                <GroupIcon
-                  className="w-4 h-4 text-tungsten translate-y-0.5"
-                  strokeWidth={1.75}
-                  aria-hidden
-                />
-                <h3 className="text-sm uppercase tracking-[0.16em] text-tungsten font-medium">
-                  {group.label}
-                </h3>
-                <span className="text-sm text-muted">· {group.rateModel}</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {group.options.map((opt) => {
-                  const active = hoursSelected === opt.hours;
-                  return (
-                    <button
-                      key={opt.label}
-                      type="button"
-                      onClick={() => pickOption(opt)}
-                      aria-pressed={active}
-                      className={cn(
-                        "min-w-[7.5rem] rounded-card px-4 py-3 text-left transition-all duration-200 ease-cinematic",
-                        "border whitespace-nowrap",
-                        active
-                          ? "bg-tungsten text-ink border-tungsten shadow-[0_8px_22px_-8px_rgba(200,132,43,0.5)]"
-                          : "border-hairline bg-panel hover:border-tungsten hover:-translate-y-px hover:bg-tungsten/5",
-                      )}
-                    >
-                      <span
-                        className={cn(
-                          "block font-display text-xl leading-tight",
-                          active ? "text-ink" : "text-bone",
-                        )}
-                      >
-                        {opt.label}
-                      </span>
-                      <span
-                        className={cn(
-                          "block text-sm mt-0.5",
-                          active ? "text-ink/70" : "text-muted",
-                        )}
-                      >
-                        {dollars(opt.priceCents)}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
+        <div className="grid grid-cols-1 lg:grid-cols-[auto_auto] gap-x-10 gap-y-8">
+          {GROUP_PAIRS.map(([hourly, flat]) => (
+            <Pair key={hourly.id} hourly={hourly} flat={flat} hoursSelected={hoursSelected} onPick={pickOption} />
+          ))}
+        </div>
       </section>
 
       {/* Bottom bookend — multi-day. Special because it picks a date range,
@@ -234,6 +198,100 @@ export function ServiceStep({
         >
           Continue <ArrowRight className="w-4 h-4" />
         </button>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Pair — a single row of the length picker. Renders the hourly group as
+ * the left column and its flat-rate counterpart as the right column,
+ * separated by a vertical hairline divider on lg+. On mobile they stack
+ * with no divider.
+ */
+function Pair({
+  hourly,
+  flat,
+  hoursSelected,
+  onPick,
+}: {
+  hourly: DurationGroup;
+  flat: DurationGroup;
+  hoursSelected: number | null;
+  onPick: (opt: HourOption) => void;
+}) {
+  return (
+    <>
+      <GroupCol group={hourly} hoursSelected={hoursSelected} onPick={onPick} />
+      <div className="lg:border-l lg:border-hairline lg:pl-10">
+        <GroupCol group={flat} hoursSelected={hoursSelected} onPick={onPick} />
+      </div>
+    </>
+  );
+}
+
+/**
+ * GroupCol — eyebrow row + chip cluster for a single duration group.
+ */
+function GroupCol({
+  group,
+  hoursSelected,
+  onPick,
+}: {
+  group: DurationGroup;
+  hoursSelected: number | null;
+  onPick: (opt: HourOption) => void;
+}) {
+  const GroupIcon = group.icon;
+  return (
+    <div className="space-y-3">
+      <div className="flex items-baseline gap-2">
+        <GroupIcon
+          className="w-4 h-4 text-tungsten translate-y-0.5"
+          strokeWidth={1.75}
+          aria-hidden
+        />
+        <h3 className="text-sm uppercase tracking-[0.16em] text-tungsten font-medium">
+          {group.label}
+        </h3>
+        <span className="text-sm text-muted">· {group.rateModel}</span>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {group.options.map((opt) => {
+          const active = hoursSelected === opt.hours;
+          return (
+            <button
+              key={opt.label}
+              type="button"
+              onClick={() => onPick(opt)}
+              aria-pressed={active}
+              className={cn(
+                "min-w-[7.5rem] rounded-card px-4 py-3 text-left transition-all duration-200 ease-cinematic",
+                "border whitespace-nowrap",
+                active
+                  ? "bg-tungsten text-ink border-tungsten shadow-[0_8px_22px_-8px_rgba(200,132,43,0.5)]"
+                  : "border-hairline bg-panel hover:border-tungsten hover:-translate-y-px hover:bg-tungsten/5",
+              )}
+            >
+              <span
+                className={cn(
+                  "block font-display text-xl leading-tight",
+                  active ? "text-ink" : "text-bone",
+                )}
+              >
+                {opt.label}
+              </span>
+              <span
+                className={cn(
+                  "block text-sm mt-0.5",
+                  active ? "text-ink/70" : "text-muted",
+                )}
+              >
+                {dollars(opt.priceCents)}
+              </span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
