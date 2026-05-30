@@ -11,20 +11,61 @@
 import { useState } from "react";
 import { cn } from "@/lib/cn";
 import type { WizardState } from "../state";
-import { APPOINTMENT_TYPES } from "@/lib/booking/appointment-types";
+
+type HourOption = {
+  /** Label shown on the chip. */
+  label: string;
+  /** Actual hours the system books. For the "Full day" chip this is 12 — the
+   * full block — even though Acuity historically priced 10/11/12 identically.
+   * Collapsing to a single chip keeps the UI clean; the customer gets the
+   * full 12h window for the same flat price. */
+  hours: number;
+  priceCents: number;
+};
 
 type Tier = {
   id: "quick" | "halfday" | "fullday";
   label: string;
   blurb: string;
-  hours: number[]; // exact hour options to expose
+  options: HourOption[];
   fromCents: number;
 };
 
 const TIERS: Tier[] = [
-  { id: "quick",   label: "Quick",     blurb: "2–4 hours",  hours: [2, 3, 4],            fromCents: 20000 },
-  { id: "halfday", label: "Half day",  blurb: "5 hours flat", hours: [5],                fromCents: 48500 },
-  { id: "fullday", label: "Full day",  blurb: "6–12 hours", hours: [6, 7, 8, 9, 10, 11, 12], fromCents: 57500 },
+  {
+    id: "quick",
+    label: "Quick",
+    blurb: "2–4 hours",
+    options: [
+      { label: "2h", hours: 2, priceCents: 20000 },
+      { label: "3h", hours: 3, priceCents: 29500 },
+      { label: "4h", hours: 4, priceCents: 39000 },
+    ],
+    fromCents: 20000,
+  },
+  {
+    id: "halfday",
+    label: "Half day",
+    blurb: "5 hours flat",
+    options: [{ label: "5h", hours: 5, priceCents: 48500 }],
+    fromCents: 48500,
+  },
+  {
+    id: "fullday",
+    label: "Full day",
+    blurb: "6–12 hours",
+    options: [
+      { label: "6h", hours: 6, priceCents: 57500 },
+      { label: "7h", hours: 7, priceCents: 66500 },
+      { label: "8h", hours: 8, priceCents: 75500 },
+      { label: "9h", hours: 9, priceCents: 84000 },
+      // The 10/11/12 Acuity rungs collapse into one "Full day" chip — same
+      // flat $925, books the full 12-hour window so the customer has the
+      // room all day.
+      { label: "Full day · 10–12h", hours: 12, priceCents: 92500 },
+    ],
+    fromCents: 57500,
+  },
 ];
 
 function dollars(cents: number): string {
@@ -33,15 +74,11 @@ function dollars(cents: number): string {
 
 function appointmentSlugForHours(hours: number): string {
   if (hours === 5) return "hourly-5-halfday";
-  if (hours === 10) return "hourly-10-fullday";
-  if (hours === 11) return "hourly-11-fullday";
   if (hours === 12) return "hourly-12-fullday";
+  // 10/11 are still valid slugs server-side (admins can book them) but the
+  // public UI no longer exposes them — every "Full day" pick uses the 12-hour
+  // slug above.
   return `hourly-${hours}`;
-}
-
-function priceForHours(hours: number): number {
-  const slug = appointmentSlugForHours(hours);
-  return APPOINTMENT_TYPES.find((t) => t.slug === slug)?.basePriceCents ?? 0;
 }
 
 export function ServiceStep({
@@ -64,8 +101,11 @@ export function ServiceStep({
     onChange({ appointmentTypeSlug: "tour", hours: 20 / 60 });
     setOpenTier(null);
   }
-  function pickHours(hours: number) {
-    onChange({ appointmentTypeSlug: appointmentSlugForHours(hours), hours });
+  function pickOption(opt: HourOption) {
+    onChange({
+      appointmentTypeSlug: appointmentSlugForHours(opt.hours),
+      hours: opt.hours,
+    });
   }
 
   const tourSelected = state.appointmentTypeSlug === "tour";
@@ -108,7 +148,10 @@ export function ServiceStep({
         {TIERS.map((tier) => {
           const isOpen = openTier === tier.id;
           const isPicked =
-            state.appointmentTypeSlug && state.hours != null && tier.hours.includes(state.hours);
+            state.appointmentTypeSlug != null &&
+            state.hours != null &&
+            tier.options.some((o) => o.hours === state.hours) &&
+            !tourSelected;
           return (
             <div
               key={tier.id}
@@ -127,20 +170,24 @@ export function ServiceStep({
               >
                 <div className="text-xs uppercase tracking-wider text-muted">{tier.label}</div>
                 <div className="font-display text-2xl">{tier.blurb}</div>
-                <div className="text-sm text-muted">from {dollars(tier.fromCents)}</div>
+                <div className="text-sm text-muted">
+                  {tier.options.length === 1
+                    ? dollars(tier.options[0].priceCents)
+                    : `from ${dollars(tier.fromCents)}`}
+                </div>
               </button>
 
               {isOpen && (
                 <div className="border-t border-hairline p-4">
                   <div className="text-xs text-muted mb-2">Exact length</div>
                   <div className="flex flex-wrap gap-2">
-                    {tier.hours.map((h) => {
-                      const active = state.hours === h && !tourSelected;
+                    {tier.options.map((opt) => {
+                      const active = state.hours === opt.hours && !tourSelected;
                       return (
                         <button
-                          key={h}
+                          key={opt.label}
                           type="button"
-                          onClick={() => pickHours(h)}
+                          onClick={() => pickOption(opt)}
                           className={cn(
                             "rounded-full px-3 py-1.5 text-sm border transition-colors",
                             active
@@ -148,13 +195,8 @@ export function ServiceStep({
                               : "border-hairline hover:border-tungsten",
                           )}
                         >
-                          {h}h
-                          <span className="text-muted ml-1">
-                            ·{" "}
-                            {tier.id === "fullday" && h >= 10
-                              ? "$925"
-                              : `$${(priceForHours(h) / 100).toFixed(0)}`}
-                          </span>
+                          {opt.label}
+                          <span className="text-muted ml-1">· {dollars(opt.priceCents)}</span>
                         </button>
                       );
                     })}
