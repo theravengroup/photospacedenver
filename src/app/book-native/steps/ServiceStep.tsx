@@ -1,78 +1,70 @@
 "use client";
 
 /**
- * Step 1 — pick a session.
+ * Step 1 — pick a session length.
  *
- * Three tier cards (Quick / Half-day / Full-day) with a Tour CTA at the top.
- * Tapping a card expands it inline with exact-hour chips. Selecting an hour
- * locks in {appointmentTypeSlug, hours} and exposes the Continue button.
+ * IA redesign (2026-05-30, Dan-confirmed):
+ *   - One atomic unit: a duration chip. Every chip is identical in size +
+ *     shape so the eye doesn't have to recalibrate per row.
+ *   - Chips are grouped under category eyebrow rows that carry the
+ *     pricing-model semantics (`· hourly` vs `· flat`).
+ *   - Tour and Multi-day are full-width bookend panels because they're
+ *     conceptually different choices (free pre-visit / multi-day) — they
+ *     earn their own real estate instead of being squeezed into a chip row.
+ *
+ * The earlier 5-card grid mixed cards-with-picker-inside (Quick/Day) with
+ * cards-that-are-themselves-the-pick (Half day/Full day/Multi-day), which
+ * produced the visual mess Dan called out: irregular content, wrapped
+ * display type, "Tap to pick" filler in the empty cards.
  */
 
-import {
-  Compass,
-  Zap,
-  Sunrise,
-  Sun,
-  Sunset,
-  CalendarDays,
-  ArrowRight,
-  type LucideIcon,
-} from "lucide-react";
+import { Compass, Zap, Sunrise, Sun, Sunset, CalendarDays, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/cn";
 import type { WizardState } from "../state";
 
 type HourOption = {
+  /** Label on the chip (e.g. "2h" or "10–12h"). */
   label: string;
+  /** Actual hours the system books. */
   hours: number;
   priceCents: number;
 };
 
-type Tier = {
-  id: "quick" | "halfday" | "day" | "fullday";
+type DurationGroup = {
+  id: "quick" | "halfday" | "longer" | "fullday";
+  /** Eyebrow label above the chip row (e.g. "QUICK"). */
   label: string;
-  blurb: string;
-  icon: LucideIcon;
+  /** Small subtitle after the label (e.g. "hourly" / "flat"). */
+  rateModel: string;
+  /** Lucide icon for the eyebrow. */
+  icon: typeof Zap;
   options: HourOption[];
-  fromCents: number;
 };
 
-/**
- * 5 session shapes that map to how customers actually think about studio
- * time (per the IA review with Dan 2026-05-30). The hour-by-hour Acuity
- * ladder still exists under the hood — these buckets just group it into
- * named tiers a human can pick:
- *
- *   QUICK    2–4 hours @ hourly      → short session (headshots, a few setups)
- *   HALF DAY 5 hours flat            → industry-standard half day, single price
- *   DAY      6–9 hours @ hourly      → most of a working day, editorial / multi-look
- *   FULL DAY 10–12 hours flat        → lock out the studio for the whole day
- *   MULTI-DAY 2+ days                → spans multiple calendar days
- */
-const TIERS: Tier[] = [
+/** The four duration groups, in natural reading order (short → long). */
+const GROUPS: DurationGroup[] = [
   {
     id: "quick",
     label: "Quick",
-    blurb: "2–4 hours",
+    rateModel: "hourly",
     icon: Zap,
     options: [
       { label: "2h", hours: 2, priceCents: 20000 },
       { label: "3h", hours: 3, priceCents: 29500 },
       { label: "4h", hours: 4, priceCents: 39000 },
     ],
-    fromCents: 20000,
   },
   {
     id: "halfday",
     label: "Half day",
-    blurb: "5 hours flat",
+    rateModel: "flat",
     icon: Sunrise,
     options: [{ label: "5h", hours: 5, priceCents: 48500 }],
-    fromCents: 48500,
   },
   {
-    id: "day",
-    label: "Day",
-    blurb: "6–9 hours",
+    id: "longer",
+    label: "Longer",
+    rateModel: "hourly",
     icon: Sun,
     options: [
       { label: "6h", hours: 6, priceCents: 57500 },
@@ -80,18 +72,13 @@ const TIERS: Tier[] = [
       { label: "8h", hours: 8, priceCents: 75500 },
       { label: "9h", hours: 9, priceCents: 84000 },
     ],
-    fromCents: 57500,
   },
   {
     id: "fullday",
     label: "Full day",
-    blurb: "10–12 hours",
+    rateModel: "flat",
     icon: Sunset,
-    // Single option — flat $925 books the full 12-hour window so the
-    // customer has the room all day. The 10/11 Acuity slugs still exist
-    // server-side for admin overrides but aren't exposed in the picker.
-    options: [{ label: "10–12h flat", hours: 12, priceCents: 92500 }],
-    fromCents: 92500,
+    options: [{ label: "10–12h", hours: 12, priceCents: 92500 }],
   },
 ];
 
@@ -102,9 +89,6 @@ function dollars(cents: number): string {
 function appointmentSlugForHours(hours: number): string {
   if (hours === 5) return "hourly-5-halfday";
   if (hours === 12) return "hourly-12-fullday";
-  // 10/11 are still valid slugs server-side (admins can book them) but the
-  // public UI no longer exposes them — every "Full day" pick uses the 12-hour
-  // slug above.
   return `hourly-${hours}`;
 }
 
@@ -127,15 +111,15 @@ export function ServiceStep({
     });
   }
   function pickMultiDay() {
-    // Hours irrelevant for multi-day — pricing comes from the date range
     onChange({ appointmentTypeSlug: "multi-day", hours: 0 });
   }
 
   const tourSelected = state.appointmentTypeSlug === "tour";
   const multiDaySelected = state.appointmentTypeSlug === "multi-day";
+  const hoursSelected = !tourSelected && !multiDaySelected ? state.hours : null;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <header>
         <h1 className="font-display text-3xl sm:text-4xl">Book the studio</h1>
         <p className="text-muted mt-2 text-base sm:text-lg">
@@ -145,138 +129,75 @@ export function ServiceStep({
         </p>
       </header>
 
-      {/* Tour CTA — separate, free, low-stakes intro */}
-      <button
-        type="button"
+      {/* Top bookend — free tour. Special because it's a pre-visit, not a
+          billable session. */}
+      <BookendPanel
+        icon={Compass}
+        eyebrow="Free studio tour"
+        headline="20 minutes"
+        sub="See the space in person before you book a real session."
+        trailingLabel="Free"
+        selected={tourSelected}
         onClick={pickTour}
-        className={cn(
-          "w-full text-left rounded-card p-5",
-          "flex items-center gap-4",
-          "glass-card glass-card-hover",
-          tourSelected && "glass-card--active",
-        )}
-        aria-pressed={tourSelected}
-      >
-        <span className="icon-chip" aria-hidden>
-          <Compass className="w-5 h-5" strokeWidth={1.75} />
-        </span>
-        <div className="flex-1">
-          <div className="font-medium text-base sm:text-lg">Free studio tour</div>
-          <div className="text-sm text-muted mt-0.5">
-            20 minutes · see the space in person before you book a real session
-          </div>
+      />
+
+      {/* The main length picker. One consistent chip; categories carry the
+          rate-model context. */}
+      <section className="space-y-6">
+        <div className="flex items-center gap-3">
+          <h2 className="text-xs uppercase tracking-[0.16em] text-muted font-medium">
+            Choose a length
+          </h2>
+          <span className="h-px flex-1 bg-hairline" aria-hidden />
         </div>
-        <span className="font-display text-lg text-tungsten">Free</span>
-      </button>
 
-      {/* Visual separator between the free tour CTA and the paid rental
-          tiers — no copy, since the page H1 already says "Book the studio"
-          and the cards below name themselves (QUICK / HALF DAY / DAY /
-          FULL DAY / MULTI-DAY). */}
-      <span className="block h-px bg-hairline" aria-hidden />
-
-
-      {/* Grid stretches every card to match the tallest in its row, so the
-          single-option cards (Half-day, Multi-day) and the multi-option ones
-          (Quick, Full-day) line up. mt-auto on each card's footer area
-          pushes the pills / "Tap to pick" label to the bottom edge so they
-          align across all four cards. */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
-        {TIERS.map((tier) => {
-          const isPicked =
-            state.appointmentTypeSlug != null &&
-            state.hours != null &&
-            state.hours > 0 &&
-            tier.options.some((o) => o.hours === state.hours) &&
-            !tourSelected &&
-            !multiDaySelected;
-          const singleOption = tier.options.length === 1;
-
-          const Icon = tier.icon;
-
-          // Single-option tier (Half day) → entire card is a single click target.
-          if (singleOption) {
-            const opt = tier.options[0];
-            return (
-              <button
-                key={tier.id}
-                type="button"
-                onClick={() => pickOption(opt)}
-                className={cn(
-                  "h-full text-left rounded-card p-5 flex flex-col gap-2",
-                  "glass-card glass-card-hover",
-                  isPicked && "glass-card--active",
-                )}
-                aria-pressed={isPicked}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="icon-chip" aria-hidden>
-                    <Icon className="w-5 h-5" strokeWidth={1.75} />
-                  </span>
-                  <span className="text-xs uppercase tracking-[0.16em] text-muted">
-                    {tier.label}
-                  </span>
-                </div>
-                <div className="font-display text-2xl mt-1">{tier.blurb}</div>
-                <div className="text-base text-muted">{dollars(opt.priceCents)}</div>
-                {/* mt-auto pushes the action label to the bottom so all
-                    4 cards' action areas share a baseline. */}
-                <div className="mt-auto pt-3 flex items-center gap-1.5 text-sm text-tungsten">
-                  {isPicked ? "✓ Selected" : (
-                    <>
-                      Tap to pick <ArrowRight className="w-3.5 h-3.5" />
-                    </>
-                  )}
-                </div>
-              </button>
-            );
-          }
-
-          // Multi-option tier → header + chips, always visible (no expand step)
+        {GROUPS.map((group) => {
+          const GroupIcon = group.icon;
           return (
-            <div
-              key={tier.id}
-              className={cn(
-                "h-full rounded-card p-5 flex flex-col gap-3",
-                "glass-card glass-card-hover",
-                isPicked && "glass-card--active",
-              )}
-            >
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="icon-chip" aria-hidden>
-                    <Icon className="w-5 h-5" strokeWidth={1.75} />
-                  </span>
-                  <span className="text-xs uppercase tracking-[0.16em] text-muted">
-                    {tier.label}
-                  </span>
-                </div>
-                <div className="font-display text-2xl mt-1">{tier.blurb}</div>
-                <div className="text-base text-muted">from {dollars(tier.fromCents)}</div>
+            <div key={group.id} className="space-y-3">
+              <div className="flex items-baseline gap-2">
+                <GroupIcon
+                  className="w-4 h-4 text-tungsten translate-y-0.5"
+                  strokeWidth={1.75}
+                  aria-hidden
+                />
+                <h3 className="text-sm uppercase tracking-[0.16em] text-tungsten font-medium">
+                  {group.label}
+                </h3>
+                <span className="text-sm text-muted">· {group.rateModel}</span>
               </div>
-              <div className="flex flex-wrap gap-2 mt-auto pt-2">
-                {tier.options.map((opt) => {
-                  const active = state.hours === opt.hours && !tourSelected;
+              <div className="flex flex-wrap gap-2">
+                {group.options.map((opt) => {
+                  const active = hoursSelected === opt.hours;
                   return (
                     <button
                       key={opt.label}
                       type="button"
                       onClick={() => pickOption(opt)}
+                      aria-pressed={active}
                       className={cn(
-                        "rounded-full px-3.5 py-1.5 text-sm border transition-all duration-200 ease-cinematic",
+                        "min-w-[7.5rem] rounded-card px-4 py-3 text-left transition-all duration-200 ease-cinematic",
+                        "border whitespace-nowrap",
                         active
-                          ? "bg-tungsten text-ink border-tungsten shadow-[0_4px_14px_-4px_rgba(200,132,43,0.45)]"
-                          : "border-hairline hover:border-tungsten hover:bg-tungsten/5",
+                          ? "bg-tungsten text-ink border-tungsten shadow-[0_8px_22px_-8px_rgba(200,132,43,0.5)]"
+                          : "border-hairline bg-panel hover:border-tungsten hover:-translate-y-px hover:bg-tungsten/5",
                       )}
                     >
-                      {opt.label}
                       <span
                         className={cn(
-                          "ml-1",
+                          "block font-display text-xl leading-tight",
+                          active ? "text-ink" : "text-bone",
+                        )}
+                      >
+                        {opt.label}
+                      </span>
+                      <span
+                        className={cn(
+                          "block text-sm mt-0.5",
                           active ? "text-ink/70" : "text-muted",
                         )}
                       >
-                        · {dollars(opt.priceCents)}
+                        {dollars(opt.priceCents)}
                       </span>
                     </button>
                   );
@@ -285,44 +206,19 @@ export function ServiceStep({
             </div>
           );
         })}
+      </section>
 
-        {/* 4th card — Multi-day. Whole card is the pick target. */}
-        <button
-          type="button"
-          onClick={pickMultiDay}
-          className={cn(
-            "h-full text-left rounded-card p-5 flex flex-col gap-2",
-            "glass-card glass-card-hover",
-            multiDaySelected && "glass-card--active",
-          )}
-          aria-pressed={multiDaySelected}
-        >
-          <div className="flex items-center justify-between">
-            <span className="icon-chip" aria-hidden>
-              <CalendarDays className="w-5 h-5" strokeWidth={1.75} />
-            </span>
-            <span className="text-xs uppercase tracking-[0.16em] text-muted">
-              Multi-day
-            </span>
-          </div>
-          <div className="font-display text-2xl mt-1">2+ days</div>
-          <div className="text-base text-muted">
-            $925/day · cap at 4 days ($3,700)
-          </div>
-          <div className="mt-auto pt-3">
-            <div className="flex items-center gap-1.5 text-sm text-tungsten">
-              {multiDaySelected ? "✓ Selected" : (
-                <>
-                  Tap to pick <ArrowRight className="w-3.5 h-3.5" />
-                </>
-              )}
-            </div>
-            <div className="text-xs text-muted/80 mt-1.5">
-              Weekend (Sat + Sun) counts as one day.
-            </div>
-          </div>
-        </button>
-      </div>
+      {/* Bottom bookend — multi-day. Special because it picks a date range,
+          not an hour count. */}
+      <BookendPanel
+        icon={CalendarDays}
+        eyebrow="Multi-day rental"
+        headline="2+ days"
+        sub="Weekend (Sat + Sun) counts as one billable day. Capped at 4 days."
+        trailingLabel="$925 / day · cap $3,700"
+        selected={multiDaySelected}
+        onClick={pickMultiDay}
+      />
 
       <div className="pt-4 flex justify-end">
         <button
@@ -330,15 +226,75 @@ export function ServiceStep({
           disabled={!state.appointmentTypeSlug}
           onClick={onContinue}
           className={cn(
-            "inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-colors",
+            "inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-medium transition-all duration-200 ease-cinematic",
             state.appointmentTypeSlug
-              ? "bg-tungsten text-ink hover:bg-tungsten-soft"
+              ? "bg-tungsten text-ink hover:bg-tungsten-soft hover:shadow-[0_8px_22px_-8px_rgba(200,132,43,0.55)] hover:-translate-y-px"
               : "bg-panel text-muted border border-hairline cursor-not-allowed",
           )}
         >
-          Continue →
+          Continue <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </div>
+  );
+}
+
+/**
+ * BookendPanel — full-width tungsten-tinted glass panel used for the Tour
+ * and Multi-day bookends. Same visual weight as a tier card but stretched
+ * wide so it reads as "this is its own concept", not part of the chip row.
+ */
+function BookendPanel({
+  icon: Icon,
+  eyebrow,
+  headline,
+  sub,
+  trailingLabel,
+  selected,
+  onClick,
+}: {
+  icon: typeof Compass;
+  eyebrow: string;
+  headline: string;
+  sub: string;
+  trailingLabel: string;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={selected}
+      className={cn(
+        "w-full text-left rounded-card p-5 sm:p-6",
+        "glass-card glass-card-hover",
+        "flex flex-wrap items-center gap-4 sm:gap-6",
+        selected && "glass-card--active",
+      )}
+    >
+      <span className="icon-chip icon-chip--lg" aria-hidden>
+        <Icon className="w-6 h-6" strokeWidth={1.75} />
+      </span>
+      <div className="flex-1 min-w-0">
+        <div className="text-xs uppercase tracking-[0.16em] text-tungsten font-medium">
+          {eyebrow}
+        </div>
+        <div className="font-display text-2xl sm:text-3xl mt-1">{headline}</div>
+        <div className="text-base text-muted mt-1.5">{sub}</div>
+      </div>
+      <div className="ml-auto text-right shrink-0">
+        <div className="font-display text-lg text-tungsten">
+          {trailingLabel}
+        </div>
+        <div className="text-sm text-tungsten/90 mt-1 flex items-center justify-end gap-1">
+          {selected ? "✓ Selected" : (
+            <>
+              Tap to pick <ArrowRight className="w-3.5 h-3.5" />
+            </>
+          )}
+        </div>
+      </div>
+    </button>
   );
 }
