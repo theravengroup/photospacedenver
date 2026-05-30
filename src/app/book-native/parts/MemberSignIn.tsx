@@ -3,7 +3,7 @@
 /**
  * MemberSignIn — small panel that lives at the top of the booking wizard.
  *
- * - Not signed in: collapsed link "Member? Sign in to use your free hours →".
+ * - Not signed in: collapsed link "Member? Sign in to use your membership hours →".
  *   Clicking expands an email input + "Send sign-in link" button. We call
  *   Supabase Auth's signInWithOtp({ email }) which sends a magic link to
  *   {APP}/auth/callback?code=... — that route exchanges the code for a
@@ -77,8 +77,8 @@ export function MemberSignIn({ preview }: { preview: MemberPreview }) {
           <span className="text-muted">{preview.email}</span>
           <span className="block sm:inline sm:ml-3 mt-1 sm:mt-0 text-base">
             {preview.hoursAvailable === 0
-              ? "No free hours left this cycle"
-              : `${preview.hoursAvailable} free ${
+              ? "No membership hours left this cycle"
+              : `${preview.hoursAvailable} membership ${
                   preview.hoursAvailable === 1 ? "hour" : "hours"
                 } available — applied automatically`}
           </span>
@@ -125,7 +125,7 @@ export function MemberSignIn({ preview }: { preview: MemberPreview }) {
       >
         {open
           ? "Cancel"
-          : "Member? Sign in to use your free hours →"}
+          : "Member? Sign in to use your membership hours →"}
       </button>
       {open && status !== "sent" && (
         <div className="mt-3 flex flex-wrap gap-2 items-start max-w-md">

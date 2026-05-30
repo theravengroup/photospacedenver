@@ -128,7 +128,7 @@ export function calculatePricing(input: PricingInput): PricingResult {
   if (memberDiscountCents > 0) {
     lineItems.push({
       key: "member-hours",
-      label: `Member free hours (${memberHoursApplied} hr${memberHoursApplied === 1 ? "" : "s"} applied)`,
+      label: `Membership hours (${memberHoursApplied} ${memberHoursApplied === 1 ? "hour" : "hours"} applied)`,
       amountCents: -memberDiscountCents,
     });
   }
