@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "updatedAt": "2026-05-29",
+  "rules": {
+    "passesDefault": false,
+    "policy": "Every feature starts as passes:false. Only flip to true after a real test run is documented in BOOKING_PROGRESS.md."
+  },
+  "features": [
+    { "id": "AUTH-001", "area": "auth",          "name": "Supabase Auth: customer email magic-link sign-in",             "status": { "passes": false, "notes": "" } },
+    { "id": "AUTH-002", "area": "auth",          "name": "Supabase Auth: admin role gate (RLS-enforced)",                "status": { "passes": false, "notes": "" } },
+    { "id": "AUTH-003", "area": "auth",          "name": "Guest checkout works without an account",                     "status": { "passes": false, "notes": "" } },
+
+    { "id": "AVAIL-001","area": "availability",  "name": "GCal FreeBusy fetch returns busy windows for date range",     "status": { "passes": false, "notes": "" } },
+    { "id": "AVAIL-002","area": "availability",  "name": "Hourly slots respect business-hours config",                  "status": { "passes": false, "notes": "" } },
+    { "id": "AVAIL-003","area": "availability",  "name": "Multi-day range computes contiguous days correctly",          "status": { "passes": false, "notes": "" } },
+    { "id": "AVAIL-004","area": "availability",  "name": "Overnight bookings span midnight without double-counting",    "status": { "passes": false, "notes": "" } },
+    { "id": "AVAIL-005","area": "availability",  "name": "Admin manual blocks suppress availability",                   "status": { "passes": false, "notes": "" } },
+    { "id": "AVAIL-006","area": "availability",  "name": "Buffer minutes before/after enforced",                        "status": { "passes": false, "notes": "" } },
+    { "id": "AVAIL-007","area": "availability",  "name": "America/Denver DST transitions handled correctly",            "status": { "passes": false, "notes": "" } },
+
+    { "id": "PRICE-001","area": "pricing",       "name": "Hourly rate × hours computed server-side",                    "status": { "passes": false, "notes": "" } },
+    { "id": "PRICE-002","area": "pricing",       "name": "Half-day flat rate applied",                                  "status": { "passes": false, "notes": "" } },
+    { "id": "PRICE-003","area": "pricing",       "name": "Full-day flat rate applied",                                  "status": { "passes": false, "notes": "" } },
+    { "id": "PRICE-004","area": "pricing",       "name": "Multi-day priced per-day with admin override possible",       "status": { "passes": false, "notes": "" } },
+    { "id": "PRICE-005","area": "pricing",       "name": "Overnight surcharge logic (if any) applied",                  "status": { "passes": false, "notes": "" } },
+    { "id": "PRICE-006","area": "pricing",       "name": "Add-on prices summed server-side",                            "status": { "passes": false, "notes": "" } },
+    { "id": "PRICE-007","area": "pricing",       "name": "Member rates applied to logged-in members",                   "status": { "passes": false, "notes": "" } },
+    { "id": "PRICE-008","area": "pricing",       "name": "Client-side total is display-only; server is source of truth","status": { "passes": false, "notes": "" } },
+
+    { "id": "ADDON-001","area": "addons",        "name": "Strobe/video/cyc/crew add-ons selectable",                    "status": { "passes": false, "notes": "" } },
+    { "id": "ADDON-002","area": "addons",        "name": "Add-ons can be added/edited/disabled by admin",               "status": { "passes": false, "notes": "" } },
+    { "id": "ADDON-003","area": "addons",        "name": "Add-on availability rules respected (e.g. requires X)",       "status": { "passes": false, "notes": "" } },
+
+    { "id": "COUP-001", "area": "coupons",       "name": "Apply coupon by code at checkout",                            "status": { "passes": false, "notes": "" } },
+    { "id": "COUP-002", "area": "coupons",       "name": "Percent and fixed discounts both supported",                  "status": { "passes": false, "notes": "" } },
+    { "id": "COUP-003", "area": "coupons",       "name": "Expiry + max-uses + per-customer limits enforced",            "status": { "passes": false, "notes": "" } },
+    { "id": "COUP-004", "area": "coupons",       "name": "Coupons configurable in admin",                               "status": { "passes": false, "notes": "" } },
+
+    { "id": "HOLD-001", "area": "holds",         "name": "Temp hold row created with TTL (e.g. 15 min)",                "status": { "passes": false, "notes": "" } },
+    { "id": "HOLD-002", "area": "holds",         "name": "Concurrent hold attempts on same window → exactly one wins",  "status": { "passes": false, "notes": "" } },
+    { "id": "HOLD-003", "area": "holds",         "name": "Expired holds auto-released (cron or query-time)",            "status": { "passes": false, "notes": "" } },
+
+    { "id": "PAY-001",  "area": "payment",       "name": "Stripe intent/checkout created with server-computed amount",  "status": { "passes": false, "notes": "" } },
+    { "id": "PAY-002",  "area": "payment",       "name": "Webhook signature verified",                                  "status": { "passes": false, "notes": "" } },
+    { "id": "PAY-003",  "area": "payment",       "name": "Webhook confirms booking + finalizes calendar event",         "status": { "passes": false, "notes": "" } },
+    { "id": "PAY-004",  "area": "payment",       "name": "Failed/abandoned payment releases hold",                      "status": { "passes": false, "notes": "" } },
+    { "id": "PAY-005",  "area": "payment",       "name": "Idempotency: replayed webhooks don't double-charge or dup",   "status": { "passes": false, "notes": "" } },
+    { "id": "PAY-006",  "area": "payment",       "name": "Refund flow (admin-initiated) returns money via Stripe",      "status": { "passes": false, "notes": "" } },
+
+    { "id": "CAL-001",  "area": "calendar",      "name": "Confirmed booking creates GCal event with correct details",   "status": { "passes": false, "notes": "" } },
+    { "id": "CAL-002",  "area": "calendar",      "name": "Cancellation removes/marks GCal event",                       "status": { "passes": false, "notes": "" } },
+    { "id": "CAL-003",  "area": "calendar",      "name": "Admin edit updates GCal event",                               "status": { "passes": false, "notes": "" } },
+    { "id": "CAL-004",  "area": "calendar",      "name": "GCal sync failure surfaces to admin (alert + retry queue)",   "status": { "passes": false, "notes": "" } },
+
+    { "id": "APPR-001", "area": "approval",      "name": "Multi-day bookings enter pending_approval",                   "status": { "passes": false, "notes": "" } },
+    { "id": "APPR-002", "area": "approval",      "name": "Admin approve/deny notifies customer (email + state change)", "status": { "passes": false, "notes": "" } },
+    { "id": "APPR-003", "area": "approval",      "name": "Hold extends/expires appropriately during approval window",   "status": { "passes": false, "notes": "" } },
+
+    { "id": "POL-001",  "area": "policy",        "name": "Policy acceptance required and recorded before payment",      "status": { "passes": false, "notes": "" } },
+    { "id": "POL-002",  "area": "policy",        "name": "Intake fields collected per appointment type",                "status": { "passes": false, "notes": "" } },
+
+    { "id": "NOTIF-001","area": "notifications", "name": "Customer confirmation email on confirm",                      "status": { "passes": false, "notes": "" } },
+    { "id": "NOTIF-002","area": "notifications", "name": "Admin notification email on confirm",                         "status": { "passes": false, "notes": "" } },
+    { "id": "NOTIF-003","area": "notifications", "name": "Reminder email ~24h before booking",                          "status": { "passes": false, "notes": "" } },
+    { "id": "NOTIF-004","area": "notifications", "name": "Cancellation email to customer + admin",                      "status": { "passes": false, "notes": "" } },
+
+    { "id": "ADMIN-001","area": "admin",         "name": "Admin route gated by role; non-admin → 404/302",              "status": { "passes": false, "notes": "" } },
+    { "id": "ADMIN-002","area": "admin",         "name": "Bookings table with filters (status, date, customer)",        "status": { "passes": false, "notes": "" } },
+    { "id": "ADMIN-003","area": "admin",         "name": "Manual block create/edit/delete",                             "status": { "passes": false, "notes": "" } },
+    { "id": "ADMIN-004","area": "admin",         "name": "Add-on + pricing management UI",                              "status": { "passes": false, "notes": "" } },
+    { "id": "ADMIN-005","area": "admin",         "name": "Coupon management UI",                                        "status": { "passes": false, "notes": "" } },
+    { "id": "ADMIN-006","area": "admin",         "name": "Approve/deny pending requests",                               "status": { "passes": false, "notes": "" } },
+    { "id": "ADMIN-007","area": "admin",         "name": "Audit log for admin actions",                                 "status": { "passes": false, "notes": "" } },
+
+    { "id": "SEC-001",  "area": "security",      "name": "RLS: customers see only their own bookings",                  "status": { "passes": false, "notes": "" } },
+    { "id": "SEC-002",  "area": "security",      "name": "Service-role key never in client bundle",                     "status": { "passes": false, "notes": "" } },
+    { "id": "SEC-003",  "area": "security",      "name": "Webhook endpoint rejects unsigned/invalid requests",          "status": { "passes": false, "notes": "" } },
+    { "id": "SEC-004",  "area": "security",      "name": "PII redacted from logs",                                      "status": { "passes": false, "notes": "" } },
+    { "id": "SEC-005",  "area": "security",      "name": "Pricing endpoints rate-limited / bot-gated",                  "status": { "passes": false, "notes": "" } },
+
+    { "id": "A11Y-001", "area": "accessibility", "name": "Booking flow keyboard-navigable end to end",                  "status": { "passes": false, "notes": "" } },
+    { "id": "A11Y-002", "area": "accessibility", "name": "Form errors announced via aria-live",                         "status": { "passes": false, "notes": "" } },
+    { "id": "A11Y-003", "area": "accessibility", "name": "Calendar grid has accessible labels + roving tabindex",       "status": { "passes": false, "notes": "" } },
+
+    { "id": "PARA-001", "area": "parallel-test", "name": "≥5 real end-to-end bookings via native flow while Acuity live","status": { "passes": false, "notes": "" } },
+    { "id": "PARA-002", "area": "parallel-test", "name": "Zero double-bookings observed in parallel-test window",       "status": { "passes": false, "notes": "" } },
+    { "id": "PARA-003", "area": "parallel-test", "name": "All confirm/cancel emails delivered in parallel-test window", "status": { "passes": false, "notes": "" } }
+  ]
+}
