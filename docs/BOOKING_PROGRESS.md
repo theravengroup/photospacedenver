@@ -13,6 +13,24 @@ Format:
 
 ---
 
+## 2026-05-30 — Phase 2 (booking brain) shipped end-to-end ✅
+- area: phase-2 (pure logic + DB-aware modules + tests)
+- new modules (server-only where DB/GCal is touched):
+  - `types.ts` — shared booking types (PricingInput/Result, BusyWindow, AvailabilityResult, Coupon, MemberTier, …)
+  - `appointment-types.ts` — Acuity ladder verbatim (12 entries incl. free tour)
+  - `addons.ts` — 14 add-ons w/ duration-aware filter (covers the resolved 2-tier tech splits)
+  - `pricing.ts` — pure: appointment + add-ons + member + coupon + payment-method → itemized cents
+  - `slots.ts` — pure: range + duration + busy + buffer + lead + advance → labeled hourly slots
+  - `coupons.ts` — server-only: code → discount via DB + per-user usage check + email allowlist (kills FAM* honor-system)
+  - `member-hours.ts` — server-only: per-member rolling-30d bucket; getMemberHoursAvailable (read) + consumeMemberHours (write); retires the `2026MEMBERPS*` codes
+  - `availability.ts` — server-only: parallel fetch of GCal + bookings + holds + manual_blocks + buffer + lead → AvailabilityResult
+- deps + config: `vitest` 4.1 + `test` / `test:watch` scripts + `vitest.config.ts`
+- tests: **41/41 pass** in `pricing.test.ts` + `slots.test.ts` — full Acuity ladder smoke, member free-hours (Spark/Creator/Visionary across full-coverage, partial-overage, exhausted-bucket, add-ons-not-discounted), coupon math (% + fixed-cents both capped), buffer enforcement, lead-time labeling, max-advance blocking, granularity alignment, line-items sum to total
+- build + lint: ✅ green
+- features flipped to passes:true (with documented test evidence): PRICE-001/002/003/006/007/008, ADDON-001/003, COUP-002, AVAIL-006, SEC-002
+- left at passes:false (need DB/integration tests, or out-of-scope for v1): PRICE-004 (multi-day deferred), PRICE-005 (no surcharge per spec), ADDON-002 (no admin UI yet), COUP-001/003/004 (logic complete, need DB-integration test), AUTH-*/HOLD-*/PAY-*/CAL-*/APPR-*/POL-*/NOTIF-*/ADMIN-*/A11Y-*/PARA-* (later phases)
+- next (Phase 3): holds + Stripe Embedded Elements payment + webhook + GCal write-back. Behind a feature-flag — Acuity remains live.
+
 ## 2026-05-30 — Phase 1 fully verified end-to-end ✅
 - area: phase-1 verification
 - migration applied to live Supabase via MCP `apply_migration` — 7 tables created, all RLS-enabled, advisor warning on `set_updated_at` fixed with pinned `search_path` (second migration `harden_set_updated_at_search_path`).

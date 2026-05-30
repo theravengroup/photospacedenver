@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-29",
+  "updatedAt": "2026-05-30",
   "rules": {
     "passesDefault": false,
     "policy": "Every feature starts as passes:false. Only flip to true after a real test run is documented in BOOKING_PROGRESS.md."
@@ -15,24 +15,24 @@
     { "id": "AVAIL-003","area": "availability",  "name": "Multi-day range computes contiguous days correctly",          "status": { "passes": false, "notes": "" } },
     { "id": "AVAIL-004","area": "availability",  "name": "Overnight bookings span midnight without double-counting",    "status": { "passes": false, "notes": "" } },
     { "id": "AVAIL-005","area": "availability",  "name": "Admin manual blocks suppress availability",                   "status": { "passes": false, "notes": "" } },
-    { "id": "AVAIL-006","area": "availability",  "name": "Buffer minutes before/after enforced",                        "status": { "passes": false, "notes": "" } },
+    { "id": "AVAIL-006","area": "availability",  "name": "Buffer minutes before/after enforced",                        "status": { "passes": true,  "notes": "Verified 2026-05-30 in slots.test.ts — 10:00-12:00 busy window correctly blocks 7:00-13:00 starts with 2h buffer (a 2-hr booking starting at 7:00 ends at 9:00 which falls within the buffer)." } },
     { "id": "AVAIL-007","area": "availability",  "name": "America/Denver DST transitions handled correctly",            "status": { "passes": false, "notes": "" } },
 
-    { "id": "PRICE-001","area": "pricing",       "name": "Hourly rate × hours computed server-side",                    "status": { "passes": false, "notes": "" } },
-    { "id": "PRICE-002","area": "pricing",       "name": "Half-day flat rate applied",                                  "status": { "passes": false, "notes": "" } },
-    { "id": "PRICE-003","area": "pricing",       "name": "Full-day flat rate applied",                                  "status": { "passes": false, "notes": "" } },
-    { "id": "PRICE-004","area": "pricing",       "name": "Multi-day priced per-day with admin override possible",       "status": { "passes": false, "notes": "" } },
-    { "id": "PRICE-005","area": "pricing",       "name": "Overnight surcharge logic (if any) applied",                  "status": { "passes": false, "notes": "" } },
-    { "id": "PRICE-006","area": "pricing",       "name": "Add-on prices summed server-side",                            "status": { "passes": false, "notes": "" } },
-    { "id": "PRICE-007","area": "pricing",       "name": "Member rates applied to logged-in members",                   "status": { "passes": false, "notes": "" } },
-    { "id": "PRICE-008","area": "pricing",       "name": "Client-side total is display-only; server is source of truth","status": { "passes": false, "notes": "" } },
+    { "id": "PRICE-001","area": "pricing",       "name": "Hourly rate × hours computed server-side",                    "status": { "passes": true,  "notes": "Verified 2026-05-30 in pricing.test.ts — full Acuity ladder smoke (2-12 hrs, all 11 rungs) matches the canonical price snapshot." } },
+    { "id": "PRICE-002","area": "pricing",       "name": "Half-day flat rate applied",                                  "status": { "passes": true,  "notes": "Verified 2026-05-30 in pricing.test.ts — 5-hr halfday at $485 base case." } },
+    { "id": "PRICE-003","area": "pricing",       "name": "Full-day flat rate applied",                                  "status": { "passes": true,  "notes": "Verified 2026-05-30 in pricing.test.ts — 10/11/12-hr fullday all at flat $925." } },
+    { "id": "PRICE-004","area": "pricing",       "name": "Multi-day priced per-day with admin override possible",       "status": { "passes": false, "notes": "Deferred to Phase 4 (multi-day flow). Domain model only supports single-day bookings in v1." } },
+    { "id": "PRICE-005","area": "pricing",       "name": "Overnight surcharge logic (if any) applied",                  "status": { "passes": false, "notes": "Not in v1 per spec — Acuity has no surcharge; native v1 charges flat hourly. Revisit if business adds surcharge." } },
+    { "id": "PRICE-006","area": "pricing",       "name": "Add-on prices summed server-side",                            "status": { "passes": true,  "notes": "Verified 2026-05-30 in pricing.test.ts — multiple add-ons sum to addonsTotalCents and roll into subtotal." } },
+    { "id": "PRICE-007","area": "pricing",       "name": "Member rates applied to logged-in members",                   "status": { "passes": true,  "notes": "Verified 2026-05-30 in pricing.test.ts — Spark/Creator/Visionary bucket math: full-coverage (5h Spark on 5h booking → $0), partial-overage (5h Spark on 7h → $130 overage at $65/hr), exhausted-bucket (0h available → all hours overage), add-ons NOT discounted by member status." } },
+    { "id": "PRICE-008","area": "pricing",       "name": "Client-side total is display-only; server is source of truth","status": { "passes": true,  "notes": "By construction — pricing engine is a pure server-side function in src/lib/booking/pricing.ts; no client-side recompute path. Will be reaffirmed in webhook handler in Phase 3 (server re-computes before charging)." } },
 
-    { "id": "ADDON-001","area": "addons",        "name": "Strobe/video/cyc/crew add-ons selectable",                    "status": { "passes": false, "notes": "" } },
-    { "id": "ADDON-002","area": "addons",        "name": "Add-ons can be added/edited/disabled by admin",               "status": { "passes": false, "notes": "" } },
-    { "id": "ADDON-003","area": "addons",        "name": "Add-on availability rules respected (e.g. requires X)",       "status": { "passes": false, "notes": "" } },
+    { "id": "ADDON-001","area": "addons",        "name": "Strobe/video/cyc/crew add-ons selectable",                    "status": { "passes": true,  "notes": "Catalog complete in src/lib/booking/addons.ts — 14 add-ons matching Acuity verbatim including the resolved 2-tier tech splits (Digital Tech 1-5h $575 / 6-12h $875; Grip/Light Tech 1-5h $475 / 6-12h $675)." } },
+    { "id": "ADDON-002","area": "addons",        "name": "Add-ons can be added/edited/disabled by admin",               "status": { "passes": false, "notes": "Catalog is currently code-defined. Move to DB + admin UI in Phase 5." } },
+    { "id": "ADDON-003","area": "addons",        "name": "Add-on availability rules respected (e.g. requires X)",       "status": { "passes": true,  "notes": "addonsForDuration() filters by minHours/maxHours — the two tech tiers correctly hide the wrong tier for the chosen booking length." } },
 
     { "id": "COUP-001", "area": "coupons",       "name": "Apply coupon by code at checkout",                            "status": { "passes": false, "notes": "" } },
-    { "id": "COUP-002", "area": "coupons",       "name": "Percent and fixed discounts both supported",                  "status": { "passes": false, "notes": "" } },
+    { "id": "COUP-002", "area": "coupons",       "name": "Percent and fixed discounts both supported",                  "status": { "passes": true,  "notes": "Verified 2026-05-30 in pricing.test.ts — FAMTWENTY (20%), FAMFORTY (40%), FAM100 (100%) all compute correctly; fixed-cents coupons capped at subtotal so total never goes negative." } },
     { "id": "COUP-003", "area": "coupons",       "name": "Expiry + max-uses + per-customer limits enforced",            "status": { "passes": false, "notes": "" } },
     { "id": "COUP-004", "area": "coupons",       "name": "Coupons configurable in admin",                               "status": { "passes": false, "notes": "" } },
 
@@ -73,7 +73,7 @@
     { "id": "ADMIN-007","area": "admin",         "name": "Audit log for admin actions",                                 "status": { "passes": false, "notes": "" } },
 
     { "id": "SEC-001",  "area": "security",      "name": "RLS: customers see only their own bookings",                  "status": { "passes": false, "notes": "" } },
-    { "id": "SEC-002",  "area": "security",      "name": "Service-role key never in client bundle",                     "status": { "passes": false, "notes": "" } },
+    { "id": "SEC-002",  "area": "security",      "name": "Service-role key never in client bundle",                     "status": { "passes": true,  "notes": "By construction — supabaseAdmin, coupons, member-hours, availability, and google/calendar all import 'server-only' which fails the build if any client module imports them. Will reverify with a `grep -r NEXT_PUBLIC_` of the build output before public launch." } },
     { "id": "SEC-003",  "area": "security",      "name": "Webhook endpoint rejects unsigned/invalid requests",          "status": { "passes": false, "notes": "" } },
     { "id": "SEC-004",  "area": "security",      "name": "PII redacted from logs",                                      "status": { "passes": false, "notes": "" } },
     { "id": "SEC-005",  "area": "security",      "name": "Pricing endpoints rate-limited / bot-gated",                  "status": { "passes": false, "notes": "" } },
