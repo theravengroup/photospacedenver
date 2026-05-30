@@ -175,7 +175,6 @@ export const FEES = {
   overtimeHourly: 65,
   cycRepaint: 175, // white repaint (owner-updated 2026-05-29; was $150)
   cycRepaintCustom: 600, // custom color — client provides paint 48h ahead
-  depositPctOver3k: 50,
   minimumRental: 100,
   multiDay: {
     studio: "4× daily rate", // TODO(confirm)

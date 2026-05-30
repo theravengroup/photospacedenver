@@ -45,7 +45,7 @@ export default function RequestEstimatePage() {
                 <Link href="/insurance" className="text-tungsten hover:underline">Certificate of Insurance</Link>{" "}
                 or a <Link href="/no-insurance" className="text-tungsten hover:underline">card hold</Link> for replacement value).
               </li>
-              <li><span className="text-tungsten">3.</span> Approve the estimate and we schedule pickup or Denver-metro delivery.</li>
+              <li><span className="text-tungsten">3.</span> Approve the estimate and we schedule pickup or delivery within 500 miles of Denver.</li>
             </ol>
             <p className="mt-6 text-xs text-muted">
               Just need the studio for a day? You can book that directly on the{" "}

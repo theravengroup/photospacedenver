@@ -46,7 +46,7 @@ export const GEAR_CATEGORIES: GearCategory[] = [
     blurb:
       "Medium format through mirrorless and cinema — bodies and lenses for the work. Body-only rentals include a battery and charger; lenses include a UV filter.",
     intro:
-      "Medium format through mirrorless and cinema — pro bodies and the glass to match, ready to shoot. Body-only rentals include a battery and charger; lenses ship with a UV filter. Pick up at the Kalamath St. shop or have it delivered across the Denver metro.",
+      "Medium format through mirrorless and cinema — pro bodies and the glass to match, ready to shoot. Body-only rentals include a battery and charger; lenses ship with a UV filter. Pick up at the Kalamath St. shop or have it delivered anywhere within 500 miles of Denver.",
     seo: {
       title: "Camera & Lens Rental in Denver — Phase One, Canon, Nikon",
       description:
@@ -170,7 +170,7 @@ export const GEAR_CATEGORIES: GearCategory[] = [
     seo: {
       title: "Strobe & Flash Lighting Rental in Denver — Profoto",
       description:
-        "Rent Profoto strobes in Denver — B10X Plus, B1X, D2, Pro-11 (2400ws), Pro-8a, and A10 speedlights, plus PocketWizard remotes. Pickup or Denver-metro delivery.",
+        "Rent Profoto strobes in Denver — B10X Plus, B1X, D2, Pro-11 (2400ws), Pro-8a, and A10 speedlights, plus PocketWizard remotes. Pickup or delivery within 500 miles of Denver.",
       keywords: ["strobe rental Denver", "Profoto rental Denver", "flash rental Denver", "studio lighting rental Denver"],
     },
     brands: ["Profoto", "PocketWizard"],
@@ -249,7 +249,7 @@ export const GEAR_CATEGORIES: GearCategory[] = [
     seo: {
       title: "Continuous & LED Lighting Rental in Denver — Arri, Aputure",
       description:
-        "Rent continuous LED lighting in Denver — Arri SkyPanel, Nanlux Dyno/Evoke, Creamsource, Astera tubes, Kino Flo, LiteMat, and Aputure. Pickup or Denver-metro delivery.",
+        "Rent continuous LED lighting in Denver — Arri SkyPanel, Nanlux Dyno/Evoke, Creamsource, Astera tubes, Kino Flo, LiteMat, and Aputure. Pickup or delivery within 500 miles of Denver.",
       keywords: ["continuous lighting rental Denver", "LED lighting rental Denver", "Arri SkyPanel rental Denver", "video lighting rental Denver"],
     },
     brands: ["Arri", "Nanlux", "Aputure", "Kino Flo", "Astera", "Creamsource", "LiteGear", "Quasar", "Litepanels", "Fiilex"],

@@ -11,7 +11,7 @@ import { FEES, usd } from "@/lib/content/pricing-data";
 export const metadata = pageMeta({
   title: "Rental & Studio Policies — photospace Denver",
   description:
-    "photospace Denver policies: insurance and liability, deposits and payment, cancellation and rescheduling, and studio-use terms.",
+    "photospace Denver policies: insurance and liability, payment terms, cancellation and rescheduling, and studio-use terms.",
   path: "/policies",
   keywords: ["photospace Denver policies", "studio rental terms Denver"],
 });
@@ -28,14 +28,14 @@ const POLICIES: { id: string; title: string; paras: string[] }[] = [
     title: "Booking, estimates & reservations",
     paras: [
       "Studio-only sessions (and the studio plus a preconfigured lighting kit) can be booked directly online. Gear and custom productions go through a written estimate.",
-      `Nothing is reserved or guaranteed until you have (1) a rental account on file, (2) an approved estimate, and (3) a paid deposit or invoice. Estimates expire after five days. Minimum rental is ${usd(FEES.minimumRental)}.`,
+      `Nothing is reserved or guaranteed until you have (1) a rental account on file, (2) an approved estimate, and (3) a paid invoice. Estimates expire after five days. Minimum rental is ${usd(FEES.minimumRental)}.`,
     ],
   },
   {
     id: "payment",
-    title: "Payment & deposits",
+    title: "Payment",
     paras: [
-      `A ${FEES.depositPctOver3k}% deposit is required for rentals over $3,000; smaller rentals are paid in full to confirm.`,
+      "Rentals are paid in full to confirm — we don't collect deposits. The full rental amount is charged when your booking or estimate is accepted.",
       `A card processing fee of ${FEES.cardFeePct}% applies; ACH payments incur a ${FEES.achFeePct}% fee.`,
     ],
   },
@@ -67,7 +67,7 @@ const POLICIES: { id: string; title: string; paras: string[] }[] = [
     title: "Studio use",
     paras: [
       `The cyclorama is provided on an as-is basis; a repaint is ${usd(FEES.cycRepaint)} plus paint at cost if a shoot marks it up. Large film/video productions or training may incur a power charge.`,
-      "Please return the space and grip to the condition you found them. Off-hours access and Denver-metro delivery are available for an additional fee.",
+      "Please return the space and grip to the condition you found them. Off-hours access and delivery within 500 miles of Denver are available for an additional fee.",
     ],
   },
   {

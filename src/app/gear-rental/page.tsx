@@ -17,7 +17,7 @@ import { faqsByTag } from "@/lib/content/faqs";
 export const metadata = pageMeta({
   title: "Camera, Lighting & Grip Rental in Denver — photospace",
   description:
-    "Denver gear rental: Profoto, Phase One, Canon, Nikon, Blackmagic, Arri, and more — cameras, lighting, modifiers, grip, accessories, and production supplies. Pickup or Denver-metro delivery.",
+    "Denver gear rental: Profoto, Phase One, Canon, Nikon, Blackmagic, Arri, and more — cameras, lighting, modifiers, grip, accessories, and production supplies. Pickup or delivery within 500 miles of Denver.",
   path: "/gear-rental",
   keywords: ["gear rental Denver", "camera rental Denver", "lighting rental Denver", "grip rental Denver", "production equipment rental Denver"],
 });
@@ -65,7 +65,7 @@ export default function GearRentalPage() {
         image="/images/gear/gear.jpg"
         eyebrow="Gear Rental"
         title="Camera, lighting & grip rental in Denver."
-        lede="A full rental house — medium format through cinema, Profoto strobes, Arri and Nanlux continuous, modifiers, grip, and production supplies. Picked up at our shop or delivered across the Denver metro."
+        lede="A full rental house — medium format through cinema, Profoto strobes, Arri and Nanlux continuous, modifiers, grip, and production supplies. Picked up at our shop or delivered anywhere within 500 miles of Denver."
         breadcrumbs={breadcrumbs}
       >
         <EstimateCTA page="gear-rental" location="hero" />
@@ -164,7 +164,7 @@ export default function GearRentalPage() {
           serviceSchema({
             name: "Photo & video gear rental",
             description:
-              "Camera, lighting, grip, and production-supply rental in Denver — pickup or Denver-metro delivery, with insurance options.",
+              "Camera, lighting, grip, and production-supply rental in Denver — pickup or delivery within 500 miles of Denver, with insurance options.",
             path: "/gear-rental",
             serviceType: "Equipment rental",
           }),

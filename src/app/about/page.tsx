@@ -29,7 +29,7 @@ const WHY = [
   { t: "Operator-run since 2008", b: "Run by working pros who've staged shoots in Denver for over fifteen years. You talk to the people who actually answer the call." },
   { t: "Sole source for some of what we carry", b: "Medium-format Phase One and Hasselblad, Profoto Pro heads, and select grip you won't find elsewhere on the Front Range." },
   { t: "Current and clean", b: "Bodies, computing, and grip are updated continuously. Gear leaves the shop checked, charged, packed, and inventoried." },
-  { t: "Local pickup and delivery", b: "No shipping waits. Pick up at the Kalamath St. shop or schedule Denver-metro delivery. Out-of-town crews — we stage on arrival." },
+  { t: "Local pickup and delivery", b: "No shipping waits. Pick up at the Kalamath St. shop or schedule delivery within 500 miles of Denver. Out-of-town crews — we stage on arrival." },
   { t: "Last-minute capability", b: "Productions move; we move with them. Add-ons, swaps, and after-hours by arrangement — usually a fast yes." },
   { t: "Studio and gear under one roof", b: "A fully equipped commercial studio plus the gear inside it, from a single point of contact. A real, daily option." },
 ];

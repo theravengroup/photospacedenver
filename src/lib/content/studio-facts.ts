@@ -89,7 +89,7 @@ export function buildStudioFacts() {
     policies: {
       insurance: "Certificate of insurance on file, or a credit-card authorization for full replacement value, required before gear pickup.",
       cancellation: "Full credit if cancelled/rescheduled ≥72 hours before a booking; inside 72 hours non-refundable but rebookable for 60 days.",
-      deposit: `${FEES.depositPctOver3k}% deposit for rentals over $3,000.`,
+      deposit: "None — rentals are paid in full at booking.",
       cardFeePercent: FEES.cardFeePct,
     },
     idealUseCases: STUDIO.useCases.map((u) => u.title),
