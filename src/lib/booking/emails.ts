@@ -214,6 +214,94 @@ export async function sendBookingCancellation(input: {
   });
 }
 
+/**
+ * Reschedule email — customer + admin. Shows old → new and CTAs to the
+ * manage page so they can change again if they need to.
+ */
+export async function sendBookingReschedule(input: {
+  toEmails: string[];
+  appointmentSlug: string;
+  appointmentLabel: string;
+  customerFirstName: string;
+  bookingId: string;
+  oldStart: Date;
+  oldEnd: Date;
+  newStart: Date;
+  newEnd: Date;
+  totalCents: number;
+}): Promise<void> {
+  const oldDate = DATE_FMT.format(input.oldStart);
+  const oldTime = `${TIME_FMT.format(input.oldStart)} – ${TIME_FMT.format(input.oldEnd)}`;
+  const newDate = DATE_FMT.format(input.newStart);
+  const newTime = `${TIME_FMT.format(input.newStart)} – ${TIME_FMT.format(input.newEnd)}`;
+  const manageUrl = `${CANONICAL_DOMAIN}/booking/manage/${input.bookingId}`;
+  const mapsUrl = SITE.address.mapsHref;
+
+  // ─── Customer email ──────────────────────────────────────────────
+  const customerSubject = `Your booking has moved — now ${newDate}`;
+  const customerText = [
+    `Hi ${input.customerFirstName},`,
+    ``,
+    `Your studio booking has been rescheduled.`,
+    ``,
+    `Was:  ${oldDate} · ${oldTime}`,
+    `Now:  ${newDate} · ${newTime}`,
+    ``,
+    `What:  ${input.appointmentLabel}`,
+    `Where: ${whereLine()}`,
+    `       ${mapsUrl}`,
+    ``,
+    `Manage your booking: ${manageUrl}`,
+    `Questions? ${SITE.contact.email} · ${SITE.contact.phone}`,
+    ``,
+    `See you at the studio.`,
+    `— photospace Denver`,
+  ].join("\n");
+
+  const customerHtml = renderBrandedEmail({
+    preheader: `${input.appointmentLabel} — moved to ${newDate}`,
+    eyebrow: "Rescheduled",
+    heading: `Your booking has moved, ${input.customerFirstName}.`,
+    intro: `We've updated the calendar. Here's the change — same booking, new time.`,
+    details: [
+      { label: "Was", value: `${escapeText(oldDate)}<br><span style="color:#b7afa2;font-size:14px;">${escapeText(oldTime)}</span>` },
+      { label: "Now", value: `<strong style="color:#c8842b;">${escapeText(newDate)}</strong><br><span style="color:#e8e3d8;">${escapeText(newTime)}</span>` },
+      { label: "Session", value: escapeText(input.appointmentLabel) },
+      {
+        label: "Where",
+        value: `${escapeText(whereLine())}<br><a href="${escapeText(mapsUrl)}" style="color:#c8842b;text-decoration:none;font-size:13px;">Get directions →</a>`,
+      },
+      {
+        label: "Confirmation #",
+        value: `<code style="font-family:ui-monospace,'SF Mono','Cascadia Mono',Menlo,monospace;font-size:12px;">${escapeText(input.bookingId)}</code>`,
+      },
+    ],
+    cta: { label: "Manage your booking", href: manageUrl },
+    footnote: `Need to change or cancel again? Use the button above, or just reply to this email.`,
+  });
+
+  await sendEmail({
+    to: input.toEmails,
+    subject: customerSubject,
+    text: customerText,
+    html: customerHtml,
+  });
+
+  // ─── Admin notify ────────────────────────────────────────────────
+  await sendEmail({
+    subject: `[BOOKING rescheduled] ${input.appointmentLabel}`,
+    text: [
+      `Booking rescheduled by customer.`,
+      ``,
+      `Customer: ${input.customerFirstName}`,
+      `Recipients: ${input.toEmails.join(", ")}`,
+      `Was:  ${oldDate} · ${oldTime}`,
+      `Now:  ${newDate} · ${newTime}`,
+      `Booking ID: ${input.bookingId}`,
+    ].join("\n"),
+  });
+}
+
 /** Local html-escape for values we inject into the branded template. */
 function escapeText(s: string): string {
   return s

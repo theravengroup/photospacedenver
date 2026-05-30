@@ -34,23 +34,31 @@ export const DEFAULT_MAX_ADVANCE_DAYS = 90;
 export async function fetchBusyWindows(input: {
   rangeStart: Date;
   rangeEnd: Date;
+  /** Exclude this booking id from the conflict set. Used by the reschedule
+   *  flow so a booking doesn't see itself as its own conflict. */
+  excludeBookingId?: string;
 }): Promise<BusyWindow[]> {
   const sb = supabaseAdmin();
   const rangeStartIso = input.rangeStart.toISOString();
   const rangeEndIso = input.rangeEnd.toISOString();
   const nowIso = new Date().toISOString();
 
+  let bookingsQuery = sb
+    .from("bookings")
+    .select("start_at, end_at")
+    .in("status", ["pending_payment", "pending_approval", "confirmed"])
+    .lt("start_at", rangeEndIso)
+    .gt("end_at", rangeStartIso);
+  if (input.excludeBookingId) {
+    bookingsQuery = bookingsQuery.neq("id", input.excludeBookingId);
+  }
+
   const [gcalBusy, bookingsRes, holdsRes, blocksRes] = await Promise.all([
     getFreeBusy(input.rangeStart, input.rangeEnd).catch((err) => {
       console.error("[availability] gcal fetch failed:", err);
       return [] as { start: Date; end: Date }[];
     }),
-    sb
-      .from("bookings")
-      .select("start_at, end_at")
-      .in("status", ["pending_payment", "pending_approval", "confirmed"])
-      .lt("start_at", rangeEndIso)
-      .gt("end_at", rangeStartIso),
+    bookingsQuery,
     sb
       .from("holds")
       .select("start_at, end_at")
@@ -99,6 +107,9 @@ export async function checkAvailability(input: {
   minLeadHours?: number;
   maxAdvanceDays?: number;
   now?: Date;
+  /** Reschedule: exclude this booking id from the conflict check so the
+   *  booking-being-moved isn't its own conflict. */
+  excludeBookingId?: string;
 }): Promise<AvailabilityResult> {
   const bufferHours = input.bufferHours ?? DEFAULT_BUFFER_HOURS;
   const minLeadHours = input.minLeadHours ?? DEFAULT_MIN_LEAD_HOURS;
@@ -127,7 +138,11 @@ export async function checkAvailability(input: {
   // Expand window by buffer on both sides for the conflict fetch
   const bufferedStart = new Date(input.start.getTime() - bufferHours * HOUR_MS);
   const bufferedEnd = new Date(input.end.getTime() + bufferHours * HOUR_MS);
-  const busy = await fetchBusyWindows({ rangeStart: bufferedStart, rangeEnd: bufferedEnd });
+  const busy = await fetchBusyWindows({
+    rangeStart: bufferedStart,
+    rangeEnd: bufferedEnd,
+    excludeBookingId: input.excludeBookingId,
+  });
 
   const conflicts: BusyWindow[] = [];
   for (const b of busy) {

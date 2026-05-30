@@ -30,6 +30,9 @@ const TZ = "America/Denver";
 type SlotsBody = {
   dateISO?: string;
   hours?: number;
+  /** Reschedule: exclude this booking from the busy fetch so the booking-
+   *  being-rescheduled doesn't show itself as its own conflict. */
+  excludeBookingId?: string;
 };
 
 export async function POST(req: Request) {
@@ -61,6 +64,7 @@ export async function POST(req: Request) {
   const busy = await fetchBusyWindows({
     rangeStart: new Date(dayStart.getTime() - padMs),
     rangeEnd: new Date(dayEnd.getTime() + padMs),
+    excludeBookingId: body.excludeBookingId,
   });
 
   const now = new Date();

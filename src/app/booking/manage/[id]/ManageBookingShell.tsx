@@ -7,7 +7,7 @@ import {
   AlertCircle,
   CalendarX,
   ArrowRight,
-  MessageSquare,
+  CalendarClock,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { SITE } from "@/lib/content/site-config";
@@ -213,6 +213,13 @@ export function ManageBookingShell({
 
           {!confirming && (
             <div className="flex flex-wrap gap-3 pt-2">
+              <Link
+                href={`/booking/manage/${bookingId}/reschedule`}
+                className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-base font-medium bg-tungsten text-ink hover:bg-tungsten-soft transition-colors"
+              >
+                <CalendarClock className="w-4 h-4" />
+                Reschedule
+              </Link>
               <button
                 type="button"
                 onClick={() => setConfirming(true)}
@@ -221,13 +228,6 @@ export function ManageBookingShell({
                 <CalendarX className="w-4 h-4" />
                 Cancel this booking
               </button>
-              <a
-                href={`mailto:${SITE.contact.email}?subject=Reschedule booking ${bookingId}&body=Hi — I'd like to reschedule my booking (${bookingId}) for ${DATE_FMT.format(start)} at ${TIME_FMT.format(start)}. Could we move it to a new time? Thanks.`}
-                className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-base font-medium border border-hairline text-bone hover:border-tungsten hover:text-tungsten transition-colors"
-              >
-                <MessageSquare className="w-4 h-4" />
-                Reschedule (email us)
-              </a>
             </div>
           )}
 
