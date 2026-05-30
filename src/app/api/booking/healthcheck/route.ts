@@ -10,10 +10,10 @@
  *
  * Returns JSON describing each subsystem's reachability. 200 only if both pass.
  *
- *   curl 'https://www.photospacedenver.com/api/_booking/healthcheck?token=…'
+ *   curl 'https://www.photospacedenver.com/api/booking/healthcheck?token=…'
  *
- * Not for end users — the `/_booking/` path segment makes it clear this is
- * internal. Remove once Phase 1 is fully verified.
+ * Not for end users — the token gate keeps it private. Remove once Phase 1
+ * is fully verified end-to-end.
  */
 
 import { NextResponse } from "next/server";
