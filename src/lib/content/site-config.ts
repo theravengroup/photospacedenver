@@ -107,7 +107,7 @@ export const BOOKING = {
 
 /** Canonical CTA labels — use these strings, don't invent new ones. */
 export const CTA_LABELS = {
-  checkAvailability: "Check Availability",
+  checkAvailability: "Check Studio Availability",
   bookStudio: "Book the Studio",
   bookTour: "Book a Free Tour",
   viewMemberships: "View Memberships",
