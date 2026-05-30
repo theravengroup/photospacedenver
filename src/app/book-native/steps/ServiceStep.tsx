@@ -178,8 +178,8 @@ export function ServiceStep({
         icon={CalendarDays}
         eyebrow="Multi-day rental"
         headline="2+ days"
-        sub="Weekend (Sat + Sun) counts as one billable day. Capped at 4 days."
-        trailingLabel="$925 / day · cap $3,700"
+        sub="Weekend (Sat + Sun) counts as one billable day."
+        trailingLabel="$925 / day"
         selected={multiDaySelected}
         onClick={pickMultiDay}
       />
