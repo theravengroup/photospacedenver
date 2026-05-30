@@ -230,7 +230,7 @@ export function BookingWizard() {
   const currentStep = state.step;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 pb-24 lg:pb-0">
+    <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_24rem] gap-8 pb-24 lg:pb-0">
       <div>
         <Stepper current={currentStep} visibleSteps={visibleSteps} onJumpBack={goto} />
 

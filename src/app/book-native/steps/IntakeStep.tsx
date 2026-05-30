@@ -105,7 +105,7 @@ export function IntakeStep({
         <button
           type="button"
           onClick={() => setCcOpen((v) => !v)}
-          className="text-sm text-muted hover:text-current underline underline-offset-4"
+          className="text-base text-muted hover:text-current underline underline-offset-4"
           aria-expanded={ccOpen}
         >
           {ccOpen ? "Hide" : "Cc someone else? (producer, client, assistant)"}
@@ -164,12 +164,12 @@ export function IntakeStep({
         )}
       </div>
 
-      <label className="flex items-start gap-3 text-sm cursor-pointer">
+      <label className="flex items-start gap-3 text-base cursor-pointer">
         <input
           type="checkbox"
           checked={state.policiesAccepted}
           onChange={(e) => onChange({ policiesAccepted: e.target.checked })}
-          className="mt-1 accent-tungsten"
+          className="mt-1 w-5 h-5 shrink-0 accent-tungsten cursor-pointer"
         />
         <span className="text-muted">
           I&apos;ve read and accept the{" "}

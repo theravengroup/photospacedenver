@@ -8,7 +8,6 @@
  * locks in {appointmentTypeSlug, hours} and exposes the Continue button.
  */
 
-import { useState } from "react";
 import { cn } from "@/lib/cn";
 import type { WizardState } from "../state";
 
@@ -90,16 +89,8 @@ export function ServiceStep({
   onChange: (patch: Partial<WizardState>) => void;
   onContinue: () => void;
 }) {
-  const [openTier, setOpenTier] = useState<Tier["id"] | null>(() => {
-    if (state.hours === 5) return "halfday";
-    if (state.hours && state.hours >= 6) return "fullday";
-    if (state.hours && state.hours <= 4) return "quick";
-    return null;
-  });
-
   function pickTour() {
     onChange({ appointmentTypeSlug: "tour", hours: 20 / 60 });
-    setOpenTier(null);
   }
   function pickOption(opt: HourOption) {
     onChange({
@@ -110,7 +101,6 @@ export function ServiceStep({
   function pickMultiDay() {
     // Hours irrelevant for multi-day — pricing comes from the date range
     onChange({ appointmentTypeSlug: "multi-day", hours: 0 });
-    setOpenTier(null);
   }
 
   const tourSelected = state.appointmentTypeSlug === "tour";
@@ -151,9 +141,8 @@ export function ServiceStep({
 
       <div className="text-xs uppercase tracking-wider text-muted pt-2">or rent the studio</div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 items-start">
         {TIERS.map((tier) => {
-          const isOpen = openTier === tier.id;
           const isPicked =
             state.appointmentTypeSlug != null &&
             state.hours != null &&
@@ -161,69 +150,84 @@ export function ServiceStep({
             tier.options.some((o) => o.hours === state.hours) &&
             !tourSelected &&
             !multiDaySelected;
+          const singleOption = tier.options.length === 1;
+
+          // Single-option tier (Half day) → entire card is a single click target.
+          if (singleOption) {
+            const opt = tier.options[0];
+            return (
+              <button
+                key={tier.id}
+                type="button"
+                onClick={() => pickOption(opt)}
+                className={cn(
+                  "text-left bg-panel border rounded-card p-5 transition-colors",
+                  "flex flex-col gap-2",
+                  isPicked
+                    ? "border-tungsten ring-1 ring-tungsten/40"
+                    : "border-hairline hover:border-tungsten/60",
+                )}
+                aria-pressed={isPicked}
+              >
+                <div className="text-xs uppercase tracking-wider text-muted">{tier.label}</div>
+                <div className="font-display text-2xl">{tier.blurb}</div>
+                <div className="text-base text-muted">{dollars(opt.priceCents)}</div>
+                <div className="text-sm text-tungsten mt-1">
+                  {isPicked ? "✓ Selected" : "Tap to pick"}
+                </div>
+              </button>
+            );
+          }
+
+          // Multi-option tier → header + chips, always visible (no expand step)
           return (
             <div
               key={tier.id}
               className={cn(
-                "bg-panel border rounded-card overflow-hidden transition-colors",
+                "bg-panel border rounded-card p-5 transition-colors flex flex-col gap-3",
                 isPicked
                   ? "border-tungsten ring-1 ring-tungsten/40"
                   : "border-hairline hover:border-tungsten/60",
               )}
             >
-              <button
-                type="button"
-                onClick={() => setOpenTier(isOpen ? null : tier.id)}
-                className="w-full text-left p-5 flex flex-col gap-2"
-                aria-expanded={isOpen}
-              >
+              <div className="flex flex-col gap-1">
                 <div className="text-xs uppercase tracking-wider text-muted">{tier.label}</div>
                 <div className="font-display text-2xl">{tier.blurb}</div>
-                <div className="text-sm text-muted">
-                  {tier.options.length === 1
-                    ? dollars(tier.options[0].priceCents)
-                    : `from ${dollars(tier.fromCents)}`}
-                </div>
-              </button>
-
-              {isOpen && (
-                <div className="border-t border-hairline p-4">
-                  <div className="text-xs text-muted mb-2">Exact length</div>
-                  <div className="flex flex-wrap gap-2">
-                    {tier.options.map((opt) => {
-                      const active = state.hours === opt.hours && !tourSelected;
-                      return (
-                        <button
-                          key={opt.label}
-                          type="button"
-                          onClick={() => pickOption(opt)}
-                          className={cn(
-                            "rounded-full px-3 py-1.5 text-sm border transition-colors",
-                            active
-                              ? "bg-tungsten text-ink border-tungsten"
-                              : "border-hairline hover:border-tungsten",
-                          )}
-                        >
-                          {opt.label}
-                          <span
-                            className={cn(
-                              "ml-1",
-                              active ? "text-ink/70" : "text-muted",
-                            )}
-                          >
-                            · {dollars(opt.priceCents)}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
+                <div className="text-base text-muted">from {dollars(tier.fromCents)}</div>
+              </div>
+              <div className="flex flex-wrap gap-2 pt-1">
+                {tier.options.map((opt) => {
+                  const active = state.hours === opt.hours && !tourSelected;
+                  return (
+                    <button
+                      key={opt.label}
+                      type="button"
+                      onClick={() => pickOption(opt)}
+                      className={cn(
+                        "rounded-full px-3.5 py-1.5 text-sm border transition-colors",
+                        active
+                          ? "bg-tungsten text-ink border-tungsten"
+                          : "border-hairline hover:border-tungsten",
+                      )}
+                    >
+                      {opt.label}
+                      <span
+                        className={cn(
+                          "ml-1",
+                          active ? "text-ink/70" : "text-muted",
+                        )}
+                      >
+                        · {dollars(opt.priceCents)}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           );
         })}
 
-        {/* 4th card — Multi-day. No sub-pick; tapping selects + advances on Continue. */}
+        {/* 4th card — Multi-day. Whole card is the pick target. */}
         <button
           type="button"
           onClick={pickMultiDay}
@@ -238,8 +242,11 @@ export function ServiceStep({
         >
           <div className="text-xs uppercase tracking-wider text-muted">Multi-day</div>
           <div className="font-display text-2xl">2+ days</div>
-          <div className="text-sm text-muted">
+          <div className="text-base text-muted">
             $925/day · cap at 4 days ($3,700)
+          </div>
+          <div className="text-sm text-tungsten mt-1">
+            {multiDaySelected ? "✓ Selected" : "Tap to pick"}
           </div>
           <div className="text-xs text-muted/80 mt-1">
             Weekend (Sat + Sun) counts as one day.
