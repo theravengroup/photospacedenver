@@ -197,7 +197,7 @@ p, li, dt, dd, blockquote, figcaption {
    Booking-flow glass card — tier cards, slot panels, addon items.
    Slightly richer than .bg-panel (more frosting, faint tungsten edge),
    with a subtle hover lift + brighter border. Use on any clickable card
-   in /book-native. Pair with `.glass-card--active` for the picked state.
+   in /book-studio. Pair with `.glass-card--active` for the picked state.
    ========================================================= */
 .glass-card {
   background-color: color-mix(in oklab, var(--panel) 70%, transparent);
@@ -275,7 +275,7 @@ p, li, dt, dd, blockquote, figcaption {
      - small/secondary text (in this scope): 0.9375rem (15px)
      - eyebrows / tiny ALL-CAPS chips: 0.8125rem (13px) — small is OK
        when there's strong letter-spacing
-   Wrap the whole /book-native page in this class to inherit the
+   Wrap the whole /book-studio page in this class to inherit the
    baseline; individual elements can still go larger.
    ========================================================= */
 .book-shell {
@@ -403,7 +403,7 @@ p, li, dt, dd, blockquote, figcaption {
 /* =========================================================
    Form-field surface — used by both `components/forms/Fields.tsx`
    (as a JS string constant via Tailwind utilities) and `.FIELD`
-   class form fields in newer code paths (e.g. /book-native).
+   class form fields in newer code paths (e.g. /book-studio).
    Mirrors the Tailwind string + adds a tinted focus background +
    stronger border so fields read clearly against dark glass.
    ========================================================= */

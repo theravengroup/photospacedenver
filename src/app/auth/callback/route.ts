@@ -2,9 +2,9 @@
  * GET /auth/callback
  *
  * Supabase Auth magic-link landing pad. The auth email contains a link of
- * the form `/auth/callback?code=...&next=/book-native`. We exchange the
+ * the form `/auth/callback?code=...&next=/book-studio`. We exchange the
  * code for a session, set the cookie, then redirect the user back to
- * `next` (or `/book-native` by default).
+ * `next` (or `/book-studio` by default).
  */
 
 import { NextResponse } from "next/server";
@@ -16,11 +16,11 @@ export const runtime = "nodejs";
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
-  const next = url.searchParams.get("next") || "/book-native";
+  const next = url.searchParams.get("next") || "/book-studio";
 
   if (!code) {
     return NextResponse.redirect(
-      new URL(`/book-native?auth_error=missing_code`, req.url),
+      new URL(`/book-studio?auth_error=missing_code`, req.url),
     );
   }
 
@@ -30,13 +30,13 @@ export async function GET(req: Request) {
   if (error) {
     return NextResponse.redirect(
       new URL(
-        `/book-native?auth_error=${encodeURIComponent(error.message)}`,
+        `/book-studio?auth_error=${encodeURIComponent(error.message)}`,
         req.url,
       ),
     );
   }
 
   // Avoid double-encoding "next" — if it's already a path, redirect directly.
-  const safeNext = next.startsWith("/") ? next : "/book-native";
+  const safeNext = next.startsWith("/") ? next : "/book-studio";
   return NextResponse.redirect(new URL(safeNext, req.url));
 }

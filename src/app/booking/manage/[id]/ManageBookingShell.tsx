@@ -271,7 +271,7 @@ export function ManageBookingShell({
 
       <div className="text-center pt-4">
         <Link
-          href="/book-native"
+          href="/book-studio"
           className="text-base text-muted hover:text-current underline underline-offset-4"
         >
           ← Back to booking

@@ -1,5 +1,5 @@
 /**
- * Shared types + reducer for the /book-native wizard. All state is held in
+ * Shared types + reducer for the /book-studio wizard. All state is held in
  * one place so the right-side PriceSummary can react to every change without
  * prop-drilling.
  *

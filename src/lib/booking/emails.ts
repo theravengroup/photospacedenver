@@ -190,7 +190,7 @@ export async function sendBookingCancellation(input: {
       { label: "Refund", value: refundedFull ? escapeText(refundedFull) : "—" },
       { label: "Cancellation #", value: `<code style="font-family:ui-monospace,'SF Mono','Cascadia Mono',Menlo,monospace;font-size:12px;">${escapeText(input.bookingId)}</code>` },
     ],
-    cta: { label: "Start a new booking", href: `${CANONICAL_DOMAIN}/book-native` },
+    cta: { label: "Start a new booking", href: `${CANONICAL_DOMAIN}/book-studio` },
     footnote: `Questions? Just reply — or call us at ${SITE.contact.phone}.`,
   });
 

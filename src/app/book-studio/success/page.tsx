@@ -4,7 +4,7 @@ import { Section } from "@/components/ui/Section";
 import { SuccessShell } from "./SuccessShell";
 
 /**
- * /book-native/success — Stripe redirects here after confirmPayment.
+ * /book-studio/success — Stripe redirects here after confirmPayment.
  *
  * The webhook fires asynchronously, so the booking may not yet be `confirmed`
  * by the time the user lands. SuccessShell polls /api/booking/status until

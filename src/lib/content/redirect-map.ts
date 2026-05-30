@@ -20,6 +20,11 @@ export const REDIRECTS: Redirect[] = [
   { from: "/location", to: "/contact" },
   { from: "/lifespace", to: "/content-creator-studio-denver" }, // TODO(confirm)
 
+  // Native booking system renamed 2026-05-30: /book-native → /book-studio
+  // Keep these redirects so old confirmation/management email links work.
+  { from: "/book-native", to: "/book-studio" },
+  { from: "/book-native/success", to: "/book-studio/success" },
+
   // Gear (legacy /gear/<x> + old anchors → new SEO category pages)
   { from: "/gear", to: "/gear-rental" },
   { from: "/gear/cameras-lenses", to: "/camera-lens-rental-denver" },

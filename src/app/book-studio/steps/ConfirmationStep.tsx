@@ -2,7 +2,7 @@
 
 /**
  * Step 6 — terminal "done" screen for the $0 path (free Studio Tour, 100%-off
- * coupon). For paid bookings Stripe redirects to /book-native/success, which
+ * coupon). For paid bookings Stripe redirects to /book-studio/success, which
  * has its own polling shell.
  */
 
@@ -91,7 +91,7 @@ export function ConfirmationStep({ state }: { state: WizardState }) {
           ← Home
         </Link>
         <Link
-          href="/book-native"
+          href="/book-studio"
           className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium bg-tungsten text-ink hover:bg-tungsten-soft transition-colors"
         >
           Book another

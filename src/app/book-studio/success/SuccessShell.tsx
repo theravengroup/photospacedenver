@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Client shell for /book-native/success — polls /api/booking/status for up
+ * Client shell for /book-studio/success — polls /api/booking/status for up
  * to ~30s until the webhook flips the booking to confirmed. Renders an
  * optimistic confirmation UI immediately so the user isn't staring at a
  * spinner during the typical 1-2s webhook delay.
@@ -86,7 +86,7 @@ export function SuccessShell({ bookingId }: { bookingId: string }) {
           persists, email {SITE.contact.email}.
         </p>
         <Link
-          href="/book-native"
+          href="/book-studio"
           className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium bg-tungsten text-ink hover:bg-tungsten-soft transition-colors"
         >
           Start a new booking
@@ -180,7 +180,7 @@ export function SuccessShell({ bookingId }: { bookingId: string }) {
           ← Home
         </Link>
         <Link
-          href="/book-native"
+          href="/book-studio"
           className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium bg-tungsten text-ink hover:bg-tungsten-soft transition-colors"
         >
           Book another

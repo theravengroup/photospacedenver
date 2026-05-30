@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * MemberSignIn — prominent panel at the top of /book-native.
+ * MemberSignIn — prominent panel at the top of /book-studio.
  *
  * Three states:
  *   1. Not signed in → tungsten-tinted glass panel with icon + headline +
@@ -47,7 +47,7 @@ export function MemberSignIn({ preview }: { preview: MemberPreview }) {
       const { error: err } = await sb.auth.signInWithOtp({
         email: email.trim().toLowerCase(),
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback?next=/book-native`,
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=/book-studio`,
           shouldCreateUser: true,
         },
       });

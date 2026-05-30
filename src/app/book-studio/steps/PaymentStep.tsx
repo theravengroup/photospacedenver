@@ -10,7 +10,7 @@
  *   - publishableKey (creates the Stripe instance)
  *   - bookingId (used in the return_url)
  *
- * On confirm, Stripe redirects to /book-native/success?booking_id=<id> where
+ * On confirm, Stripe redirects to /book-studio/success?booking_id=<id> where
  * we poll status until the webhook flips it to confirmed.
  */
 
@@ -129,7 +129,7 @@ function CheckoutForm({
     setErr(null);
 
     const returnUrl = new URL(
-      `/book-native/success?booking_id=${encodeURIComponent(state.bookingId ?? "")}`,
+      `/book-studio/success?booking_id=${encodeURIComponent(state.bookingId ?? "")}`,
       window.location.origin,
     ).toString();
 

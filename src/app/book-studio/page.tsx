@@ -4,7 +4,7 @@ import { Section } from "@/components/ui/Section";
 import { BookingWizard } from "./BookingWizard";
 
 /**
- * /book-native — public-facing booking flow that replaces Acuity.
+ * /book-studio — public-facing booking flow that replaces Acuity.
  *
  * Phase 4: deliberately unlisted (no nav link, no internal links from
  * marketing pages). You reach it by typing the URL. After parallel testing

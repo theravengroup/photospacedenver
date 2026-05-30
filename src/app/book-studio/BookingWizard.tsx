@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Client orchestrator for /book-native. Holds the reducer state, fetches the
+ * Client orchestrator for /book-studio. Holds the reducer state, fetches the
  * live pricing preview from /api/booking/quote whenever a price-affecting
  * field changes, creates the booking + intent on transition into payment,
  * and routes to the success page after Stripe redirects (or the inline
