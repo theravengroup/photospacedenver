@@ -41,7 +41,7 @@
     { "id": "HOLD-003", "area": "holds",         "name": "Expired holds auto-released (cron or query-time)",            "status": { "passes": false, "notes": "" } },
 
     { "id": "PAY-001",  "area": "payment",       "name": "Stripe intent/checkout created with server-computed amount",  "status": { "passes": false, "notes": "" } },
-    { "id": "PAY-002",  "area": "payment",       "name": "Webhook signature verified",                                  "status": { "passes": false, "notes": "" } },
+    { "id": "PAY-002",  "area": "payment",       "name": "Webhook signature verified",                                  "status": { "passes": true,  "notes": "Verified 2026-05-30 in stripe.test.ts — 4 cases: valid signature → event parsed; bogus signature → throws; payload tampered after signing → throws; wrong secret configured → throws. Real webhook auth gated on the in-prod STRIPE_WEBHOOK_SECRET env var." } },
     { "id": "PAY-003",  "area": "payment",       "name": "Webhook confirms booking + finalizes calendar event",         "status": { "passes": false, "notes": "" } },
     { "id": "PAY-004",  "area": "payment",       "name": "Failed/abandoned payment releases hold",                      "status": { "passes": false, "notes": "" } },
     { "id": "PAY-005",  "area": "payment",       "name": "Idempotency: replayed webhooks don't double-charge or dup",   "status": { "passes": false, "notes": "" } },

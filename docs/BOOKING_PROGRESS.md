@@ -13,6 +13,28 @@ Format:
 
 ---
 
+## 2026-05-30 — Phase 3 (holds + Stripe + webhook + GCal write + cron) shipped ✅
+- area: phase-3 booking flow
+- migration applied via MCP (`phase3_booking_flow`): UNIQUE on `bookings.stripe_intent_id`, two SECURITY DEFINER PL/pgSQL functions:
+  - `create_booking_hold(...)` — advisory-lock serialization → conflict checks (bookings + active holds + manual_blocks, 2h buffer) → atomic insert of booking (`pending_payment`) + paired hold. Raises typed exceptions on conflict.
+  - `expire_holds_and_bookings()` — promotes pending_payment whose holds expired → `expired`; deletes holds older than 1h.
+- new server-only modules:
+  - `src/lib/booking/stripe.ts` — `createBookingPaymentIntent` (idempotency-keyed on booking id) + `constructStripeEvent` (signature-verifying webhook parser) + `refundCharge`
+  - `src/lib/booking/holds.ts` — wraps the rpc, returns typed conflict reasons; helpers `consumeHoldForBooking` + `releaseHoldForBooking`
+  - `src/lib/booking/emails.ts` — `sendBookingConfirmation` (customer multi-recipient + admin notify) + `sendBookingCancellation` w/ refund line. Times rendered in America/Denver.
+- `src/lib/forms/email.ts` extended to accept a `to` override (was hardcoded to INQUIRY_TO_EMAIL).
+- new routes:
+  - `POST /api/booking/quote` — read-only pricing + availability preview
+  - `POST /api/booking/checkout` — server-authoritative recompute → atomic hold+booking → Stripe PaymentIntent → returns client_secret. Handles $0 bookings (free tour / 100%-off) by skipping Stripe and confirming immediately. Rolls back if Stripe call fails.
+  - `POST /api/booking/webhook` — signature verify → handles `payment_intent.succeeded` (confirm + GCal event + coupon redemption + customer + admin emails, idempotent on status), `payment_intent.payment_failed` (release hold), `charge.refunded` (cancel + GCal cancel + cancellation emails)
+  - `GET /api/booking/cron/cleanup-holds` — Vercel cron entry, gated by CRON_SECRET
+- `vercel.json` — hourly cron config
+- env added: `CRON_SECRET` (Production, generated random hex). `STRIPE_WEBHOOK_SECRET` still pending — Dan needs to create the webhook in Stripe Dashboard and send the whsec_… value.
+- tests: **45/45 passing** (4 new in stripe.test.ts proving valid sig accepted, bogus sig rejected, tampered payload rejected, wrong secret rejected). Added vitest server-only stub so server-side modules are testable.
+- features flipped: PAY-002 (webhook signature verification — strictly tested).
+- code-complete but awaiting end-to-end live test: HOLD-001/002/003, PAY-001/003/004/005, CAL-001/002, COUP-001/003, NOTIF-001/002/004 — these all gate on the live Stripe webhook setup + one real curl-driven test booking.
+- next: Dan sets up Stripe Dashboard webhook → sends signing secret → I add to Vercel → real test booking via curl → flip the remaining 12+ Phase 3 features. Then Phase 4 = polished public UI.
+
 ## 2026-05-30 — Phase 2 (booking brain) shipped end-to-end ✅
 - area: phase-2 (pure logic + DB-aware modules + tests)
 - new modules (server-only where DB/GCal is touched):

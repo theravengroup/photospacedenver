@@ -17,20 +17,25 @@ export async function sendEmail({
   subject,
   text,
   replyTo,
+  to: toOverride,
   attachments,
 }: {
   subject: string;
   text: string;
   replyTo?: string;
+  /** Override default INQUIRY_TO_EMAIL recipient (string or list). */
+  to?: string | string[];
   attachments?: EmailAttachment[];
 }): Promise<{ ok: boolean; delivered: boolean; error?: string }> {
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.INQUIRY_TO_EMAIL ?? SITE.contact.email;
+  const to =
+    toOverride ?? process.env.INQUIRY_TO_EMAIL ?? SITE.contact.email;
   const from = process.env.INQUIRY_FROM_EMAIL ?? "photospace Denver <onboarding@resend.dev>";
 
   if (!apiKey) {
     // TODO(env): set RESEND_API_KEY in production to actually deliver these.
-    console.info(`[email] (no RESEND_API_KEY) ${subject}\n${text}`);
+    const dest = Array.isArray(to) ? to.join(", ") : to;
+    console.info(`[email] (no RESEND_API_KEY) to=${dest} subj=${subject}\n${text}`);
     return { ok: true, delivered: false };
   }
 

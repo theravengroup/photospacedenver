@@ -40,6 +40,12 @@ yarn-error.log*
 # playwright mcp test artifacts
 .playwright-mcp/
 
+# local IDE / claude workspace settings (may contain secrets/tokens)
+.claude/
+
+# legacy Acuity form exports — reference material only, not part of the app
+jsons-forms/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
