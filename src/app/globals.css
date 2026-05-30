@@ -401,6 +401,78 @@ p, li, dt, dd, blockquote, figcaption {
 }
 
 /* =========================================================
+   Sitewide radio + checkbox normalization.
+   The OS default native control renders weirdly on light/dark
+   themed surfaces (especially macOS where unchecked radios show as
+   solid black filled discs — Dan flagged this 2026-05-30). We
+   strip the appearance and re-style consistently:
+     - Unchecked: hollow circle / square with a hairline border
+     - Checked:   tungsten filled, white dot/checkmark inside
+     - Hover:     tungsten-tinted border
+     - Focus:     ring inherited from the :focus-visible rule above
+   ========================================================= */
+input[type="radio"],
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: 0;
+  border: 1.5px solid color-mix(in oklab, var(--color-tungsten) 30%, var(--hairline));
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+input[type="radio"]   { border-radius: 50%; }
+input[type="checkbox"]{ border-radius: 4px; }
+
+input[type="radio"]:hover,
+input[type="checkbox"]:hover {
+  border-color: var(--color-tungsten);
+}
+
+input[type="radio"]:checked,
+input[type="checkbox"]:checked {
+  border-color: var(--color-tungsten);
+  background-color: var(--color-tungsten);
+}
+
+/* Radio: inner white dot */
+input[type="radio"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: #ffffff;
+  transform: translate(-50%, -50%);
+}
+
+/* Checkbox: SVG-style check rendered via CSS — no DOM child needed,
+   so any native <input type="checkbox"> picks this up automatically. */
+input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6.5l3 3L10 3' fill='none' stroke='%230e0e0d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 75% 75%;
+}
+
+input[type="radio"]:disabled,
+input[type="checkbox"]:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* =========================================================
    Form-field surface — used by both `components/forms/Fields.tsx`
    (as a JS string constant via Tailwind utilities) and `.FIELD`
    class form fields in newer code paths (e.g. /book-studio).
