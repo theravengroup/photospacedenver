@@ -16,11 +16,45 @@ import { cn } from "@/lib/cn";
 import type { WizardState } from "../state";
 
 const TZ = "America/Denver";
+/** Compact label: "6 AM", "12 PM", "11 PM" — no minute zeros, no wrap. */
 const TIME_FMT = new Intl.DateTimeFormat("en-US", {
   timeZone: TZ,
   hour: "numeric",
-  minute: "2-digit",
+  hour12: true,
 });
+/** Hour-of-day in Denver (0–23) for time-of-day bucketing. */
+function denverHour(d: Date): number {
+  const h = new Intl.DateTimeFormat("en-US", {
+    timeZone: TZ,
+    hour: "numeric",
+    hour12: false,
+  }).format(d);
+  // The Intl output can be "0" through "23" or sometimes "24" — normalize.
+  const n = parseInt(h, 10) % 24;
+  return Number.isFinite(n) ? n : 0;
+}
+
+type Bucket = "morning" | "afternoon" | "evening" | "late";
+const BUCKET_LABEL: Record<Bucket, string> = {
+  morning: "Morning",
+  afternoon: "Afternoon",
+  evening: "Evening",
+  late: "Late night",
+};
+const BUCKET_RANGE: Record<Bucket, string> = {
+  morning: "6 AM – 12 PM",
+  afternoon: "12 PM – 5 PM",
+  evening: "5 PM – 10 PM",
+  late: "10 PM – 6 AM",
+};
+const BUCKET_ORDER: Bucket[] = ["morning", "afternoon", "evening", "late"];
+function bucketFor(d: Date): Bucket {
+  const h = denverHour(d);
+  if (h >= 6 && h < 12) return "morning";
+  if (h >= 12 && h < 17) return "afternoon";
+  if (h >= 17 && h < 22) return "evening";
+  return "late";
+}
 
 // react-day-picker theme tokens — same set as the existing DateRangeCalendar
 const RDP_THEME = {
@@ -154,60 +188,14 @@ export function DateTimeStep({
           />
         </div>
 
-        <div className="bg-panel border border-hairline rounded-card p-5">
-          <div className="text-xs uppercase tracking-wider text-muted mb-3">
-            {date ? "Available times" : "Pick a date first"}
-          </div>
-          {!date && (
-            <p className="text-sm text-muted">Use the calendar to choose a date.</p>
-          )}
-          {date && loading && (
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-              {Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className="h-10 rounded-full bg-hairline/40 animate-pulse" />
-              ))}
-            </div>
-          )}
-          {date && !loading && err && (
-            <p className="text-sm text-amber-400">{err}</p>
-          )}
-          {date && !loading && !err && slots.length === 0 && (
-            <p className="text-sm text-muted">
-              No times that day. Try the next day, or shorter session.
-            </p>
-          )}
-          {date && !loading && !err && slots.length > 0 && (
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-              {slots.map((s) => {
-                const isPicked = state.startAt === s.startAt;
-                const disabled = s.status !== "available";
-                return (
-                  <button
-                    key={s.startAt}
-                    type="button"
-                    disabled={disabled}
-                    onClick={() => pickSlot(s)}
-                    className={cn(
-                      "rounded-full px-3 py-2 text-sm border transition-colors",
-                      isPicked && "bg-tungsten text-ink border-tungsten",
-                      !isPicked && !disabled && "border-hairline hover:border-tungsten",
-                      disabled && "border-hairline/40 text-muted/60 cursor-not-allowed line-through",
-                    )}
-                    title={
-                      s.status === "blocked"
-                        ? "Conflicts with another booking"
-                        : s.status === "requires_approval"
-                          ? "Inside the 12h lead window — admin approval needed"
-                          : undefined
-                    }
-                  >
-                    {TIME_FMT.format(new Date(s.startAt))}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
+        <SlotPanel
+          date={date}
+          slots={slots}
+          loading={loading}
+          err={err}
+          pickedStartAt={state.startAt}
+          onPick={pickSlot}
+        />
       </div>
 
       <div className="pt-4 flex items-center justify-between">
@@ -232,6 +220,143 @@ export function DateTimeStep({
           Continue →
         </button>
       </div>
+    </div>
+  );
+}
+
+/**
+ * The slot panel — grouped by time-of-day for scannability. Blocked slots
+ * are hidden entirely (rendering 24 strikethroughs reads as broken, not
+ * informative). If a bucket has no bookable slots it's omitted. If the
+ * whole day has nothing bookable, we show a clean empty-state instead of
+ * a wall of pills.
+ */
+function SlotPanel({
+  date,
+  slots,
+  loading,
+  err,
+  pickedStartAt,
+  onPick,
+}: {
+  date: Date | undefined;
+  slots: Slot[];
+  loading: boolean;
+  err: string | null;
+  pickedStartAt: string | null;
+  onPick: (s: Slot) => void;
+}) {
+  // Hide blocked slots — only show actually-bookable times. Approval-required
+  // slots stay (dimmed) so the user knows they exist but need a request.
+  const bookable = slots.filter(
+    (s) => s.status === "available" || s.status === "requires_approval",
+  );
+
+  // Group by time-of-day bucket
+  const grouped = new Map<Bucket, Slot[]>();
+  for (const s of bookable) {
+    const b = bucketFor(new Date(s.startAt));
+    const arr = grouped.get(b) ?? [];
+    arr.push(s);
+    grouped.set(b, arr);
+  }
+
+  return (
+    <div className="bg-panel border border-hairline rounded-card p-5">
+      <div className="text-xs uppercase tracking-wider text-muted mb-4">
+        {date ? "Available times" : "Pick a date first"}
+      </div>
+
+      {!date && (
+        <p className="text-base text-muted">Use the calendar to choose a date.</p>
+      )}
+
+      {date && loading && (
+        <div className="space-y-5">
+          {[1, 2, 3].map((row) => (
+            <div key={row}>
+              <div className="h-3 w-24 rounded bg-hairline/40 animate-pulse mb-3" />
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-10 rounded-full bg-hairline/40 animate-pulse"
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {date && !loading && err && (
+        <p className="text-base text-amber-400">{err}</p>
+      )}
+
+      {date && !loading && !err && bookable.length === 0 && (
+        <div className="rounded-card border border-hairline/60 p-6 text-center">
+          <p className="text-base">Nothing available that day.</p>
+          <p className="text-sm text-muted mt-2">
+            Try the next day, a shorter session, or {""}
+            <a
+              className="text-tungsten underline underline-offset-4"
+              href="mailto:hello@photospacedenver.com"
+            >
+              text us
+            </a>{" "}
+            if it&apos;s urgent.
+          </p>
+        </div>
+      )}
+
+      {date && !loading && !err && bookable.length > 0 && (
+        <div className="space-y-5">
+          {BUCKET_ORDER.map((bucket) => {
+            const items = grouped.get(bucket);
+            if (!items || items.length === 0) return null;
+            return (
+              <section key={bucket}>
+                <div className="flex items-baseline justify-between mb-2">
+                  <h3 className="text-xs uppercase tracking-[0.16em] text-tungsten font-medium">
+                    {BUCKET_LABEL[bucket]}
+                  </h3>
+                  <span className="text-xs text-muted">{BUCKET_RANGE[bucket]}</span>
+                </div>
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  {items.map((s) => {
+                    const isPicked = pickedStartAt === s.startAt;
+                    const approvalOnly = s.status === "requires_approval";
+                    return (
+                      <button
+                        key={s.startAt}
+                        type="button"
+                        disabled={approvalOnly}
+                        onClick={() => onPick(s)}
+                        className={cn(
+                          "h-10 rounded-full text-sm border transition-colors whitespace-nowrap",
+                          isPicked && "bg-tungsten text-ink border-tungsten",
+                          !isPicked &&
+                            !approvalOnly &&
+                            "border-hairline hover:border-tungsten",
+                          approvalOnly &&
+                            "border-hairline/40 text-muted/70 cursor-not-allowed",
+                        )}
+                        title={
+                          approvalOnly
+                            ? "Inside the 12h lead window — would need admin approval"
+                            : undefined
+                        }
+                      >
+                        {TIME_FMT.format(new Date(s.startAt))}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

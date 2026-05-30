@@ -63,20 +63,25 @@ export async function POST(req: Request) {
     rangeEnd: new Date(dayEnd.getTime() + padMs),
   });
 
+  const now = new Date();
   const slots = generateSlots({
     rangeStart: dayStart,
     rangeEnd: dayEnd,
     durationHours: hours,
     busy,
     bufferHours: 2,
-    now: new Date(),
+    now,
     minLeadHours: 12,
     maxAdvanceDays: 90,
     granularityHours: 1,
   });
 
+  // Past slots are unbookable by definition — skip them entirely so the UI
+  // never has to render 12am-now as a wall of strike-throughs.
+  const future = slots.filter((s) => s.start.getTime() > now.getTime());
+
   return NextResponse.json({
-    slots: slots.map((s) => ({
+    slots: future.map((s) => ({
       startAt: s.start.toISOString(),
       endAt: s.end.toISOString(),
       status: s.status,
