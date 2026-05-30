@@ -16,12 +16,17 @@ export type EmailAttachment = {
 export async function sendEmail({
   subject,
   text,
+  html,
   replyTo,
   to: toOverride,
   attachments,
 }: {
   subject: string;
+  /** Plain-text body. ALWAYS provide one as a fallback even when html is set. */
   text: string;
+  /** Optional pre-rendered HTML body. When present, clients that support
+   *  HTML render this instead of `text` (which becomes the fallback). */
+  html?: string;
   replyTo?: string;
   /** Override default INQUIRY_TO_EMAIL recipient (string or list). */
   to?: string | string[];
@@ -40,6 +45,7 @@ export async function sendEmail({
   }
 
   const payload: Record<string, unknown> = { from, to, subject, text };
+  if (html) payload.html = html;
   if (replyTo) payload.reply_to = replyTo;
   if (attachments?.length) payload.attachments = attachments;
 

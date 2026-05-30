@@ -1,23 +1,26 @@
 import "server-only";
 import { sendEmail } from "@/lib/forms/email";
-import { SITE } from "@/lib/content/site-config";
+import { SITE, CANONICAL_DOMAIN } from "@/lib/content/site-config";
+import { renderBrandedEmail } from "@/lib/emails/branded";
 
 /**
- * Booking transactional emails — text-only first pass (Resend renders plain
- * text fine; brand HTML rebuild is a Phase 4 polish task per the migration
- * map). All times rendered in America/Denver.
+ * Booking transactional emails — sent to the customer when their booking
+ * confirms or cancels. Wrapped in the branded HTML layout (dark ink, logo,
+ * tungsten accents) with a plain-text fallback for clients that refuse HTML.
  *
- * - sendBookingConfirmation → to customer (every email in their intake list)
- *                             + admin notify to the studio inbox
+ * - sendBookingConfirmation → customer (every email in their intake list)
+ *                             + admin notify to the studio inbox (plain text)
  * - sendBookingCancellation → same pattern, includes refund line
+ *
+ * All times rendered in America/Denver.
  */
 
 const TZ = "America/Denver";
 
 const DATE_FMT = new Intl.DateTimeFormat("en-US", {
   timeZone: TZ,
-  weekday: "short",
-  month: "short",
+  weekday: "long",
+  month: "long",
   day: "numeric",
   year: "numeric",
 });
@@ -28,12 +31,12 @@ const TIME_FMT = new Intl.DateTimeFormat("en-US", {
   timeZoneName: "short",
 });
 
-function fmtRange(start: Date, end: Date): string {
-  return `${DATE_FMT.format(start)} · ${TIME_FMT.format(start)} – ${TIME_FMT.format(end)}`;
-}
-
 function dollars(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
+}
+
+function whereLine(): string {
+  return `${SITE.address.line1}, ${SITE.address.city} ${SITE.address.region} ${SITE.address.postalCode}`;
 }
 
 export async function sendBookingConfirmation(input: {
@@ -45,18 +48,20 @@ export async function sendBookingConfirmation(input: {
   bookingId: string;
   customerFirstName: string;
 }): Promise<void> {
-  const when = fmtRange(input.startAt, input.endAt);
+  const date = DATE_FMT.format(input.startAt);
+  const time = `${TIME_FMT.format(input.startAt)} – ${TIME_FMT.format(input.endAt)}`;
+  const whenShort = `${date} · ${time}`;
 
-  // Customer-facing
-  const customerSubject = `Your studio session is confirmed — ${when}`;
+  // ─── Customer email (branded HTML + plain text fallback) ──────────
+  const customerSubject = `Your studio session is confirmed — ${whenShort}`;
   const customerText = [
     `Hi ${input.customerFirstName},`,
     ``,
     `Your studio session at photospace is confirmed.`,
     ``,
     `What:  ${input.appointmentLabel}`,
-    `When:  ${when}`,
-    `Where: ${SITE.address.line1}, ${SITE.address.city} ${SITE.address.region} ${SITE.address.postalCode}`,
+    `When:  ${whenShort}`,
+    `Where: ${whereLine()}`,
     `Total: ${dollars(input.totalCents)}`,
     ``,
     `Easy in, easy out — 24/7 keyless access. ${SITE.address.directionsNote}`,
@@ -67,21 +72,43 @@ export async function sendBookingConfirmation(input: {
     `— photospace Denver`,
   ].join("\n");
 
+  const customerHtml = renderBrandedEmail({
+    preheader: `${input.appointmentLabel} · ${whenShort}`,
+    eyebrow: "Confirmed",
+    heading: `You're booked, ${input.customerFirstName}.`,
+    intro: `Your studio session is locked in. Here are the details — same info is at the bottom of this email if you ever need to pull it up later.`,
+    details: [
+      { label: "Session", value: escapeText(input.appointmentLabel) },
+      { label: "Date", value: escapeText(date) },
+      { label: "Time", value: escapeText(time) },
+      { label: "Where", value: escapeText(whereLine()) },
+      { label: "Total", value: escapeText(dollars(input.totalCents)) },
+      { label: "Confirmation #", value: `<code style="font-family:ui-monospace,'SF Mono','Cascadia Mono',Menlo,monospace;font-size:12px;">${escapeText(input.bookingId)}</code>` },
+    ],
+    bodyHtml: `
+      <p style="margin:6px 0 18px 0;color:#b7afa2;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.6;">
+        Easy in, easy out — 24/7 keyless access. ${escapeText(SITE.address.directionsNote)}
+      </p>`,
+    cta: { label: "View studio details", href: `${CANONICAL_DOMAIN}/studio` },
+    footnote: `Need to change or cancel? Just reply to this email or call ${SITE.contact.phone}.`,
+  });
+
   await sendEmail({
     to: input.toEmails,
     subject: customerSubject,
     text: customerText,
+    html: customerHtml,
   });
 
-  // Admin notify
+  // ─── Admin notify (plain text — internal ops, no need to brand) ───
   await sendEmail({
-    subject: `[BOOKING confirmed] ${input.appointmentLabel} — ${when}`,
+    subject: `[BOOKING confirmed] ${input.appointmentLabel} — ${whenShort}`,
     text: [
       `New confirmed booking.`,
       ``,
       `Customer: ${input.customerFirstName}`,
       `Recipients: ${input.toEmails.join(", ")}`,
-      `When:  ${when}`,
+      `When:  ${whenShort}`,
       `Total: ${dollars(input.totalCents)}`,
       `Booking ID: ${input.bookingId}`,
     ].join("\n"),
@@ -95,37 +122,72 @@ export async function sendBookingCancellation(input: {
   bookingId: string;
   refundedCents: number;
 }): Promise<void> {
-  const when = DATE_FMT.format(input.startAt) + " · " + TIME_FMT.format(input.startAt);
-  const refundLine =
-    input.refundedCents > 0
-      ? `A refund of ${dollars(input.refundedCents)} has been issued to your original payment method.`
-      : `Per the cancellation policy, this booking is non-refundable. Reach out within 60 days to rebook the credit.`;
+  const date = DATE_FMT.format(input.startAt);
+  const time = TIME_FMT.format(input.startAt);
+  const whenShort = `${date} · ${time}`;
+  const refundedFull = input.refundedCents > 0 ? dollars(input.refundedCents) : null;
+
+  const refundLine = refundedFull
+    ? `A refund of ${refundedFull} has been issued to your original payment method.`
+    : `Per the cancellation policy, this booking is non-refundable. Reach out within 60 days to rebook the credit.`;
+
+  // ─── Customer email ───────────────────────────────────────────────
+  const customerText = [
+    `Your studio session at photospace has been cancelled.`,
+    ``,
+    `What: ${input.appointmentLabel}`,
+    `When: ${whenShort}`,
+    ``,
+    refundLine,
+    ``,
+    `Questions? ${SITE.contact.email} · ${SITE.contact.phone}`,
+    ``,
+    `— photospace Denver`,
+  ].join("\n");
+
+  const customerHtml = renderBrandedEmail({
+    preheader: `${input.appointmentLabel} · ${whenShort}`,
+    eyebrow: "Cancelled",
+    heading: "Your session has been cancelled.",
+    intro: refundedFull
+      ? `A refund of ${refundedFull} has been issued to your original payment method — it usually clears within 5 business days.`
+      : `Per our cancellation policy, this booking is non-refundable. You can rebook the credit within the next 60 days — just reply to this email and we'll set it up.`,
+    details: [
+      { label: "Session", value: escapeText(input.appointmentLabel) },
+      { label: "Was scheduled", value: escapeText(whenShort) },
+      { label: "Refund", value: refundedFull ? escapeText(refundedFull) : "—" },
+      { label: "Cancellation #", value: `<code style="font-family:ui-monospace,'SF Mono','Cascadia Mono',Menlo,monospace;font-size:12px;">${escapeText(input.bookingId)}</code>` },
+    ],
+    cta: { label: "Start a new booking", href: `${CANONICAL_DOMAIN}/book-native` },
+    footnote: `Questions? Just reply — or call us at ${SITE.contact.phone}.`,
+  });
 
   await sendEmail({
     to: input.toEmails,
-    subject: `Your studio session is cancelled — ${when}`,
-    text: [
-      `Your studio session at photospace has been cancelled.`,
-      ``,
-      `What: ${input.appointmentLabel}`,
-      `When: ${when}`,
-      ``,
-      refundLine,
-      ``,
-      `Questions? ${SITE.contact.email} · ${SITE.contact.phone}`,
-      ``,
-      `— photospace Denver`,
-    ].join("\n"),
+    subject: `Your studio session is cancelled — ${whenShort}`,
+    text: customerText,
+    html: customerHtml,
   });
 
+  // ─── Admin notify ─────────────────────────────────────────────────
   await sendEmail({
-    subject: `[BOOKING cancelled] ${input.appointmentLabel} — ${when}`,
+    subject: `[BOOKING cancelled] ${input.appointmentLabel} — ${whenShort}`,
     text: [
       `Booking cancelled.`,
       ``,
-      `When: ${when}`,
-      `Refund: ${input.refundedCents > 0 ? dollars(input.refundedCents) : "none"}`,
+      `When: ${whenShort}`,
+      `Refund: ${refundedFull ?? "none"}`,
       `Booking ID: ${input.bookingId}`,
     ].join("\n"),
   });
+}
+
+/** Local html-escape for values we inject into the branded template. */
+function escapeText(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
