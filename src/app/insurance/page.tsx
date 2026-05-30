@@ -98,7 +98,11 @@ export default function InsurancePage() {
             <h2 className="font-display text-display-md">Name us as</h2>
             <address className="mt-4 not-italic text-sm text-muted">
               <span className="block text-foreground">{SITE.legalName}</span>
-              {SITE.address.full}
+              <span className="block whitespace-nowrap">{SITE.address.street}</span>
+              <span className="block">{SITE.address.unit}</span>
+              <span className="block">
+                {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}
+              </span>
             </address>
             <p className="mt-2 text-xs text-muted">List us as additional insured / loss payee.</p>
 

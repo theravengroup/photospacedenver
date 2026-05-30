@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { NAV_PRIMARY, CTA_LABELS, BOOKING } from "@/lib/content/site-config";
 import { Button } from "@/components/ui/Button";
@@ -10,6 +11,7 @@ import { MegaMenu } from "@/components/layout/MegaMenu";
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -17,6 +19,18 @@ export function SiteHeader() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  /** Logo click: always land at the top of the homepage. If we're already
+   *  on `/`, intercept the click and smooth-scroll up (Next's <Link> doesn't
+   *  navigate or scroll for same-route clicks). For cross-route clicks,
+   *  Next's App Router auto-scrolls to top after navigation, so plain
+   *  <Link> behavior is correct. Dan-asked 2026-05-30. */
+  function onLogoClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
 
   return (
     <header
@@ -26,7 +40,12 @@ export function SiteHeader() {
       )}
     >
       <div className="mx-auto flex h-16 w-full max-w-[88rem] items-center justify-between px-5 sm:h-20 sm:px-8">
-        <Link href="/" aria-label="photospace Denver — home" className="inline-flex items-center gap-2.5">
+        <Link
+          href="/"
+          onClick={onLogoClick}
+          aria-label="photospace Denver — home"
+          className="inline-flex items-center gap-2.5"
+        >
           {/* eslint-disable-next-line @next/next/no-img-element -- brand wordmark logo */}
           <img src="/images/brand/photospace-logo-small.png" alt="photospace" className="h-6 w-auto sm:h-7" />
           <span className="hidden text-[0.625rem] uppercase tracking-[0.22em] text-tungsten sm:inline">Denver</span>

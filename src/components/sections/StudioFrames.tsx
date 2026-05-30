@@ -34,7 +34,7 @@ const FRAMES = [
     numeral: "IV",
     label: "The Building",
     headline: "Yours, midnight or sunrise.",
-    body: "209 Kalamath St, Unit 1. Free parking, a load-in ramp, an outdoor deck, and a real working kitchen. Easy in, easy out, midnight or sunrise — the studio is yours when the work is.",
+    body: "209 Kalamath St., Unit 1. Free parking, a load-in ramp, an outdoor deck, and a real working kitchen. Easy in, easy out, midnight or sunrise — the studio is yours when the work is.",
     img: "/images/space/kitchen.jpg",
     alt: "The working kitchen and lounge at photospace",
   },

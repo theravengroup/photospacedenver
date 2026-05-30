@@ -70,7 +70,7 @@ export default function HomePage() {
               {/* Location badge — reinforces "this address" */}
               <span className="absolute left-5 top-4 flex items-center gap-1.5 rounded-full bg-bone px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-ink shadow-lg">
                 <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="shrink-0 text-tungsten fill-current"><circle cx="5" cy="4" r="2"/><path d="M5 1a3 3 0 0 1 3 3c0 2-3 5.5-3 5.5S2 6 2 4a3 3 0 0 1 3-3z" fillRule="evenodd" clipRule="evenodd"/></svg>
-                209 Kalamath St · Denver
+                <span className="whitespace-nowrap">209 Kalamath St.</span> · Denver
               </span>
             </div>
             {/* Thumbnail marquee — sample of real work shot here. Scrolls
@@ -84,7 +84,7 @@ export default function HomePage() {
               <p className="text-xs font-medium uppercase tracking-[0.2em] text-tungsten">01 · Rent the studio</p>
               <h2 className="font-display mt-2 text-display-lg">Shoot here.</h2>
               <p className="mt-3 text-muted">
-                A custom-built 1,900 ft² photo &amp; video studio at 209 Kalamath St — real cyclorama,
+                A custom-built 1,900 ft² photo &amp; video studio at <span className="whitespace-nowrap">209 Kalamath St.</span> — real cyclorama,
                 Colorado&rsquo;s largest in-studio grip selection, a starter lighting kit, and 24/7 access.
                 From $100/hr.
               </p>
@@ -175,7 +175,7 @@ export default function HomePage() {
             <p className="eyebrow">Studio rental</p>
             <h2 className="font-display mt-4 leading-[1.02] text-[clamp(2.75rem,6.5vw,5rem)]">The studio.</h2>
             <p className="mt-4 text-lg text-muted">
-              A custom-built photo &amp; video studio at 209 Kalamath St — book it by the hour, the day, or on a membership.
+              A custom-built photo &amp; video studio at <span className="whitespace-nowrap">209 Kalamath St.</span> — book it by the hour, the day, or on a membership.
             </p>
           </div>
         </Reveal>
@@ -184,7 +184,7 @@ export default function HomePage() {
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal>
             <SectionHeading
-              eyebrow="209 Kalamath St"
+              eyebrow="209 Kalamath St."
               title="This is not a converted warehouse."
               intro="Custom-built from the ground up by photographers and videographers — a real cyclorama, controllable daylight, a working kitchen and lounge, and the power to run a serious set."
             />

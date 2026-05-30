@@ -143,7 +143,8 @@ export function ManageBookingShell({
         } />
         <Row k="Where" v={
           <>
-            <div>{SITE.address.line1}</div>
+            <div className="whitespace-nowrap">{SITE.address.street}</div>
+            <div>{SITE.address.unit}</div>
             <div className="text-muted">
               {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}
             </div>

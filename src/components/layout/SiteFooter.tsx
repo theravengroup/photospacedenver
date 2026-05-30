@@ -27,7 +27,11 @@ export function SiteFooter() {
               and a full gear-rental house for shoots that happen on location.
             </p>
             <address className="mt-6 space-y-1 text-sm not-italic text-muted">
-              <div className="text-bone">{SITE.address.full}</div>
+              <div className="text-bone whitespace-nowrap">{SITE.address.street}</div>
+              <div className="text-bone">{SITE.address.unit}</div>
+              <div className="text-bone">
+                {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}
+              </div>
               <div>
                 <a href={SITE.contact.phoneHref} className="transition-colors hover:text-tungsten">
                   {SITE.contact.phone}

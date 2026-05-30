@@ -44,7 +44,7 @@ const CONTENT: Record<
       {
         n: "02",
         title: "Come by",
-        body: "Stop in at 209 Kalamath St. Free parking out front; the entrance is around the corner on W 2nd Ave.",
+        body: "Stop in at 209 Kalamath St. (Unit 1). Free parking out front; the entrance is around the corner on W 2nd Ave.",
       },
       {
         n: "03",

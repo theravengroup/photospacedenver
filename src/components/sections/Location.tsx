@@ -58,7 +58,9 @@ export function Location() {
                 <div>
                   <dt className="text-[11px] uppercase tracking-[0.18em] text-muted">Studio</dt>
                   <dd className="mt-1 text-lg leading-snug">
-                    {SITE.address.line1}
+                    <span className="whitespace-nowrap">{SITE.address.street}</span>
+                    <br />
+                    {SITE.address.unit}
                     <br />
                     {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}
                   </dd>

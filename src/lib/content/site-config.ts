@@ -38,7 +38,16 @@ export const SITE = {
   },
 
   address: {
-    line1: "209 Kalamath St, Unit 1",
+    /** Street + period — rendered as line 1 in 3-line address blocks.
+     *  Pair with `whitespace-nowrap` so the browser never breaks between
+     *  "Kalamath" and "St." (Dan-confirmed 2026-05-30: always wrap after
+     *  "St.", never inside the street name). */
+    street: "209 Kalamath St.",
+    /** Unit — rendered as line 2 in 3-line address blocks. */
+    unit: "Unit 1",
+    /** Single-line concatenation kept for schema.org / single-row consumers
+     *  (image alt, embedded-map URL, meta description). */
+    line1: "209 Kalamath St., Unit 1",
     city: "Denver",
     region: "CO",
     regionName: "Colorado",
@@ -47,7 +56,7 @@ export const SITE = {
     /** Public-facing neighborhood label (Dan-confirmed 2026-05-30). */
     neighborhood: "Lincoln Park / Baker",
     /** Single-line for display. */
-    full: "209 Kalamath St, Unit 1, Denver, CO 80223",
+    full: "209 Kalamath St., Unit 1, Denver, CO 80223",
     directionsNote: "Entrance is around the corner on W 2nd Ave.",
     /** Two sentences joined by a newline. Render with `whitespace-pre-line`
      *  so the amenities line wraps to its own row visually. */
