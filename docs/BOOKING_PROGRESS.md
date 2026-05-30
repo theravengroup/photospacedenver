@@ -13,6 +13,47 @@ Format:
 
 ---
 
+## 2026-05-30 — Phase 4 shipped: /book-native multi-step UI ✅
+- area: customer-facing booking wizard
+- commit: `cb7f426`
+- routes added:
+  - GET `/book-native` — the wizard page (unlisted; robots noindex; no
+    nav link; reach by typing URL during parallel test)
+  - GET `/book-native/success` — Stripe return_url target; polls
+    `/api/booking/status` until webhook flips booking to confirmed
+  - POST `/api/booking/slots` — per-day labeled slot list
+    (available/requires_approval/blocked) using `generateSlots` +
+    `fetchBusyWindows`, with DST-correct Denver day boundaries
+  - GET `/api/booking/status` — read-only booking polling endpoint
+    (minimal fields to avoid PII enumeration via UUID guessing)
+- UX decisions baked in:
+  - **3-tier service cards + sub-pick** (locked-in design choice from Dan)
+  - **No "first time?" question** — feels paternalistic; email is asked
+    once at step 4, no PII prefill from unverified email
+  - **Save-payment via Stripe Link** — auto-surfaces in PaymentElement
+    when the customer email is set; zero local storage of card data
+  - **4 required fields**: first/last/email/phone, with browser autofill
+  - **$0 path** skips Stripe entirely and inline-renders ConfirmationStep
+  - **Server-authoritative** throughout: live pricing via `/api/booking/quote`
+    (debounced + cancellable), real availability via `/api/booking/slots`,
+    booking creation via `/api/booking/checkout` (atomic hold + intent +
+    idempotency), confirmation status via `/api/booking/status`
+- visual:
+  - dark glass aesthetic, existing tokens (tungsten accent, bone text)
+  - sticky right-rail price summary on desktop; bottom sheet on mobile
+  - progress stepper with jump-back on past steps
+  - react-day-picker themed via inline --rdp-* vars
+  - skeleton placeholders during slot fetch
+  - Stripe Elements themed dark via `theme:'night'` + brand variables
+- prod smoke test (after deploy):
+  - `GET /book-native` → 200, HTML contains Service step copy
+  - `POST /api/booking/slots {date: tomorrow, hours: 4}` → 21 slots
+    correctly labeled (1 available, 1 requires_approval, 19 blocked due
+    to overlap with live Acuity events within 2h buffer)
+- next: Dan opens `/book-native` end-to-end via real browser, does a
+  Studio Tour (free, no Stripe) and/or a $1-class real card test to
+  flip COUP-003, PAY-006 refund flow, and the PARA-* parallel-test gates.
+
 ## 2026-05-30 — Phase 3 verified live in production ✅
 - area: end-to-end verification + bug fixes
 - commits:
