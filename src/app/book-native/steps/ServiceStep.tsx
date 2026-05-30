@@ -169,12 +169,12 @@ export function ServiceStep({
         <span className="font-display text-lg text-tungsten">Free</span>
       </button>
 
-      <div className="flex items-center gap-3 pt-2">
-        <span className="text-xs uppercase tracking-[0.16em] text-muted">
-          or rent the studio
-        </span>
-        <span className="h-px flex-1 bg-hairline" aria-hidden />
-      </div>
+      {/* Visual separator between the free tour CTA and the paid rental
+          tiers — no copy, since the page H1 already says "Book the studio"
+          and the cards below name themselves (QUICK / HALF DAY / DAY /
+          FULL DAY / MULTI-DAY). */}
+      <span className="block h-px bg-hairline" aria-hidden />
+
 
       {/* Grid stretches every card to match the tallest in its row, so the
           single-option cards (Half-day, Multi-day) and the multi-option ones
