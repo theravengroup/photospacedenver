@@ -108,13 +108,8 @@ export function calculatePricing(input: PricingInput): PricingResult {
       label: `Multi-day rental — ${mdBreakdown.billableDays} ${dayWord} @ $${(MULTI_DAY_RATE_CENTS / 100).toFixed(0)}/day`,
       amountCents: canonicalBaseCents,
     });
-    if (mdBreakdown.savingsCents > 0) {
-      lineItems.push({
-        key: "multi-day-cap",
-        label: `Week-rate cap (saved ${mdBreakdown.billableDaysRaw - mdBreakdown.billableDays} days)`,
-        amountCents: 0, // already reflected in the cap; informational only
-      });
-    }
+    // (no cap — linear pricing. The savings line item the previous cap-
+    // based version emitted has been retired.)
   } else {
     lineItems.push({
       key: `appointment:${slug}`,
