@@ -126,7 +126,7 @@ export default function StudioFactsPage() {
 
           <Block title="Booking">
             <dl className="space-y-3">
-              <Row k="Book the studio" v={<Link className="text-tungsten hover:underline" href="/book">/book</Link>} />
+              <Row k="Book the studio" v={<Link className="text-tungsten hover:underline" href="/book-studio">/book-studio</Link>} />
               <Row k="Request an estimate" v={<Link className="text-tungsten hover:underline" href="/request-estimate">/request-estimate</Link>} />
               <Row k="Apply for membership" v={<Link className="text-tungsten hover:underline" href="/memberships">/memberships</Link>} />
               <Row k="Free tour" v={f.booking.freeTour} />

@@ -1,64 +1,56 @@
 "use client";
 
-import { useState } from "react";
-import dynamic from "next/dynamic";
-import { SITE, ANALYTICS_EVENTS } from "@/lib/content/site-config";
-import type { BookingVariant } from "@/components/ui/BookingModal";
+import Link from "next/link";
+import { SITE, ANALYTICS_EVENTS, BOOKING } from "@/lib/content/site-config";
 
-const BookingModal = dynamic(
-  () => import("@/components/ui/BookingModal").then((m) => m.BookingModal),
-  { ssr: false },
-);
+const ITEM =
+  "flex w-full flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-bone transition-colors hover:text-tungsten";
 
-const ITEM = "flex w-full flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-bone transition-colors hover:text-tungsten";
-
-/** Persistent Book · Tour · Call bar, mobile only. Book/Tour open the same
- *  modals the inline CTAs use, so behavior is consistent site-wide. */
+/**
+ * Persistent Book · Tour · Call bar, mobile only.
+ * 2026-05-30 cutover: Book/Tour now navigate to /book-studio (the native
+ * wizard) instead of opening the Acuity-iframe modal. Tour uses
+ * ?session=tour so the wizard pre-selects the Free Studio Tour card.
+ */
 export function MobileStickyCTA() {
-  const [modal, setModal] = useState<BookingVariant | null>(null);
   return (
-    <>
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-hairline glass lg:hidden">
-        <div
-          className="grid grid-cols-3 pb-[max(0.25rem,env(safe-area-inset-bottom))]"
-          style={{ color: "var(--color-bone)" }}
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-hairline glass lg:hidden">
+      <div
+        className="grid grid-cols-3 pb-[max(0.25rem,env(safe-area-inset-bottom))]"
+        style={{ color: "var(--color-bone)" }}
+      >
+        <Link
+          href={BOOKING.bookPath}
+          className={ITEM}
+          data-cta-location="mobile-sticky"
+          data-cta-type="book_studio"
+          data-event={ANALYTICS_EVENTS.clickBookStudio}
         >
-          <button
-            type="button"
-            onClick={() => setModal("book")}
-            className={ITEM}
-            data-cta-location="mobile-sticky"
-            data-cta-type="book_studio"
-            data-event={ANALYTICS_EVENTS.clickBookStudio}
-          >
-            <CalendarIcon />
-            Book
-          </button>
-          <button
-            type="button"
-            onClick={() => setModal("tour")}
-            className={`${ITEM} border-x border-hairline`}
-            data-cta-location="mobile-sticky"
-            data-cta-type="book_tour"
-            data-event={ANALYTICS_EVENTS.clickBookTour}
-          >
-            <EyeIcon />
-            Tour
-          </button>
-          <a
-            href={SITE.contact.phoneHref}
-            className={ITEM}
-            data-cta-location="mobile-sticky"
-            data-cta-type="call"
-            data-event={ANALYTICS_EVENTS.clickCall}
-          >
-            <PhoneIcon />
-            Call
-          </a>
-        </div>
+          <CalendarIcon />
+          Book
+        </Link>
+        <Link
+          href={`${BOOKING.bookPath}?session=tour`}
+          className={`${ITEM} border-x border-hairline`}
+          data-cta-location="mobile-sticky"
+          data-cta-type="book_tour"
+          data-event={ANALYTICS_EVENTS.clickBookTour}
+        >
+          <EyeIcon />
+          Tour
+        </Link>
+        <a
+          href={SITE.contact.phoneHref}
+          className={ITEM}
+          data-cta-location="mobile-sticky"
+          data-cta-type="call"
+          data-event={ANALYTICS_EVENTS.clickCall}
+        >
+          <PhoneIcon />
+          Call
+        </a>
       </div>
-      {modal && <BookingModal variant={modal} onClose={() => setModal(null)} />}
-    </>
+    </div>
   );
 }
 

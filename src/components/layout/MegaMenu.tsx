@@ -43,7 +43,7 @@ const GEAR_CATEGORIES: { href: string; label: string; desc: string; icon: Lucide
 const STUDIO_LINKS: { href: string; label: string; desc: string; icon: LucideIcon }[] = [
   { href: "/studio", label: "The Studio", desc: "A real cyclorama, controllable daylight, 24/7 access.", icon: Building2 },
   { href: "/studio-pricing", label: "Studio Pricing", desc: "Hourly, half-day & full-day rates.", icon: Tag },
-  { href: "/book", label: "Book the Studio", desc: "Reserve your time — same rate, day or night.", icon: CalendarCheck },
+  { href: "/book-studio", label: "Book the Studio", desc: "Reserve your time — same rate, day or night.", icon: CalendarCheck },
 ];
 
 const MIN_MEMBER_PRICE = Math.min(...MEMBERSHIP_TIERS.map((t) => t.price));

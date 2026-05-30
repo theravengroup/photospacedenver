@@ -49,7 +49,7 @@ export default function RequestEstimatePage() {
             </ol>
             <p className="mt-6 text-xs text-muted">
               Just need the studio for a day? You can book that directly on the{" "}
-              <Link href="/book" className="text-tungsten hover:underline">booking page</Link>.
+              <Link href="/book-studio" className="text-tungsten hover:underline">booking page</Link>.
             </p>
             <p className="mt-4 text-xs text-muted">
               Prefer to talk? Call <a href={SITE.contact.phoneHref} className="text-tungsten hover:underline">{SITE.contact.phone}</a>.

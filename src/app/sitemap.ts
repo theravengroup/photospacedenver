@@ -12,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/memberships", priority: 0.9, freq: "monthly" },
     { path: "/gear-rental", priority: 0.9, freq: "monthly" },
     { path: "/studio-pricing", priority: 0.8, freq: "monthly" },
-    { path: "/book", priority: 0.8, freq: "monthly" },
+    { path: "/book-studio", priority: 0.8, freq: "monthly" },
     { path: "/contact", priority: 0.7, freq: "yearly" },
     { path: "/about", priority: 0.6, freq: "yearly" },
     { path: "/faq", priority: 0.6, freq: "monthly" },

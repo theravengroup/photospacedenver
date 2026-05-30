@@ -53,7 +53,7 @@ export const REDIRECTS: Redirect[] = [
   { from: "/join", to: "/about" }, // crew recruitment — NOT membership
 
   // Booking / estimate / account
-  { from: "/how-to-rent", to: "/book" },
+  { from: "/how-to-rent", to: "/book-studio" },
   { from: "/book-online", to: "/book" },
   { from: "/estimate", to: "/request-estimate" },
   { from: "/request-estimate", to: "/request-estimate" },

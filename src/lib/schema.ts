@@ -68,7 +68,7 @@ export function localBusinessSchema() {
         name: `Studio rental — ${t.name}`,
         price: t.price,
         priceCurrency: "USD",
-        url: absoluteUrl("/book"),
+        url: absoluteUrl("/book-studio"),
       })),
       ...MEMBERSHIP_TIERS.map((t) => ({
         "@type": "Offer",

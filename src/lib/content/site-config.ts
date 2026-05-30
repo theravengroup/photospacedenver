@@ -98,7 +98,11 @@ export const BOOKING = {
   applyPath: "/memberships/apply",
   tourNote: "Free 20-minute studio tours, 7 days a week.",
   estimatePath: "/request-estimate",
-  bookPath: "/book",
+  /** Public booking flow. Cut over from Acuity-modal-at-/book to the native
+   *  wizard at /book-studio on 2026-05-30. /book still works (Acuity iframe
+   *  kept as a rollback path) but every CTA in the site config now routes
+   *  to the native flow. */
+  bookPath: "/book-studio",
 } as const;
 
 /** Canonical CTA labels — use these strings, don't invent new ones. */
@@ -153,7 +157,7 @@ export const NAV_PRIMARY: NavItem[] = [
     children: [
       { label: "Studio Pricing", href: "/studio-pricing" },
       { label: "Memberships", href: "/memberships" },
-      { label: "Book the Studio", href: "/book" },
+      { label: "Book the Studio", href: "/book-studio" },
     ],
   },
   {
@@ -183,7 +187,7 @@ export const FOOTER_COLUMNS: { heading: string; links: NavItem[] }[] = [
       { label: "The Studio", href: "/studio" },
       { label: "Studio Pricing", href: "/studio-pricing" },
       { label: "Memberships", href: "/memberships" },
-      { label: "Book the Studio", href: "/book" },
+      { label: "Book the Studio", href: "/book-studio" },
     ],
   },
   {
