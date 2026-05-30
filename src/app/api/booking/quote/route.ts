@@ -22,6 +22,9 @@ type QuoteBody = {
   appointmentTypeSlug?: string;
   startAt?: string;
   endAt?: string;
+  /** For multi-day: YYYY-MM-DD start + end dates (interpreted in Denver). */
+  multiDayStartDate?: string;
+  multiDayEndDate?: string;
   addonSlugs?: string[];
   couponCode?: string | null;
   customerEmail?: string | null;
@@ -41,26 +44,62 @@ export async function POST(req: Request) {
     : undefined;
   if (!appt) return NextResponse.json({ error: "invalid_appointment_type" }, { status: 400 });
 
-  const start = body.startAt ? new Date(body.startAt) : null;
-  const end = body.endAt ? new Date(body.endAt) : null;
+  const isMultiDay = appt.slug === "multi-day";
+
+  // Multi-day: compute start/end from the date range (Denver midnight bounds).
+  // Hourly: take startAt/endAt as-is.
+  let start: Date | null = null;
+  let end: Date | null = null;
+  if (isMultiDay) {
+    if (!body.multiDayStartDate || !body.multiDayEndDate) {
+      return NextResponse.json({ error: "missing_multi_day_dates" }, { status: 400 });
+    }
+    if (
+      !/^\d{4}-\d{2}-\d{2}$/.test(body.multiDayStartDate) ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(body.multiDayEndDate)
+    ) {
+      return NextResponse.json({ error: "invalid_multi_day_dates" }, { status: 400 });
+    }
+    start = denverMidnight(body.multiDayStartDate);
+    end = denverMidnight(body.multiDayEndDate, /*addDay*/ 1); // exclusive end at next midnight
+  } else {
+    start = body.startAt ? new Date(body.startAt) : null;
+    end = body.endAt ? new Date(body.endAt) : null;
+  }
   if (!start || !end || isNaN(start.getTime()) || isNaN(end.getTime())) {
     return NextResponse.json({ error: "invalid_dates" }, { status: 400 });
   }
+  if (end.getTime() <= start.getTime()) {
+    return NextResponse.json({ error: "end_before_start" }, { status: 400 });
+  }
 
-  // Filter add-ons by duration eligibility (tech tiers); ignore unknown slugs.
-  const validAddons = addonsForDuration(appt.hours);
-  const validSlugs = new Set(validAddons.map((a) => a.slug));
-  const resolvedAddons = (body.addonSlugs ?? [])
-    .filter((s) => validSlugs.has(s))
-    .map((s) => addonBySlug(s)!)
-    .map((a) => ({ slug: a.slug, label: a.label, priceCents: a.priceCents }));
+  // Filter add-ons. Multi-day v1 skips add-ons entirely — customers describe
+  // crew / lighting / paint needs in the notes field instead.
+  const resolvedAddons = isMultiDay
+    ? []
+    : (() => {
+        const validAddons = addonsForDuration(appt.hours);
+        const validSlugs = new Set(validAddons.map((a) => a.slug));
+        return (body.addonSlugs ?? [])
+          .filter((s) => validSlugs.has(s))
+          .map((s) => addonBySlug(s)!)
+          .map((a) => ({ slug: a.slug, label: a.label, priceCents: a.priceCents }));
+      })();
 
   // Availability (so the UI knows if the slot is even bookable)
   const availability = await checkAvailability({ start, end });
 
   // Preliminary subtotal for coupon math
+  const preliminaryBase = isMultiDay
+    ? // multi-day base resolves inside calculatePricing — for the coupon
+      // pre-check we need an estimate; do a quick calc here
+      // (calculatePricing repeats the math authoritatively below)
+      (
+        await import("@/lib/booking/multi-day")
+      ).countBillableDays(body.multiDayStartDate!, body.multiDayEndDate!).subtotalCents
+    : appt.basePriceCents;
   const preliminarySubtotal =
-    appt.basePriceCents + resolvedAddons.reduce((s, a) => s + a.priceCents, 0);
+    preliminaryBase + resolvedAddons.reduce((s, a) => s + a.priceCents, 0);
 
   // Coupon resolution requires an email (allowlist + per-user limits hinge on it)
   let resolvedCoupon: { code: string; type: "percent" | "fixed"; value: number } | null = null;
@@ -85,8 +124,11 @@ export async function POST(req: Request) {
 
   const pricing = calculatePricing({
     appointment: { slug: appt.slug, hours: appt.hours, basePriceCents: appt.basePriceCents },
+    multiDay: isMultiDay
+      ? { startDateISO: body.multiDayStartDate!, endDateISO: body.multiDayEndDate! }
+      : undefined,
     addons: resolvedAddons,
-    member: null, // members come in once Supabase Auth wires (Phase 4)
+    member: null, // members come in once Supabase Auth wires (Phase 5)
     coupon: resolvedCoupon,
     paymentMethod: body.paymentMethod ?? "card",
   });
@@ -97,4 +139,24 @@ export async function POST(req: Request) {
     couponError,
     pricing,
   });
+}
+
+/**
+ * Convert a YYYY-MM-DD string (interpreted as Denver-local) to its UTC
+ * midnight Date. Optionally add days (useful for end-of-day = next-midnight).
+ */
+function denverMidnight(dateISO: string, addDay = 0): Date {
+  const [y, m, d] = dateISO.split("-").map(Number);
+  // Same offset-extraction approach used by /api/booking/slots
+  const utcMidnight = Date.UTC(y, m - 1, d + addDay);
+  const fmt = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Denver",
+    timeZoneName: "shortOffset",
+    year: "numeric",
+  });
+  const parts = fmt.formatToParts(new Date(utcMidnight));
+  const off = parts.find((p) => p.type === "timeZoneName")?.value ?? "GMT-7";
+  const match = /GMT([+-]\d+)/.exec(off);
+  const hoursOffset = match ? Number(match[1]) : -7;
+  return new Date(utcMidnight - hoursOffset * 60 * 60 * 1000);
 }

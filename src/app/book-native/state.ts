@@ -13,11 +13,16 @@ import type { PricingResult } from "@/lib/booking/types";
 export type StepId =
   | "service"
   | "datetime"
+  | "multiday"
   | "addons"
   | "intake"
   | "payment"
   | "confirmation";
 
+/**
+ * Visible step order in the stepper. multiday + datetime occupy the same
+ * "slot 2" — only one renders based on whether the user picked multi-day.
+ */
 export const STEP_ORDER: StepId[] = [
   "service",
   "datetime",
@@ -30,6 +35,7 @@ export const STEP_ORDER: StepId[] = [
 export const STEP_LABELS: Record<StepId, string> = {
   service: "Session",
   datetime: "Date & time",
+  multiday: "Dates",
   addons: "Add-ons",
   intake: "Your info",
   payment: "Pay",
@@ -43,10 +49,14 @@ export type WizardState = {
   appointmentTypeSlug: string | null;
   hours: number | null;
 
-  // Step 2: Date/time
+  // Step 2 (hourly): Date/time
   dateISO: string | null;
   startAt: string | null; // ISO
   endAt: string | null; // ISO
+
+  // Step 2 (multi-day): date range as YYYY-MM-DD
+  multiDayStartDate: string | null;
+  multiDayEndDate: string | null;
 
   // Step 3: Add-ons
   addonSlugs: string[];
@@ -80,6 +90,8 @@ export const INITIAL_STATE: WizardState = {
   dateISO: null,
   startAt: null,
   endAt: null,
+  multiDayStartDate: null,
+  multiDayEndDate: null,
   addonSlugs: [],
   customGearRequest: "",
   customerFirstName: "",

@@ -6,6 +6,13 @@
  * field changes, creates the booking + intent on transition into payment,
  * and routes to the success page after Stripe redirects (or the inline
  * ConfirmationStep for the $0 path).
+ *
+ * Step routing:
+ *   - Hourly path:    service → datetime → addons → intake → payment → confirmation
+ *   - Multi-day path: service → multiday → intake → payment → confirmation
+ *     (no add-ons in multi-day v1; customer's "tell us about the shoot" notes
+ *      land in the booking's custom_gear_request field)
+ *   - $0 path (free tour / 100%-off): skips payment, lands in confirmation
  */
 
 import { useEffect, useReducer, useCallback, useMemo, useRef } from "react";
@@ -19,6 +26,7 @@ import { Stepper } from "./parts/Stepper";
 import { PriceSummary } from "./parts/PriceSummary";
 import { ServiceStep } from "./steps/ServiceStep";
 import { DateTimeStep } from "./steps/DateTimeStep";
+import { MultiDayStep } from "./steps/MultiDayStep";
 import { AddonsStep } from "./steps/AddonsStep";
 import { IntakeStep } from "./steps/IntakeStep";
 import { PaymentStep } from "./steps/PaymentStep";
@@ -28,13 +36,34 @@ export function BookingWizard() {
   const [state, dispatch] = useReducer(wizardReducer, INITIAL_STATE);
 
   const set = useCallback((patch: Partial<WizardState>) => dispatch({ type: "set", patch }), []);
-  const next = useCallback(() => dispatch({ type: "next" }), []);
-  const back = useCallback(() => dispatch({ type: "back" }), []);
   const goto = useCallback((step: StepId) => dispatch({ type: "goto", step }), []);
 
+  const isMultiDay = state.appointmentTypeSlug === "multi-day";
+
+  // Stepper shows only the steps that apply to the chosen path.
+  const visibleSteps: StepId[] = isMultiDay
+    ? ["service", "multiday", "intake", "payment", "confirmation"]
+    : ["service", "datetime", "addons", "intake", "payment", "confirmation"];
+
+  // Path-aware navigation. service → (multiday | datetime); multiday → intake;
+  // datetime → addons; addons → intake.
+  const fromService = useCallback(() => {
+    goto(isMultiDay ? "multiday" : "datetime");
+  }, [goto, isMultiDay]);
+  const fromMultiDay = useCallback(() => goto("intake"), [goto]);
+  const fromDateTime = useCallback(() => goto("addons"), [goto]);
+  const fromAddons = useCallback(() => goto("intake"), [goto]);
+  const backFromMultiDay = useCallback(() => goto("service"), [goto]);
+  const backFromDateTime = useCallback(() => goto("service"), [goto]);
+  const backFromAddons = useCallback(() => goto("datetime"), [goto]);
+  const backFromIntake = useCallback(
+    () => goto(isMultiDay ? "multiday" : "addons"),
+    [goto, isMultiDay],
+  );
+  const backFromPayment = useCallback(() => goto("intake"), [goto]);
+
   // Live pricing preview — refetch whenever a price-affecting input changes.
-  // Skip on intake/payment/confirmation: by then the price is locked into the
-  // server-created booking. Debounced.
+  // Debounced 250ms.
   const debouncedFetchRef = useRef<number | null>(null);
   const livePriceInputs = useMemo(
     () =>
@@ -42,54 +71,83 @@ export function BookingWizard() {
         slug: state.appointmentTypeSlug,
         startAt: state.startAt,
         endAt: state.endAt,
+        mdStart: state.multiDayStartDate,
+        mdEnd: state.multiDayEndDate,
         addons: state.addonSlugs,
       }),
-    [state.appointmentTypeSlug, state.startAt, state.endAt, state.addonSlugs],
+    [
+      state.appointmentTypeSlug,
+      state.startAt,
+      state.endAt,
+      state.multiDayStartDate,
+      state.multiDayEndDate,
+      state.addonSlugs,
+    ],
   );
 
   useEffect(() => {
-    if (!state.appointmentTypeSlug || !state.hours) return;
-    // Only need a live price once the user has at least picked a service.
-    // startAt/endAt drive availability — we can preview pricing without them
-    // by passing now+24h as a placeholder, but the cleaner UX is to wait
-    // until step 2 has a time. Either way works for pricing math.
+    if (!state.appointmentTypeSlug) return;
+    // Multi-day needs a date range before we can preview.
+    if (isMultiDay && (!state.multiDayStartDate || !state.multiDayEndDate)) return;
+    // Hourly needs at least a duration; if no time yet we pass a placeholder
+    // (pricing math is duration-driven, not time-driven).
+    if (!isMultiDay && !state.hours) return;
+
     if (debouncedFetchRef.current) window.clearTimeout(debouncedFetchRef.current);
     debouncedFetchRef.current = window.setTimeout(() => {
       void (async () => {
         set({ livePricingLoading: true, livePricingError: null });
         try {
-          // Placeholder times if user hasn't picked a slot yet — pricing is
-          // duration-driven and doesn't actually depend on start/end value.
-          const start =
-            state.startAt ??
-            new Date(Date.now() + 25 * 60 * 60 * 1000).toISOString();
-          const end =
-            state.endAt ??
-            new Date(
-              new Date(start).getTime() + state.hours! * 60 * 60 * 1000,
-            ).toISOString();
+          const body: Record<string, unknown> = {
+            appointmentTypeSlug: state.appointmentTypeSlug,
+            addonSlugs: state.addonSlugs,
+            paymentMethod: "card",
+          };
+          if (isMultiDay) {
+            body.multiDayStartDate = state.multiDayStartDate;
+            body.multiDayEndDate = state.multiDayEndDate;
+          } else {
+            const start =
+              state.startAt ??
+              new Date(Date.now() + 25 * 60 * 60 * 1000).toISOString();
+            const end =
+              state.endAt ??
+              new Date(
+                new Date(start).getTime() + state.hours! * 60 * 60 * 1000,
+              ).toISOString();
+            body.startAt = start;
+            body.endAt = end;
+          }
+
           const res = await fetch("/api/booking/quote", {
             method: "POST",
             headers: { "content-type": "application/json" },
-            body: JSON.stringify({
-              appointmentTypeSlug: state.appointmentTypeSlug,
-              startAt: start,
-              endAt: end,
-              addonSlugs: state.addonSlugs,
-              paymentMethod: "card",
-            }),
+            body: JSON.stringify(body),
           });
           const json = await res.json();
           if (!res.ok) {
-            set({ livePricing: null, livePricingError: json.error ?? "quote_error", livePricingLoading: false });
+            set({
+              livePricing: null,
+              livePricingError: json.error ?? "quote_error",
+              livePricingLoading: false,
+            });
           } else {
-            set({ livePricing: json.pricing, livePricingError: null, livePricingLoading: false });
+            set({
+              livePricing: json.pricing,
+              livePricingError: null,
+              livePricingLoading: false,
+            });
           }
         } catch {
-          set({ livePricing: null, livePricingError: "network_error", livePricingLoading: false });
+          set({
+            livePricing: null,
+            livePricingError: "network_error",
+            livePricingLoading: false,
+          });
         }
       })();
     }, 250);
+
     return () => {
       if (debouncedFetchRef.current) window.clearTimeout(debouncedFetchRef.current);
     };
@@ -100,23 +158,30 @@ export function BookingWizard() {
   const handleIntakeContinue = useCallback(async () => {
     set({ livePricingLoading: true, livePricingError: null });
     try {
+      const checkoutBody: Record<string, unknown> = {
+        appointmentTypeSlug: state.appointmentTypeSlug,
+        addonSlugs: state.addonSlugs,
+        customerFirstName: state.customerFirstName,
+        customerLastName: state.customerLastName,
+        customerEmail: state.customerEmail,
+        customerPhone: state.customerPhone,
+        customerAdditionalEmails: state.additionalEmails,
+        customGearRequest: state.customGearRequest || null,
+        policiesAccepted: state.policiesAccepted,
+        paymentMethod: "card",
+      };
+      if (isMultiDay) {
+        checkoutBody.multiDayStartDate = state.multiDayStartDate;
+        checkoutBody.multiDayEndDate = state.multiDayEndDate;
+      } else {
+        checkoutBody.startAt = state.startAt;
+        checkoutBody.endAt = state.endAt;
+      }
+
       const res = await fetch("/api/booking/checkout", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          appointmentTypeSlug: state.appointmentTypeSlug,
-          startAt: state.startAt,
-          endAt: state.endAt,
-          addonSlugs: state.addonSlugs,
-          customerFirstName: state.customerFirstName,
-          customerLastName: state.customerLastName,
-          customerEmail: state.customerEmail,
-          customerPhone: state.customerPhone,
-          customerAdditionalEmails: state.additionalEmails,
-          customGearRequest: state.customGearRequest || null,
-          policiesAccepted: state.policiesAccepted,
-          paymentMethod: "card",
-        }),
+        body: JSON.stringify(checkoutBody),
       });
       const json = await res.json();
       if (!res.ok || !json.ok) {
@@ -127,9 +192,8 @@ export function BookingWizard() {
               ? "Slot was just taken — please pick another."
               : json.error ?? "Couldn't reserve slot — try again.",
         });
-        // Knock the user back to the date step if the slot vanished
         if (json.error === "not_available" || json.error === "requires_approval") {
-          goto("datetime");
+          goto(isMultiDay ? "multiday" : "datetime");
         }
         return;
       }
@@ -154,49 +218,65 @@ export function BookingWizard() {
         livePricing: json.pricing,
         livePricingLoading: false,
       });
-      next();
+      goto("payment");
     } catch {
       set({
         livePricingLoading: false,
         livePricingError: "Network error — try again.",
       });
     }
-  }, [state, set, next, goto]);
+  }, [state, set, goto, isMultiDay]);
 
-  // For paid bookings, Stripe redirects to /book-native/success directly;
-  // no inline ConfirmationStep render. But if the user lands here in
-  // confirmation state after the $0 path, render it.
   const currentStep = state.step;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 pb-24 lg:pb-0">
       <div>
-        <Stepper current={currentStep} onJumpBack={goto} />
+        <Stepper current={currentStep} visibleSteps={visibleSteps} onJumpBack={goto} />
 
         {currentStep === "service" && (
-          <ServiceStep state={state} onChange={set} onContinue={next} />
+          <ServiceStep state={state} onChange={set} onContinue={fromService} />
         )}
         {currentStep === "datetime" && (
-          <DateTimeStep state={state} onChange={set} onContinue={next} onBack={back} />
+          <DateTimeStep
+            state={state}
+            onChange={set}
+            onContinue={fromDateTime}
+            onBack={backFromDateTime}
+          />
+        )}
+        {currentStep === "multiday" && (
+          <MultiDayStep
+            state={state}
+            onChange={set}
+            onContinue={fromMultiDay}
+            onBack={backFromMultiDay}
+          />
         )}
         {currentStep === "addons" && (
-          <AddonsStep state={state} onChange={set} onContinue={next} onBack={back} />
+          <AddonsStep
+            state={state}
+            onChange={set}
+            onContinue={fromAddons}
+            onBack={backFromAddons}
+          />
         )}
         {currentStep === "intake" && (
           <IntakeStep
             state={state}
             onChange={set}
             onContinue={handleIntakeContinue}
-            onBack={back}
+            onBack={backFromIntake}
           />
         )}
-        {currentStep === "payment" && <PaymentStep state={state} onBack={back} />}
+        {currentStep === "payment" && (
+          <PaymentStep state={state} onBack={backFromPayment} />
+        )}
         {currentStep === "confirmation" && <ConfirmationStep state={state} />}
       </div>
 
       <PriceSummary state={state} />
 
-      {/* Hidden noscript guard so search engines see a meaningful skeleton */}
       <noscript>
         <p className="text-sm text-muted">
           The booking flow needs JavaScript. Email {""}

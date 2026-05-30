@@ -7,18 +7,21 @@
  * picking a date).
  */
 
-import { STEP_ORDER, STEP_LABELS, type StepId } from "../state";
+import { STEP_LABELS, type StepId } from "../state";
 import { cn } from "@/lib/cn";
 
 export function Stepper({
   current,
+  visibleSteps,
   onJumpBack,
 }: {
   current: StepId;
+  /** The path-specific step list. Hourly: [service, datetime, addons,
+   *  intake, payment]. Multi-day: [service, multiday, intake, payment]. */
+  visibleSteps: StepId[];
   onJumpBack: (step: StepId) => void;
 }) {
-  // Don't render the confirmation marker as a clickable step — it's a terminal state
-  const visible = STEP_ORDER.filter((s): s is StepId => s !== "confirmation");
+  const visible = visibleSteps.filter((s) => s !== "confirmation");
   const currentIdx = visible.findIndex((s) => s === current);
 
   return (

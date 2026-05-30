@@ -16,6 +16,7 @@
  */
 
 import type { PricingInput, PricingResult, PricingLineItem } from "./types";
+import { countBillableDays, MULTI_DAY_RATE_CENTS } from "./multi-day";
 
 const CARD_FEE_PCT = 3;
 const ACH_FEE_PCT = 1;
@@ -46,16 +47,29 @@ export function formatDuration(hours: number): string {
 }
 
 export function calculatePricing(input: PricingInput): PricingResult {
-  const { appointment, addons, member, coupon, paymentMethod } = input;
-  const { hours, basePriceCents: canonicalBaseCents, slug } = appointment;
+  const { appointment, multiDay, addons, member, coupon, paymentMethod } = input;
+  const { hours, slug } = appointment;
+
+  // Multi-day overrides the canonical base price — base = countBillableDays
+  // × MULTI_DAY_RATE_CENTS (capped). Member hours don't apply to multi-day
+  // (no overage rate logic). Add-ons / coupons / fees apply normally.
+  const isMultiDay = slug === "multi-day";
+  const mdBreakdown =
+    isMultiDay && multiDay
+      ? countBillableDays(multiDay.startDateISO, multiDay.endDateISO)
+      : null;
+
+  const canonicalBaseCents = isMultiDay
+    ? mdBreakdown?.subtotalCents ?? 0
+    : appointment.basePriceCents;
 
   const addonsTotalCents = addons.reduce((s, a) => s + a.priceCents, 0);
 
-  // 1. Member free-hours
+  // 1. Member free-hours (hourly only; multi-day never discounts via member)
   let memberHoursApplied = 0;
   let memberDiscountCents = 0;
   let baseAfterMemberCents = canonicalBaseCents;
-  if (member && hours > 0) {
+  if (!isMultiDay && member && hours > 0) {
     memberHoursApplied = Math.min(hours, Math.max(0, member.hoursAvailable));
     const overageHours = Math.max(0, hours - memberHoursApplied);
     baseAfterMemberCents = Math.round(overageHours * MEMBER_EXTRA_HOUR_CENTS);
@@ -87,11 +101,27 @@ export function calculatePricing(input: PricingInput): PricingResult {
 
   // 5. Line items for receipts / order summary (sum = totalCents)
   const lineItems: PricingLineItem[] = [];
-  lineItems.push({
-    key: `appointment:${slug}`,
-    label: `Studio booking — ${hours} hr${hours === 1 ? "" : "s"}`,
-    amountCents: canonicalBaseCents,
-  });
+  if (isMultiDay && mdBreakdown) {
+    const dayWord = mdBreakdown.billableDays === 1 ? "day" : "days";
+    lineItems.push({
+      key: `appointment:${slug}`,
+      label: `Multi-day rental — ${mdBreakdown.billableDays} ${dayWord} @ $${(MULTI_DAY_RATE_CENTS / 100).toFixed(0)}/day`,
+      amountCents: canonicalBaseCents,
+    });
+    if (mdBreakdown.savingsCents > 0) {
+      lineItems.push({
+        key: "multi-day-cap",
+        label: `Week-rate cap (saved ${mdBreakdown.billableDaysRaw - mdBreakdown.billableDays} days)`,
+        amountCents: 0, // already reflected in the cap; informational only
+      });
+    }
+  } else {
+    lineItems.push({
+      key: `appointment:${slug}`,
+      label: `Studio booking — ${formatDuration(hours)}`,
+      amountCents: canonicalBaseCents,
+    });
+  }
   for (const a of addons) {
     lineItems.push({ key: `addon:${a.slug}`, label: a.label, amountCents: a.priceCents });
   }

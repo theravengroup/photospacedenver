@@ -30,6 +30,9 @@ type CheckoutBody = {
   appointmentTypeSlug?: string;
   startAt?: string;
   endAt?: string;
+  /** For multi-day: YYYY-MM-DD start + end dates (interpreted in Denver). */
+  multiDayStartDate?: string;
+  multiDayEndDate?: string;
   addonSlugs?: string[];
   couponCode?: string | null;
   customerFirstName?: string;
@@ -70,8 +73,28 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "invalid_appointment_type" }, { status: 400 });
   }
 
-  const start = body.startAt ? new Date(body.startAt) : null;
-  const end = body.endAt ? new Date(body.endAt) : null;
+  const isMultiDay = appt.slug === "multi-day";
+
+  // Resolve the window: multi-day uses date range (Denver midnight bounds);
+  // hourly uses the startAt/endAt timestamps as provided.
+  let start: Date | null = null;
+  let end: Date | null = null;
+  if (isMultiDay) {
+    if (!body.multiDayStartDate || !body.multiDayEndDate) {
+      return NextResponse.json({ error: "missing_multi_day_dates" }, { status: 400 });
+    }
+    if (
+      !/^\d{4}-\d{2}-\d{2}$/.test(body.multiDayStartDate) ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(body.multiDayEndDate)
+    ) {
+      return NextResponse.json({ error: "invalid_multi_day_dates" }, { status: 400 });
+    }
+    start = denverMidnight(body.multiDayStartDate);
+    end = denverMidnight(body.multiDayEndDate, /*addDay*/ 1);
+  } else {
+    start = body.startAt ? new Date(body.startAt) : null;
+    end = body.endAt ? new Date(body.endAt) : null;
+  }
   if (!start || !end || isNaN(start.getTime()) || isNaN(end.getTime())) {
     return NextResponse.json({ error: "invalid_dates" }, { status: 400 });
   }
@@ -79,37 +102,53 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "end_before_start" }, { status: 400 });
   }
 
-  // Duration must match the appointment type (prevents arbitrary windows).
-  const actualHours = (end.getTime() - start.getTime()) / 3_600_000;
-  if (Math.abs(actualHours - appt.hours) > 0.01) {
-    return NextResponse.json({ error: "duration_mismatch" }, { status: 400 });
+  // Hourly: duration must match appointment type. Multi-day: skipped — the
+  // range is the booking.
+  if (!isMultiDay) {
+    const actualHours = (end.getTime() - start.getTime()) / 3_600_000;
+    if (Math.abs(actualHours - appt.hours) > 0.01) {
+      return NextResponse.json({ error: "duration_mismatch" }, { status: 400 });
+    }
   }
 
-  // Live availability re-check (vs. customer-side preview which may be stale)
+  // Live availability re-check (vs. customer-side preview which may be stale).
+  // Multi-day uses the same code path — the buffer + lead-time + max-advance
+  // rules apply across the entire range.
   const availability = await checkAvailability({ start, end });
   if (!availability.available) {
     return NextResponse.json({ error: "not_available", availability }, { status: 409 });
   }
   if (availability.requiresApproval) {
-    // <12h leads must go through the request-only path (multi-day modal today).
     return NextResponse.json(
       { error: "requires_approval", reasons: availability.reasons },
       { status: 409 },
     );
   }
 
-  // Filter add-ons by duration eligibility, ignore unknown slugs
-  const validAddons = addonsForDuration(appt.hours);
-  const validSlugs = new Set(validAddons.map((a) => a.slug));
-  const resolvedAddons = (body.addonSlugs ?? [])
-    .filter((s) => validSlugs.has(s))
-    .map((s) => addonBySlug(s)!)
-    .map((a) => ({ slug: a.slug, label: a.label, priceCents: a.priceCents }));
+  // Filter add-ons by duration eligibility, ignore unknown slugs.
+  // Multi-day skips add-ons entirely in v1 (custom requests go in the notes
+  // field; admin can append crew/lighting after the fact).
+  const resolvedAddons = isMultiDay
+    ? []
+    : (() => {
+        const validAddons = addonsForDuration(appt.hours);
+        const validSlugs = new Set(validAddons.map((a) => a.slug));
+        return (body.addonSlugs ?? [])
+          .filter((s) => validSlugs.has(s))
+          .map((s) => addonBySlug(s)!)
+          .map((a) => ({ slug: a.slug, label: a.label, priceCents: a.priceCents }));
+      })();
 
   // Coupon (server-side recompute; never trust client total)
   let resolvedCoupon: { code: string; type: "percent" | "fixed"; value: number } | null = null;
+  const preliminaryBase = isMultiDay
+    ? (await import("@/lib/booking/multi-day")).countBillableDays(
+        body.multiDayStartDate!,
+        body.multiDayEndDate!,
+      ).subtotalCents
+    : appt.basePriceCents;
   const preliminarySubtotal =
-    appt.basePriceCents + resolvedAddons.reduce((s, a) => s + a.priceCents, 0);
+    preliminaryBase + resolvedAddons.reduce((s, a) => s + a.priceCents, 0);
   if (body.couponCode) {
     const res = await resolveCoupon({
       code: body.couponCode,
@@ -129,8 +168,11 @@ export async function POST(req: Request) {
 
   const pricing = calculatePricing({
     appointment: { slug: appt.slug, hours: appt.hours, basePriceCents: appt.basePriceCents },
+    multiDay: isMultiDay
+      ? { startDateISO: body.multiDayStartDate!, endDateISO: body.multiDayEndDate! }
+      : undefined,
     addons: resolvedAddons,
-    member: null, // Phase 4
+    member: null, // Phase 5
     coupon: resolvedCoupon,
     paymentMethod: body.paymentMethod ?? "card",
   });
@@ -214,4 +256,20 @@ export async function POST(req: Request) {
     total: pricing.totalCents,
     pricing,
   });
+}
+
+/** YYYY-MM-DD (interpreted in America/Denver) → UTC Date at local midnight. */
+function denverMidnight(dateISO: string, addDay = 0): Date {
+  const [y, m, d] = dateISO.split("-").map(Number);
+  const utcMidnight = Date.UTC(y, m - 1, d + addDay);
+  const fmt = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Denver",
+    timeZoneName: "shortOffset",
+    year: "numeric",
+  });
+  const parts = fmt.formatToParts(new Date(utcMidnight));
+  const off = parts.find((p) => p.type === "timeZoneName")?.value ?? "GMT-7";
+  const match = /GMT([+-]\d+)/.exec(off);
+  const hoursOffset = match ? Number(match[1]) : -7;
+  return new Date(utcMidnight - hoursOffset * 60 * 60 * 1000);
 }

@@ -11,6 +11,11 @@ export const APPOINTMENT_TYPES: AppointmentType[] = [
   // Free tour
   { slug: "tour", label: "Studio Tour (free)", hours: 20 / 60, basePriceCents: 0, group: "tour" },
 
+  // Multi-day rental — flat daily × billable days, capped at 4 (= $3,700)
+  // Hours/basePriceCents are placeholders; pricing engine reads the date
+  // range from PricingInput.multiDay instead.
+  { slug: "multi-day",         label: "Multi-day rental",   hours: 0,  basePriceCents:      0, group: "rental" },
+
   // Hourly ladder (Acuity-verbatim)
   { slug: "hourly-2",          label: "2 Hours",            hours: 2,  basePriceCents:  20000, group: "rental" },
   { slug: "hourly-3",          label: "3 Hours",            hours: 3,  basePriceCents:  29500, group: "rental" },

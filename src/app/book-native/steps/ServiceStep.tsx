@@ -9,7 +9,6 @@
  */
 
 import { useState } from "react";
-import Link from "next/link";
 import { cn } from "@/lib/cn";
 import type { WizardState } from "../state";
 
@@ -108,8 +107,14 @@ export function ServiceStep({
       hours: opt.hours,
     });
   }
+  function pickMultiDay() {
+    // Hours irrelevant for multi-day — pricing comes from the date range
+    onChange({ appointmentTypeSlug: "multi-day", hours: 0 });
+    setOpenTier(null);
+  }
 
   const tourSelected = state.appointmentTypeSlug === "tour";
+  const multiDaySelected = state.appointmentTypeSlug === "multi-day";
 
   return (
     <div className="space-y-6">
@@ -119,14 +124,6 @@ export function ServiceStep({
           1,900 sq ft of controllable daylight in Denver — remote-controlled
           blinds on every window, full cove, 24/7 keyless access. Photo or
           video. Pick a length and we&apos;ll find you a time.
-        </p>
-        <p className="mt-3 text-sm">
-          <Link
-            href="/request-estimate"
-            className="text-tungsten underline underline-offset-4 hover:text-tungsten-soft"
-          >
-            Booking more than one day? Request a multi-day quote →
-          </Link>
         </p>
       </header>
 
@@ -154,14 +151,16 @@ export function ServiceStep({
 
       <div className="text-xs uppercase tracking-wider text-muted pt-2">or rent the studio</div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
         {TIERS.map((tier) => {
           const isOpen = openTier === tier.id;
           const isPicked =
             state.appointmentTypeSlug != null &&
             state.hours != null &&
+            state.hours > 0 &&
             tier.options.some((o) => o.hours === state.hours) &&
-            !tourSelected;
+            !tourSelected &&
+            !multiDaySelected;
           return (
             <div
               key={tier.id}
@@ -223,6 +222,29 @@ export function ServiceStep({
             </div>
           );
         })}
+
+        {/* 4th card — Multi-day. No sub-pick; tapping selects + advances on Continue. */}
+        <button
+          type="button"
+          onClick={pickMultiDay}
+          className={cn(
+            "text-left bg-panel border rounded-card p-5 transition-colors",
+            "flex flex-col gap-2",
+            multiDaySelected
+              ? "border-tungsten ring-1 ring-tungsten/40"
+              : "border-hairline hover:border-tungsten/60",
+          )}
+          aria-pressed={multiDaySelected}
+        >
+          <div className="text-xs uppercase tracking-wider text-muted">Multi-day</div>
+          <div className="font-display text-2xl">2+ days</div>
+          <div className="text-sm text-muted">
+            $925/day · cap at 4 days ($3,700)
+          </div>
+          <div className="text-xs text-muted/80 mt-1">
+            Weekend (Sat + Sun) counts as one day.
+          </div>
+        </button>
       </div>
 
       <div className="pt-4 flex justify-end">

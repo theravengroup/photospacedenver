@@ -83,26 +83,48 @@ function SummaryBody({ state }: { state: WizardState }) {
 
       {state.appointmentTypeSlug && (
         <dl className="space-y-2 text-base">
-          {state.hours != null && (
-            <div className="flex justify-between gap-3">
-              <dt className="text-muted">Session</dt>
-              <dd className="text-right">
-                {state.appointmentTypeSlug === "tour"
-                  ? "Studio Tour (free)"
-                  : `${state.hours} ${state.hours === 1 ? "hour" : "hours"}`}
-              </dd>
-            </div>
-          )}
-          {state.startAt && state.endAt && (
-            <div className="flex justify-between gap-3">
-              <dt className="text-muted">When</dt>
-              <dd className="text-right">
-                <div>{DATE_FMT.format(new Date(state.startAt))}</div>
-                <div className="text-muted">
-                  {TIME_FMT.format(new Date(state.startAt))} – {TIME_FMT.format(new Date(state.endAt))}
+          {state.appointmentTypeSlug === "multi-day" ? (
+            <>
+              <div className="flex justify-between gap-3">
+                <dt className="text-muted">Session</dt>
+                <dd className="text-right">Multi-day rental</dd>
+              </div>
+              {state.multiDayStartDate && state.multiDayEndDate && (
+                <div className="flex justify-between gap-3">
+                  <dt className="text-muted">Dates</dt>
+                  <dd className="text-right">
+                    <div>{DATE_FMT.format(new Date(`${state.multiDayStartDate}T12:00:00`))}</div>
+                    <div className="text-muted">
+                      → {DATE_FMT.format(new Date(`${state.multiDayEndDate}T12:00:00`))}
+                    </div>
+                  </dd>
                 </div>
-              </dd>
-            </div>
+              )}
+            </>
+          ) : (
+            <>
+              {state.hours != null && (
+                <div className="flex justify-between gap-3">
+                  <dt className="text-muted">Session</dt>
+                  <dd className="text-right">
+                    {state.appointmentTypeSlug === "tour"
+                      ? "Studio Tour (free)"
+                      : `${state.hours} ${state.hours === 1 ? "hour" : "hours"}`}
+                  </dd>
+                </div>
+              )}
+              {state.startAt && state.endAt && (
+                <div className="flex justify-between gap-3">
+                  <dt className="text-muted">When</dt>
+                  <dd className="text-right">
+                    <div>{DATE_FMT.format(new Date(state.startAt))}</div>
+                    <div className="text-muted">
+                      {TIME_FMT.format(new Date(state.startAt))} – {TIME_FMT.format(new Date(state.endAt))}
+                    </div>
+                  </dd>
+                </div>
+              )}
+            </>
           )}
         </dl>
       )}

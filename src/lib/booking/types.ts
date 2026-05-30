@@ -70,6 +70,9 @@ export type Coupon = {
 
 export type PricingInput = {
   appointment: { slug: string; hours: number; basePriceCents: number };
+  /** Set when appointment.slug === "multi-day" — the date range whose
+   * billable days drive the base price (instead of hours × hourly rate). */
+  multiDay?: { startDateISO: string; endDateISO: string };
   addons: { slug: string; label: string; priceCents: number }[];
   member: { hoursAvailable: number; tier: MemberTier } | null;
   coupon: { code: string; type: "percent" | "fixed"; value: number } | null;
