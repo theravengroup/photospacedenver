@@ -215,6 +215,92 @@ export async function sendBookingCancellation(input: {
 }
 
 /**
+ * 24-hour reminder email — fires from the hourly cron about a day before
+ * the booking starts. Branded HTML with a "Manage your booking" CTA and
+ * a get-directions link. Plain-text fallback included.
+ */
+export async function sendBookingReminder(input: {
+  toEmails: string[];
+  appointmentSlug: string;
+  appointmentLabel: string;
+  customerFirstName: string;
+  bookingId: string;
+  startAt: Date;
+  endAt: Date;
+}): Promise<void> {
+  const date = DATE_FMT.format(input.startAt);
+  const time = `${TIME_FMT.format(input.startAt)} – ${TIME_FMT.format(input.endAt)}`;
+  const whenShort = `${date} · ${time}`;
+  const isTour = input.appointmentSlug === "tour";
+  const manageUrl = `${CANONICAL_DOMAIN}/booking/manage/${input.bookingId}`;
+  const mapsUrl = SITE.address.mapsHref;
+
+  const arrivalLine = isTour
+    ? `A photospace team member will meet you at the door.`
+    : `Easy in, easy out — 24/7 keyless access. Door code is in your confirmation email.`;
+
+  const customerSubject = isTour
+    ? `Tomorrow: your studio tour at ${TIME_FMT.format(input.startAt)}`
+    : `Tomorrow: your studio session at ${TIME_FMT.format(input.startAt)}`;
+
+  const customerText = [
+    `Hi ${input.customerFirstName},`,
+    ``,
+    isTour
+      ? `Quick reminder — your studio tour is tomorrow.`
+      : `Quick reminder — your studio session is tomorrow.`,
+    ``,
+    `What:  ${input.appointmentLabel}`,
+    `When:  ${whenShort}`,
+    `Where: ${whereLine()}`,
+    `       ${mapsUrl}`,
+    ``,
+    arrivalLine,
+    ``,
+    `Need to change something? ${manageUrl}`,
+    `Questions? ${SITE.contact.email} · ${SITE.contact.phone}`,
+    ``,
+    `See you soon.`,
+    `— photospace Denver`,
+  ].join("\n");
+
+  const customerHtml = renderBrandedEmail({
+    preheader: `${input.appointmentLabel} · ${whenShort}`,
+    eyebrow: "Tomorrow",
+    heading: isTour
+      ? `See you at the studio, ${input.customerFirstName}.`
+      : `Your session is tomorrow, ${input.customerFirstName}.`,
+    intro: `Quick reminder. Here are the details — same info you got in your confirmation.`,
+    details: [
+      { label: "Session", value: escapeText(input.appointmentLabel) },
+      { label: "Date", value: escapeText(date) },
+      { label: "Time", value: escapeText(time) },
+      {
+        label: "Where",
+        value: `${escapeText(whereLine())}<br><a href="${escapeText(mapsUrl)}" style="color:#c8842b;text-decoration:none;font-size:13px;">Get directions →</a>`,
+      },
+      {
+        label: "Confirmation #",
+        value: `<code style="font-family:ui-monospace,'SF Mono','Cascadia Mono',Menlo,monospace;font-size:12px;">${escapeText(input.bookingId)}</code>`,
+      },
+    ],
+    bodyHtml: `
+      <p style="margin:6px 0 18px 0;color:#b7afa2;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.6;">
+        ${escapeText(arrivalLine)}
+      </p>`,
+    cta: { label: "Manage your booking", href: manageUrl },
+    footnote: `Need to change or cancel? Use the button above, or just reply.`,
+  });
+
+  await sendEmail({
+    to: input.toEmails,
+    subject: customerSubject,
+    text: customerText,
+    html: customerHtml,
+  });
+}
+
+/**
  * Reschedule email — customer + admin. Shows old → new and CTAs to the
  * manage page so they can change again if they need to.
  */

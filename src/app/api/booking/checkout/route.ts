@@ -23,7 +23,12 @@ import { confirmBooking } from "@/lib/booking/confirm";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { getCurrentMember } from "@/lib/supabase/server";
 import { getMemberHoursAvailable } from "@/lib/booking/member-hours";
+import { rateLimit, clientIp, rateLimitHeaders } from "@/lib/booking/rate-limit";
 import type { PaymentMethod, MemberTier } from "@/lib/booking/types";
+
+// Checkout creates a Stripe intent + a DB row, so we're tighter than quote.
+const RATE_LIMIT = 10;
+const RATE_REFILL_PER_SEC = 0.1;
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -48,6 +53,14 @@ type CheckoutBody = {
 };
 
 export async function POST(req: Request) {
+  const rl = rateLimit(`checkout:${clientIp(req)}`, RATE_LIMIT, RATE_REFILL_PER_SEC);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "rate_limited" },
+      { status: 429, headers: rateLimitHeaders(rl, RATE_LIMIT) },
+    );
+  }
+
   let body: CheckoutBody;
   try {
     body = (await req.json()) as CheckoutBody;

@@ -27,6 +27,10 @@ import { appointmentTypeBySlug } from "@/lib/booking/appointment-types";
 import { checkAvailability } from "@/lib/booking/availability";
 import { updateEvent } from "@/lib/google/calendar";
 import { sendBookingReschedule } from "@/lib/booking/emails";
+import { rateLimit, clientIp, rateLimitHeaders } from "@/lib/booking/rate-limit";
+
+const RATE_LIMIT = 10;
+const RATE_REFILL_PER_SEC = 0.1;
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -55,6 +59,14 @@ export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const rl = rateLimit(`reschedule:${clientIp(req)}`, RATE_LIMIT, RATE_REFILL_PER_SEC);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "rate_limited" },
+      { status: 429, headers: rateLimitHeaders(rl, RATE_LIMIT) },
+    );
+  }
+
   const { id } = await params;
   if (!id || !/^[0-9a-f-]{32,}$/i.test(id)) {
     return NextResponse.json({ error: "invalid_id" }, { status: 400 });

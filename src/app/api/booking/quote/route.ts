@@ -15,7 +15,13 @@ import { checkAvailability } from "@/lib/booking/availability";
 import { resolveCoupon } from "@/lib/booking/coupons";
 import { getCurrentMember } from "@/lib/supabase/server";
 import { getMemberHoursAvailable } from "@/lib/booking/member-hours";
+import { rateLimit, clientIp, rateLimitHeaders } from "@/lib/booking/rate-limit";
 import type { PaymentMethod, MemberTier } from "@/lib/booking/types";
+
+// 60 quotes / min burst, sustained ~1 / sec — enough for a normal user
+// debouncing through the wizard, blocks abuse.
+const RATE_LIMIT = 60;
+const RATE_REFILL_PER_SEC = 1;
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -34,6 +40,14 @@ type QuoteBody = {
 };
 
 export async function POST(req: Request) {
+  const rl = rateLimit(`quote:${clientIp(req)}`, RATE_LIMIT, RATE_REFILL_PER_SEC);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "rate_limited" },
+      { status: 429, headers: rateLimitHeaders(rl, RATE_LIMIT) },
+    );
+  }
+
   let body: QuoteBody;
   try {
     body = (await req.json()) as QuoteBody;

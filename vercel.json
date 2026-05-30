@@ -1,6 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "crons": [
-    { "path": "/api/booking/cron/cleanup-holds", "schedule": "0 * * * *" }
+    { "path": "/api/booking/cron/cleanup-holds",  "schedule": "0 * * * *" },
+    { "path": "/api/booking/cron/send-reminders", "schedule": "15 * * * *" }
   ]
 }

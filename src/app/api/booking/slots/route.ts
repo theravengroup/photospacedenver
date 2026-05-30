@@ -21,6 +21,10 @@
 import { NextResponse } from "next/server";
 import { generateSlots } from "@/lib/booking/slots";
 import { fetchBusyWindows } from "@/lib/booking/availability";
+import { rateLimit, clientIp, rateLimitHeaders } from "@/lib/booking/rate-limit";
+
+const RATE_LIMIT = 90;
+const RATE_REFILL_PER_SEC = 1.5;
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -36,6 +40,14 @@ type SlotsBody = {
 };
 
 export async function POST(req: Request) {
+  const rl = rateLimit(`slots:${clientIp(req)}`, RATE_LIMIT, RATE_REFILL_PER_SEC);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "rate_limited" },
+      { status: 429, headers: rateLimitHeaders(rl, RATE_LIMIT) },
+    );
+  }
+
   let body: SlotsBody;
   try {
     body = (await req.json()) as SlotsBody;
