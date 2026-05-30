@@ -51,7 +51,7 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow="The story"
             title="This is not a converted warehouse."
-            intro={`Founded in ${SITE.foundedYear} and run by owner Dan Jahn, photospace is a purpose-built studio and gear house in Denver's Sun Valley — the city's home for professional photo and video production.`}
+            intro={`Founded in ${SITE.foundedYear} and run by owner Dan Jahn, photospace is a purpose-built studio and gear house in Denver — the city's home for professional photo and video production.`}
           />
           <p className="measure text-lg text-muted">
             The idea is simple: a serious, comfortable, fully-equipped place to make great work, backed

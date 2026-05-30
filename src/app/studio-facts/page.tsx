@@ -64,7 +64,9 @@ export default function StudioFactsPage() {
           <Block title="Location & contact">
             <dl className="space-y-3">
               <Row k="Address" v={f.location.address} />
-              <Row k="Neighborhood" v={f.location.neighborhood} />
+              {f.location.neighborhood && (
+                <Row k="Neighborhood" v={f.location.neighborhood} />
+              )}
               <Row k="Service area" v={f.location.serviceAreas.join(", ")} />
               <Row k="Phone" v={<a className="hover:text-tungsten" href={`tel:${f.contact.phone}`}>{f.contact.phone}</a>} />
               <Row k="Email" v={<a className="hover:text-tungsten" href={`mailto:${f.contact.email}`}>{f.contact.email}</a>} />

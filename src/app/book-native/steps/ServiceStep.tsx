@@ -116,8 +116,9 @@ export function ServiceStep({
       <header>
         <h1 className="font-display text-3xl sm:text-4xl">Book the studio</h1>
         <p className="text-muted mt-2 text-base sm:text-lg">
-          One photo studio in Denver — 1,900 sq ft, north-facing daylight, 24/7
-          keyless access. Pick a session length and we&apos;ll find you a time.
+          1,900 sq ft of controllable daylight in Denver — remote-controlled
+          blinds on every window, full cove, 24/7 keyless access. Photo or
+          video. Pick a length and we&apos;ll find you a time.
         </p>
         <p className="mt-3 text-sm">
           <Link
@@ -205,7 +206,14 @@ export function ServiceStep({
                           )}
                         >
                           {opt.label}
-                          <span className="text-muted ml-1">· {dollars(opt.priceCents)}</span>
+                          <span
+                            className={cn(
+                              "ml-1",
+                              active ? "text-ink/70" : "text-muted",
+                            )}
+                          >
+                            · {dollars(opt.priceCents)}
+                          </span>
                         </button>
                       );
                     })}

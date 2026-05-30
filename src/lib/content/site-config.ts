@@ -44,11 +44,16 @@ export const SITE = {
     regionName: "Colorado",
     postalCode: "80223",
     country: "US",
-    neighborhood: "Sun Valley",
+    /** Public-facing neighborhood label. Left empty intentionally: 209
+     * Kalamath / 80223 isn't a clean fit for any of the city's named
+     * neighborhoods, so we describe the location by highway + downtown
+     * distance instead (see `locationNote`). Consumers should skip
+     * rendering when this is empty. */
+    neighborhood: "",
     /** Single-line for display. */
     full: "209 Kalamath St, Unit 1, Denver, CO 80223",
     directionsNote: "Entrance is around the corner on W 2nd Ave.",
-    locationNote: "In Denver's Sun Valley neighborhood — just off I-25, minutes from downtown.",
+    locationNote: "Just off I-25, minutes from downtown Denver. Free parking, load-in ramp, outdoor deck.",
     mapsHref:
       "https://www.google.com/maps/dir/?api=1&destination=209%20Kalamath%20St%2C%20Denver%2C%20CO%2080223",
   },

@@ -41,7 +41,7 @@ export default function StudioPage() {
         image="/images/space/stage.jpg"
         eyebrow="The Studio"
         title="Where creativity finds its space."
-        lede="A custom-built photo & video studio in Denver's Sun Valley since 2008 — 1,900 ft² of controllable light, a real cyclorama, a starter light and grip kit, a calibrated tether station, and 24/7 access."
+        lede="A custom-built photo & video studio in Denver since 2008 — 1,900 ft² of controllable daylight with remote-controlled blinds, a real cyclorama, a starter light and grip kit, a calibrated tether station, and 24/7 access."
         breadcrumbs={breadcrumbs}
       >
         <BookingCTA page="studio" location="hero" />

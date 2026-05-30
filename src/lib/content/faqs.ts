@@ -52,7 +52,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: "Where is photospace located in Denver?",
-    a: "209 Kalamath St, Unit 1, Denver, CO 80223 — in Denver's Sun Valley neighborhood, just off I-25 and minutes from downtown. The building has free parking, a load-in ramp, and an outdoor deck.",
+    a: "209 Kalamath St, Unit 1, Denver, CO 80223 — just off I-25 and minutes from downtown. The building has free parking, a load-in ramp, and an outdoor deck.",
     tags: ["location"],
   },
   {

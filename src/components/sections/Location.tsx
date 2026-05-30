@@ -17,7 +17,7 @@ export function Location() {
           <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-hairline shadow-2xl">
             <Image
               src="/images/space/studio-drone-shot.jpg"
-              alt="Aerial view of photospace in Denver's Sun Valley — the studio, the rail line, and the Rockies on the horizon"
+              alt="Aerial view of photospace in Denver — the studio, the rail line, and the Rockies on the horizon"
               fill
               sizes="(min-width: 1024px) 45vw, 90vw"
               className="object-cover"
