@@ -13,6 +13,41 @@ Format:
 
 ---
 
+## 2026-05-30 — Phase 3 verified live in production ✅
+- area: end-to-end verification + bug fixes
+- commits:
+  - `b75ab5b` — extracted `confirmBooking()` shared helper so the $0 path
+    (free tour / 100%-off coupon) does the same side-effects as the webhook
+    success path (GCal event + customer + admin emails). Original $0 branch
+    silently skipped both.
+  - migration `fix_create_booking_hold_ambiguous_refs` (applied via MCP, also
+    mirrored to `supabase/migrations/20260530000002_phase3_booking_flow.sql`) —
+    `RETURNS TABLE(booking_id, hold_id, expires_at, ...)` OUT columns were
+    colliding with bare `expires_at` / `booking_id` refs inside the
+    holds-conflict subquery. Qualified every table reference with an alias.
+- verification curl runs against `https://www.photospacedenver.com`:
+  - `/api/booking/quote` for a 5/31 7am-MDT tour → correctly reported
+    `available:false` with `1 conflict within 2h buffer, source: gcal` (the
+    system is actively seeing live Acuity events and refusing to double-book).
+  - `/api/booking/quote` for a 6/15 noon 4-hour shoot → 39000 base + 1170
+    processing fee = 40170 total (matches the Acuity ladder).
+  - `/api/booking/webhook` with no `stripe-signature` → 400 `missing_signature`.
+  - `/api/booking/webhook` with `t=1,v1=deadbeef` → 400 `bad_signature`.
+  - `/api/booking/checkout` for a $0 Studio Tour at 5/31 6am UTC → created
+    real booking row `a18e04db-…`, `status: confirmed`,
+    `gcal_event_id: t6eh85613l781t41v3ci79bhds`, hold consumed (deleted),
+    healthcheck `busy_windows_next_24h` went 2 → 3 (real GCal event landed),
+    customer + admin confirmation emails sent via Resend.
+  - Test booking row deleted via MCP; Dan to clean up the GCal "Studio Tour
+    (free) — Phase3 Test PLEASE IGNORE" event manually.
+- features flipped (12): HOLD-001, HOLD-002, HOLD-003, PAY-001, PAY-003,
+  PAY-004, PAY-005, CAL-001, CAL-002, NOTIF-001, NOTIF-002, NOTIF-004,
+  COUP-001, POL-001, SEC-003 (15 total this round).
+- still awaiting parallel-test: PAY-006 refund flow, COUP-003 per-user usage
+  enforcement, NOTIF-003 reminder cron, PARA-* full parallel-test gates.
+- next: Phase 4 = polished public UI (Stripe Embedded Elements styled to the
+  site, customer-facing calendar picker, post-checkout success page).
+
 ## 2026-05-30 — Phase 3 (holds + Stripe + webhook + GCal write + cron) shipped ✅
 - area: phase-3 booking flow
 - migration applied via MCP (`phase3_booking_flow`): UNIQUE on `bookings.stripe_intent_id`, two SECURITY DEFINER PL/pgSQL functions:
