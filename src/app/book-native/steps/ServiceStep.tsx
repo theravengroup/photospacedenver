@@ -163,7 +163,7 @@ export function ServiceStep({
         <div className="flex-1">
           <div className="font-medium text-base sm:text-lg">Free studio tour</div>
           <div className="text-sm text-muted mt-0.5">
-            20 minutes · meet us in person before you book a real session
+            20 minutes · see the space in person before you book a real session
           </div>
         </div>
         <span className="font-display text-lg text-tungsten">Free</span>

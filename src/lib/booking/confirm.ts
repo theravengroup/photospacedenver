@@ -172,6 +172,7 @@ export async function confirmBooking(opts: {
   try {
     await sendBookingConfirmation({
       toEmails: allEmails,
+      appointmentSlug: row.appointment_type_slug,
       appointmentLabel: appt?.label ?? row.appointment_type_slug,
       startAt: new Date(row.start_at),
       endAt: new Date(row.end_at),
