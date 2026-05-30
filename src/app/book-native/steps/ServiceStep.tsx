@@ -58,10 +58,10 @@ const TIERS: Tier[] = [
       { label: "7h", hours: 7, priceCents: 66500 },
       { label: "8h", hours: 8, priceCents: 75500 },
       { label: "9h", hours: 9, priceCents: 84000 },
-      // The 10/11/12 Acuity rungs collapse into one "Full day" chip — same
-      // flat $925, books the full 12-hour window so the customer has the
-      // room all day.
-      { label: "Full day · 10–12h", hours: 12, priceCents: 92500 },
+      // The 10/11/12 Acuity rungs collapse into one chip — same flat $925,
+      // books the full 12-hour window so the customer has the room all day.
+      // Label is just "10–12h"; the parent card already says "Full day".
+      { label: "10–12h", hours: 12, priceCents: 92500 },
     ],
     fromCents: 57500,
   },
