@@ -9,6 +9,7 @@
  */
 
 import { useState } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/cn";
 import type { WizardState } from "../state";
 
@@ -114,9 +115,17 @@ export function ServiceStep({
     <div className="space-y-6">
       <header>
         <h1 className="font-display text-3xl sm:text-4xl">Book the studio</h1>
-        <p className="text-muted mt-2 text-sm sm:text-base">
-          One photo studio in Denver — 1,800 sq ft, north-facing daylight, 24/7
+        <p className="text-muted mt-2 text-base sm:text-lg">
+          One photo studio in Denver — 1,900 sq ft, north-facing daylight, 24/7
           keyless access. Pick a session length and we&apos;ll find you a time.
+        </p>
+        <p className="mt-3 text-sm">
+          <Link
+            href="/request-estimate"
+            className="text-tungsten underline underline-offset-4 hover:text-tungsten-soft"
+          >
+            Booking more than one day? Request a multi-day quote →
+          </Link>
         </p>
       </header>
 

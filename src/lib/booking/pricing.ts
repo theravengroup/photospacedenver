@@ -22,6 +22,29 @@ const ACH_FEE_PCT = 1;
 /** $65/hr — `MEMBERSHIP_TERMS.extraHourRate`. Member overage rate. */
 const MEMBER_EXTRA_HOUR_CENTS = 6500;
 
+/**
+ * Human-friendly duration for the "Studio booking — X" line item label.
+ * Avoids the "0.3333… hrs" horror show that a literal `${hours}` produced
+ * for the 20-minute tour.
+ *
+ * Examples:
+ *   0.333… → "20 minutes"
+ *   1      → "1 hour"
+ *   1.5    → "1h 30m"
+ *   5      → "5 hours"
+ */
+export function formatDuration(hours: number): string {
+  const totalMin = Math.round(hours * 60);
+  if (totalMin < 60) return `${totalMin} minutes`;
+  if (totalMin % 60 === 0) {
+    const h = totalMin / 60;
+    return `${h} ${h === 1 ? "hour" : "hours"}`;
+  }
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  return `${h}h ${m}m`;
+}
+
 export function calculatePricing(input: PricingInput): PricingResult {
   const { appointment, addons, member, coupon, paymentMethod } = input;
   const { hours, basePriceCents: canonicalBaseCents, slug } = appointment;

@@ -39,7 +39,7 @@ export function AddonsStep({
     <div className="space-y-6">
       <header>
         <h1 className="font-display text-3xl sm:text-4xl">Add anything?</h1>
-        <p className="text-muted mt-2 text-sm sm:text-base">
+        <p className="text-muted mt-2 text-base sm:text-lg">
           Every booking comes with the cove, base lighting, and full grip kit.
           These are upgrades — skip if you don&apos;t need them.
         </p>
@@ -80,8 +80,12 @@ export function AddonsStep({
                     )}
                   </span>
                   <span className="min-w-0">
-                    <span className="block font-medium">{a.label}</span>
-                    <span className="block text-xs text-muted mt-0.5 capitalize">{a.group}</span>
+                    <span className="block font-medium text-base">{a.label}</span>
+                    {a.description && (
+                      <span className="block text-sm text-muted mt-1 leading-snug">
+                        {a.description}
+                      </span>
+                    )}
                   </span>
                 </div>
                 <span className="font-display text-base shrink-0">

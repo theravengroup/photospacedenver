@@ -34,6 +34,9 @@ export type AppointmentType = {
 export type Addon = {
   slug: string;
   label: string;
+  /** What's actually in the kit / what the crew does. Shown in the booking
+   * picker so customers know exactly what they're paying for. */
+  description?: string;
   priceCents: number;
   group: "strobe" | "video" | "cyc" | "crew" | "fee";
   /** If set, addon is hidden unless booking duration ≥ this many hours. */

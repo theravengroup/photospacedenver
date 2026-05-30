@@ -78,11 +78,11 @@ function SummaryBody({ state }: { state: WizardState }) {
       <h3 className="text-xs uppercase tracking-wider text-muted mb-4">Your booking</h3>
 
       {!state.hours && !state.appointmentTypeSlug && (
-        <p className="text-sm text-muted">Pick a session to see your total.</p>
+        <p className="text-base text-muted">Pick a session to see your total.</p>
       )}
 
       {state.appointmentTypeSlug && (
-        <dl className="space-y-2 text-sm">
+        <dl className="space-y-2 text-base">
           {state.hours != null && (
             <div className="flex justify-between gap-3">
               <dt className="text-muted">Session</dt>
@@ -110,7 +110,7 @@ function SummaryBody({ state }: { state: WizardState }) {
       {pricing && (
         <>
           <div className="my-4 border-t border-hairline" />
-          <dl className="space-y-2 text-sm">
+          <dl className="space-y-2 text-base">
             {pricing.lineItems
               .filter((li) => li.key !== "processing-fee")
               .map((li) => (
@@ -135,7 +135,7 @@ function SummaryBody({ state }: { state: WizardState }) {
           <div className="my-4 border-t border-hairline" />
           <div className="flex justify-between items-baseline">
             <span className="text-sm text-muted uppercase tracking-wider">Total</span>
-            <span className="font-display text-2xl">{dollars(pricing.totalCents)}</span>
+            <span className="font-display text-3xl">{dollars(pricing.totalCents)}</span>
           </div>
         </>
       )}

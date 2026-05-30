@@ -128,7 +128,7 @@ export function DateTimeStep({
     <div className="space-y-6">
       <header>
         <h1 className="font-display text-3xl sm:text-4xl">Pick a date and time</h1>
-        <p className="text-muted mt-2 text-sm sm:text-base">
+        <p className="text-muted mt-2 text-base sm:text-lg">
           Times shown in Denver. Bookings need at least 12 hours&apos; lead and
           we leave a 2-hour buffer around every shoot.
         </p>

@@ -217,6 +217,38 @@ p, li, dt, dd, blockquote, figcaption {
   border-radius: 2px;
 }
 
+/* =========================================================
+   Form-field surface — used by both `components/forms/Fields.tsx`
+   (as a JS string constant via Tailwind utilities) and `.FIELD`
+   class form fields in newer code paths (e.g. /book-native).
+   Mirrors the Tailwind string + adds a tinted focus background +
+   stronger border so fields read clearly against dark glass.
+   ========================================================= */
+.FIELD {
+  display: block;
+  width: 100%;
+  border: 1px solid color-mix(in oklab, var(--hairline) 100%, var(--color-tungsten) 20%);
+  border-radius: 0.5rem;
+  background-color: color-mix(in oklab, var(--bg) 70%, transparent);
+  padding: 0.75rem 1rem;
+  font-size: 1.0625rem;          /* ~17px — large enough to read on retina */
+  line-height: 1.4;
+  color: currentColor;
+  outline: none;
+  transition: border-color 200ms ease, background-color 200ms ease;
+}
+.FIELD::placeholder {
+  color: var(--muted);
+  opacity: 0.65;
+}
+.FIELD:hover {
+  border-color: color-mix(in oklab, var(--color-tungsten) 60%, var(--hairline));
+}
+.FIELD:focus {
+  border-color: var(--color-tungsten);
+  background-color: color-mix(in oklab, var(--color-tungsten) 4%, transparent);
+}
+
 /* Subtle film grain over dark sections */
 .grain::before {
   content: "";

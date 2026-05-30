@@ -53,13 +53,13 @@ export function IntakeStep({
     <div className="space-y-6">
       <header>
         <h1 className="font-display text-3xl sm:text-4xl">Your info</h1>
-        <p className="text-muted mt-2 text-sm sm:text-base">
+        <p className="text-muted mt-2 text-base sm:text-lg">
           Just the basics — we&apos;ll use this to confirm your booking and
           reach you if anything comes up.
         </p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <Field label="First name" required>
           <input
             type="text"
@@ -217,7 +217,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="block text-sm text-muted mb-1.5">
+      <span className="block text-base text-muted mb-2">
         {label}
         {required && <span className="text-tungsten ml-0.5">*</span>}
       </span>
