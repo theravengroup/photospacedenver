@@ -70,12 +70,14 @@ function NavigationMenuTrigger({
         strokeWidth={2}
         aria-hidden
       />
-      {/* Sliding tungsten underline — hidden by default, slides in from
-          center on hover or open. Pure CSS, no JS. */}
+      {/* Sliding underline — hidden by default, slides in from center on
+          hover or open. Uses the photospace brand lime (--color-brand-green
+          = #97b800) for the wordmark-tied accent. Pure CSS, no JS. Bumped
+          to 1.5px so the green reads at speed. */}
       <span
         aria-hidden
         className={cn(
-          "absolute left-1/2 -bottom-0.5 h-px w-0 -translate-x-1/2 bg-tungsten",
+          "absolute left-1/2 -bottom-1 h-[1.5px] w-0 -translate-x-1/2 rounded-full bg-[var(--color-brand-green)]",
           "transition-[width,opacity] duration-300 ease-cinematic opacity-0",
           "group-hover:w-8 group-hover:opacity-100",
           "group-data-[state=open]:w-10 group-data-[state=open]:opacity-100",
