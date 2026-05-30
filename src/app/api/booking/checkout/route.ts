@@ -19,6 +19,7 @@ import { checkAvailability } from "@/lib/booking/availability";
 import { resolveCoupon } from "@/lib/booking/coupons";
 import { createBookingHold } from "@/lib/booking/holds";
 import { createBookingPaymentIntent } from "@/lib/booking/stripe";
+import { confirmBooking } from "@/lib/booking/confirm";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import type { PaymentMethod } from "@/lib/booking/types";
 
@@ -159,12 +160,16 @@ export async function POST(req: Request) {
   const sb = supabaseAdmin();
 
   // $0 bookings (free tour, 100%-off coupon, etc.) skip Stripe and confirm immediately.
+  // confirmBooking() handles status flip + hold consumption + GCal write + emails —
+  // the same side-effects the webhook fires for paid bookings.
   if (pricing.totalCents === 0) {
-    await sb.from("bookings").update({ status: "confirmed" }).eq("id", hold.bookingId);
-    await sb.from("holds").delete().eq("id", hold.holdId);
-    // Note: GCal write + emails happen via a manual reconciliation here OR (cleaner)
-    // we trigger an internal "confirmed" handler. Phase 3 keeps this simple — call
-    // out as a follow-up so the free-tour path still produces calendar event + email.
+    const result = await confirmBooking({ bookingId: hold.bookingId });
+    if (!result.ok) {
+      return NextResponse.json(
+        { error: "confirm_failed", details: result.reason },
+        { status: 500 },
+      );
+    }
     return NextResponse.json({
       ok: true,
       requiresPayment: false,
