@@ -51,7 +51,7 @@ export default function ContactPage() {
               <div>
                 <div className="text-sm uppercase tracking-[0.14em] text-muted">Address</div>
                 <div className="mt-1">{SITE.address.full}</div>
-                <div className="text-sm text-muted">{SITE.address.locationNote}</div>
+                <div className="text-sm text-muted whitespace-pre-line">{SITE.address.locationNote}</div>
                 <div className="text-sm text-muted">{SITE.address.directionsNote}</div>
               </div>
               <div>

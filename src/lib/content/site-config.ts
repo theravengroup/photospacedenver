@@ -49,7 +49,9 @@ export const SITE = {
     /** Single-line for display. */
     full: "209 Kalamath St, Unit 1, Denver, CO 80223",
     directionsNote: "Entrance is around the corner on W 2nd Ave.",
-    locationNote: "In Denver's Lincoln Park / Baker — just off I-25, minutes from downtown. Free parking, load-in ramp, outdoor deck.",
+    /** Two sentences joined by a newline. Render with `whitespace-pre-line`
+     *  so the amenities line wraps to its own row visually. */
+    locationNote: "In Denver's Lincoln Park/Baker neighborhood — just off I-25, minutes from downtown.\nFree parking, load-in ramp, outdoor deck.",
     mapsHref:
       "https://www.google.com/maps/dir/?api=1&destination=209%20Kalamath%20St%2C%20Denver%2C%20CO%2080223",
   },

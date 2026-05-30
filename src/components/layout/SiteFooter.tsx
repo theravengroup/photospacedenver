@@ -10,9 +10,17 @@ export function SiteFooter() {
         <div className="grid gap-12 lg:grid-cols-[1.4fr_repeat(3,1fr)]">
           {/* Brand + contact */}
           <div>
-            <Link href="/" className="inline-flex items-baseline gap-2">
-              <span className="font-display text-2xl font-bold tracking-tight text-bone">photospace</span>
-              <span className="text-[0.625rem] uppercase tracking-[0.22em] text-tungsten">Denver</span>
+            {/* Wordmark — "photospace Denver" both set in the same display
+                serif so it reads as one mark, with "Denver" in the
+                photospace lime green from the brand wordmark
+                (--color-brand-green = #97b800). */}
+            <Link href="/" className="inline-flex items-baseline gap-1.5">
+              <span className="font-display text-2xl font-bold tracking-tight text-bone">
+                photospace
+              </span>
+              <span className="font-display text-xl font-medium tracking-tight text-[var(--color-brand-green)]">
+                Denver
+              </span>
             </Link>
             <p className="measure-tight mt-4 text-sm text-muted">
               A purpose-built photo &amp; video studio for rent in Denver since {SITE.foundedYear} —
