@@ -251,24 +251,46 @@ function GearCategoryView({ c }: { c: GearCategory }) {
         <Button href="/gear-rental" variant="outline">All gear rental</Button>
       </PageHero>
 
-      {/* On-page menu — jump to any catalog section */}
+      {/* On-page menu — jump to any catalog section. The chip row scrolls
+          horizontally when categories don't fit; .scroll-x-fade gives it
+          edge-fade gradients + a slim visible scrollbar + a pulsing right
+          chevron so visitors actually know there's more to scroll to. */}
       {c.groups.length > 1 && (
         <div className="surface-light glass-light sticky top-16 z-30 border-b border-hairline sm:top-20">
           <div className="mx-auto max-w-[88rem] px-5 sm:px-8">
-            <nav
-              aria-label={`${c.title} catalog sections`}
-              className="flex gap-2 overflow-x-auto py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            >
-              {c.groups.map((g) => (
-                <a
-                  key={g.heading}
-                  href={`#${groupId(g.heading)}`}
-                  className="shrink-0 rounded-full border border-hairline px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-muted transition-colors hover:border-tungsten/50 hover:text-ink"
-                >
-                  {g.heading}
-                </a>
-              ))}
-            </nav>
+            <div className="scroll-x-fade">
+              <nav
+                aria-label={`${c.title} catalog sections`}
+                className="scroll-x-row flex gap-2 py-3"
+              >
+                {c.groups.map((g) => (
+                  <a
+                    key={g.heading}
+                    href={`#${groupId(g.heading)}`}
+                    className="shrink-0 rounded-full border border-hairline px-4 py-2 text-sm font-semibold uppercase tracking-[0.14em] text-muted transition-colors hover:border-tungsten hover:text-ink hover:bg-tungsten/5"
+                  >
+                    {g.heading}
+                  </a>
+                ))}
+              </nav>
+              {/* Pulsing right-chevron hint that there's more content to
+                  the right. Hides itself in print + on reduce-motion. */}
+              {c.groups.length > 3 && (
+                <span className="scroll-x-fade__hint motion-reduce:hidden print:hidden" aria-hidden>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-3.5 h-3.5"
+                  >
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </span>
+              )}
+            </div>
           </div>
         </div>
       )}

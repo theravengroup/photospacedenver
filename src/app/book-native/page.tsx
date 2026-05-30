@@ -23,7 +23,12 @@ export default function BookNativePage() {
   return (
     <Section tone="dark">
       <Container>
-        <BookingWizard />
+        {/* `.book-shell` enforces a 17px body baseline + bumps text-sm/xs
+            inside the wizard so labels and helper copy stay legible on
+            Retina / 5K displays. See globals.css. */}
+        <div className="book-shell">
+          <BookingWizard />
+        </div>
       </Container>
     </Section>
   );

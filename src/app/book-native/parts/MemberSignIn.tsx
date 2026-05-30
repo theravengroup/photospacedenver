@@ -169,7 +169,7 @@ export function MemberSignIn({ preview }: { preview: MemberPreview }) {
 
       {open && status !== "sent" && (
         <div className="mt-5 pt-5 border-t border-hairline">
-          <label className="block text-sm text-muted mb-2">Member email</label>
+          <label className="block text-base text-muted mb-2">Member email</label>
           <div className="flex flex-wrap gap-2 items-start max-w-xl">
             <input
               type="email"
@@ -192,7 +192,7 @@ export function MemberSignIn({ preview }: { preview: MemberPreview }) {
               onClick={() => void sendLink()}
               disabled={!emailValid(email) || status === "sending"}
               className={cn(
-                "inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-colors shrink-0",
+                "inline-flex items-center gap-2 rounded-full px-5 py-3 text-base font-medium transition-colors shrink-0",
                 emailValid(email) && status !== "sending"
                   ? "bg-tungsten text-ink hover:bg-tungsten-soft"
                   : "border border-hairline text-muted cursor-not-allowed",
@@ -204,12 +204,12 @@ export function MemberSignIn({ preview }: { preview: MemberPreview }) {
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="text-sm text-muted hover:text-current underline underline-offset-4 self-center pl-2"
+              className="text-base text-muted hover:text-current underline underline-offset-4 self-center pl-2"
             >
               Cancel
             </button>
           </div>
-          <p className="text-xs text-muted mt-2">
+          <p className="text-sm text-muted mt-2">
             We&apos;ll email you a one-tap link. No password.
           </p>
         </div>

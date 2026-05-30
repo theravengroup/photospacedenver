@@ -11,8 +11,9 @@
 import {
   Compass,
   Zap,
-  Sun,
   Sunrise,
+  Sun,
+  Sunset,
   CalendarDays,
   ArrowRight,
   type LucideIcon,
@@ -21,18 +22,13 @@ import { cn } from "@/lib/cn";
 import type { WizardState } from "../state";
 
 type HourOption = {
-  /** Label shown on the chip. */
   label: string;
-  /** Actual hours the system books. For the "Full day" chip this is 12 — the
-   * full block — even though Acuity historically priced 10/11/12 identically.
-   * Collapsing to a single chip keeps the UI clean; the customer gets the
-   * full 12h window for the same flat price. */
   hours: number;
   priceCents: number;
 };
 
 type Tier = {
-  id: "quick" | "halfday" | "fullday";
+  id: "quick" | "halfday" | "day" | "fullday";
   label: string;
   blurb: string;
   icon: LucideIcon;
@@ -40,6 +36,18 @@ type Tier = {
   fromCents: number;
 };
 
+/**
+ * 5 session shapes that map to how customers actually think about studio
+ * time (per the IA review with Dan 2026-05-30). The hour-by-hour Acuity
+ * ladder still exists under the hood — these buckets just group it into
+ * named tiers a human can pick:
+ *
+ *   QUICK    2–4 hours @ hourly      → short session (headshots, a few setups)
+ *   HALF DAY 5 hours flat            → industry-standard half day, single price
+ *   DAY      6–9 hours @ hourly      → most of a working day, editorial / multi-look
+ *   FULL DAY 10–12 hours flat        → lock out the studio for the whole day
+ *   MULTI-DAY 2+ days                → spans multiple calendar days
+ */
 const TIERS: Tier[] = [
   {
     id: "quick",
@@ -57,26 +65,33 @@ const TIERS: Tier[] = [
     id: "halfday",
     label: "Half day",
     blurb: "5 hours flat",
-    icon: Sun,
+    icon: Sunrise,
     options: [{ label: "5h", hours: 5, priceCents: 48500 }],
     fromCents: 48500,
   },
   {
-    id: "fullday",
-    label: "Full day",
-    blurb: "6–12 hours",
-    icon: Sunrise,
+    id: "day",
+    label: "Day",
+    blurb: "6–9 hours",
+    icon: Sun,
     options: [
       { label: "6h", hours: 6, priceCents: 57500 },
       { label: "7h", hours: 7, priceCents: 66500 },
       { label: "8h", hours: 8, priceCents: 75500 },
       { label: "9h", hours: 9, priceCents: 84000 },
-      // The 10/11/12 Acuity rungs collapse into one chip — same flat $925,
-      // books the full 12-hour window so the customer has the room all day.
-      // Label is just "10–12h"; the parent card already says "Full day".
-      { label: "10–12h", hours: 12, priceCents: 92500 },
     ],
     fromCents: 57500,
+  },
+  {
+    id: "fullday",
+    label: "Full day",
+    blurb: "10–12 hours",
+    icon: Sunset,
+    // Single option — flat $925 books the full 12-hour window so the
+    // customer has the room all day. The 10/11 Acuity slugs still exist
+    // server-side for admin overrides but aren't exposed in the picker.
+    options: [{ label: "10–12h flat", hours: 12, priceCents: 92500 }],
+    fromCents: 92500,
   },
 ];
 
@@ -166,7 +181,7 @@ export function ServiceStep({
           (Quick, Full-day) line up. mt-auto on each card's footer area
           pushes the pills / "Tap to pick" label to the bottom edge so they
           align across all four cards. */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
         {TIERS.map((tier) => {
           const isPicked =
             state.appointmentTypeSlug != null &&

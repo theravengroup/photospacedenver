@@ -265,6 +265,117 @@ p, li, dt, dd, blockquote, figcaption {
   animation: book-step-in 320ms cubic-bezier(.16,1,.3,1) both;
 }
 
+/* =========================================================
+   Booking-flow typography baseline. On high-res / Retina displays
+   (MacBook Pro, Studio Display, 5K), the default Tailwind sizes
+   (text-sm = 14px) read as ~8-10pt visually — too small for any
+   body copy. This wrapper enforces minimums:
+     - base copy: 1.0625rem (~17px)
+     - paragraph / label minimum: 1rem (16px) — never go below this
+     - small/secondary text (in this scope): 0.9375rem (15px)
+     - eyebrows / tiny ALL-CAPS chips: 0.8125rem (13px) — small is OK
+       when there's strong letter-spacing
+   Wrap the whole /book-native page in this class to inherit the
+   baseline; individual elements can still go larger.
+   ========================================================= */
+.book-shell {
+  font-size: 1.0625rem;       /* 17px base */
+  line-height: 1.55;
+}
+.book-shell .text-sm {        /* bump every Tailwind text-sm INSIDE this shell */
+  font-size: 0.9375rem;        /* 15px instead of 14px */
+  line-height: 1.5;
+}
+.book-shell .text-xs {        /* bump tiny text inside this shell too */
+  font-size: 0.8125rem;        /* 13px instead of 12px */
+}
+.book-shell label,
+.book-shell .FIELD {
+  font-size: 1.0625rem;
+}
+
+/* =========================================================
+   Horizontal-scroll discoverability.
+   Wraps a scrolling row with subtle edge fades + a small chevron
+   indicator on the right so visitors know there's more content
+   off-screen. Pure CSS, works without JS.
+
+   Usage: wrap the scrolling container, give the row itself the
+   `scroll-x-row` class:
+     <div class="scroll-x-fade">
+       <nav class="scroll-x-row">...chips...</nav>
+     </div>
+   ========================================================= */
+.scroll-x-fade {
+  position: relative;
+  /* Reserve a touch of room on the right for the chevron hint. */
+}
+/* Left fade — only when there's content to the left (we cheat with
+   always-on; minimal visual impact when at scroll-x = 0). */
+.scroll-x-fade::before,
+.scroll-x-fade::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3rem;
+  pointer-events: none;
+  z-index: 2;
+}
+.scroll-x-fade::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg) 0%, color-mix(in oklab, var(--bg) 60%, transparent) 60%, transparent 100%);
+}
+.scroll-x-fade::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg) 0%, color-mix(in oklab, var(--bg) 60%, transparent) 60%, transparent 100%);
+}
+
+.scroll-x-row {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;        /* Firefox: show thin bar, not hidden */
+  scrollbar-color: color-mix(in oklab, var(--color-tungsten) 60%, transparent) transparent;
+  cursor: grab;
+}
+.scroll-x-row:active {
+  cursor: grabbing;
+}
+/* WebKit: a slim, hover-visible scrollbar so the affordance is real. */
+.scroll-x-row::-webkit-scrollbar {
+  height: 4px;
+}
+.scroll-x-row::-webkit-scrollbar-thumb {
+  background-color: color-mix(in oklab, var(--color-tungsten) 50%, transparent);
+  border-radius: 999px;
+}
+.scroll-x-row::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Tiny "more →" chevron pill that pulses gently. Pure CSS, sits
+   on top of the right fade so users see it before they scroll. */
+.scroll-x-fade__hint {
+  position: absolute;
+  top: 50%;
+  right: 0.25rem;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  background-color: color-mix(in oklab, var(--color-tungsten) 18%, transparent);
+  color: var(--color-tungsten);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  animation: scroll-x-bounce 1.8s ease-in-out infinite;
+}
+@keyframes scroll-x-bounce {
+  0%, 100% { transform: translate(0, -50%); opacity: 0.85; }
+  50%      { transform: translate(4px, -50%); opacity: 1; }
+}
+
 .eyebrow {
   font-size: 0.75rem;
   font-weight: 500;
