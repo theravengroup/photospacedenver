@@ -10,7 +10,7 @@
     { "id": "AUTH-002", "area": "auth",          "name": "Supabase Auth: admin role gate (RLS-enforced)",                "status": { "passes": false, "notes": "" } },
     { "id": "AUTH-003", "area": "auth",          "name": "Guest checkout works without an account",                     "status": { "passes": false, "notes": "" } },
 
-    { "id": "AVAIL-001","area": "availability",  "name": "GCal FreeBusy fetch returns busy windows for date range",     "status": { "passes": false, "notes": "" } },
+    { "id": "AVAIL-001","area": "availability",  "name": "GCal FreeBusy fetch returns busy windows for date range",     "status": { "passes": true,  "notes": "Verified 2026-05-30 via /api/booking/healthcheck against live photospace:studio calendar — returned 2 busy windows in next 24h (real Acuity events)." } },
     { "id": "AVAIL-002","area": "availability",  "name": "Hourly slots respect business-hours config",                  "status": { "passes": false, "notes": "" } },
     { "id": "AVAIL-003","area": "availability",  "name": "Multi-day range computes contiguous days correctly",          "status": { "passes": false, "notes": "" } },
     { "id": "AVAIL-004","area": "availability",  "name": "Overnight bookings span midnight without double-counting",    "status": { "passes": false, "notes": "" } },

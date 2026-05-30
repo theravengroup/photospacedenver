@@ -13,6 +13,15 @@ Format:
 
 ---
 
+## 2026-05-30 — Phase 1 fully verified end-to-end ✅
+- area: phase-1 verification
+- migration applied to live Supabase via MCP `apply_migration` — 7 tables created, all RLS-enabled, advisor warning on `set_updated_at` fixed with pinned `search_path` (second migration `harden_set_updated_at_search_path`).
+- bug found + fixed: original route at `/api/_booking/healthcheck` returned the 404 page because Next treats `_`-prefixed folders as private (excluded from routing). Renamed to `/api/booking/healthcheck`; token-gate keeps it private (commit `7ef46d8`).
+- healthcheck against production returned `{ok:true, supabase:{ok:true, bookings_count:0}, gcal:{ok:true, busy_windows_next_24h:2}}` — both subsystems reachable; the GCal "2 busy windows" are existing Acuity events, which means parallel-test won't double-book over them.
+- features flipped: **AVAIL-001 → passes:true** (GCal FreeBusy fetch verified against live calendar).
+- residual advisor warnings: 1 pre-existing Supabase-installed `rls_auto_enable` SECURITY DEFINER function — not from our migration, leaving as-is.
+- next (Phase 2): server-only pricing engine + server-only availability resolver, both with tests.
+
 ## 2026-05-30 — Phase 1.2: initial DB migration + integration smoke endpoint
 - area: phase-1 scaffolding
 - new: `supabase/migrations/20260530000001_init_booking.sql` — v1 schema (7 tables: bookings · holds · coupons · coupon_redemptions · manual_blocks · member_buckets · audit_log), all with RLS enabled + deny-anon stub policies (real customer-aware policies land in 1.3 with Auth). Indexes for availability + per-user coupon enforcement + member bucket lookups. `bookings.updated_at` auto-trigger.
