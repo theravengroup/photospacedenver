@@ -141,7 +141,12 @@ export function ServiceStep({
 
       <div className="text-xs uppercase tracking-wider text-muted pt-2">or rent the studio</div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 items-start">
+      {/* Grid stretches every card to match the tallest in its row, so the
+          single-option cards (Half-day, Multi-day) and the multi-option ones
+          (Quick, Full-day) line up. mt-auto on each card's footer area
+          pushes the pills / "Tap to pick" label to the bottom edge so they
+          align across all four cards. */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
         {TIERS.map((tier) => {
           const isPicked =
             state.appointmentTypeSlug != null &&
@@ -161,7 +166,7 @@ export function ServiceStep({
                 type="button"
                 onClick={() => pickOption(opt)}
                 className={cn(
-                  "text-left bg-panel border rounded-card p-5 transition-colors",
+                  "h-full text-left bg-panel border rounded-card p-5 transition-colors",
                   "flex flex-col gap-2",
                   isPicked
                     ? "border-tungsten ring-1 ring-tungsten/40"
@@ -172,7 +177,10 @@ export function ServiceStep({
                 <div className="text-xs uppercase tracking-wider text-muted">{tier.label}</div>
                 <div className="font-display text-2xl">{tier.blurb}</div>
                 <div className="text-base text-muted">{dollars(opt.priceCents)}</div>
-                <div className="text-sm text-tungsten mt-1">
+                {/* mt-auto pushes the action label to the bottom of the card
+                    so it lines up with the chips row on the multi-option
+                    tiers. */}
+                <div className="text-sm text-tungsten mt-auto pt-2">
                   {isPicked ? "✓ Selected" : "Tap to pick"}
                 </div>
               </button>
@@ -184,7 +192,7 @@ export function ServiceStep({
             <div
               key={tier.id}
               className={cn(
-                "bg-panel border rounded-card p-5 transition-colors flex flex-col gap-3",
+                "h-full bg-panel border rounded-card p-5 transition-colors flex flex-col gap-3",
                 isPicked
                   ? "border-tungsten ring-1 ring-tungsten/40"
                   : "border-hairline hover:border-tungsten/60",
@@ -195,7 +203,9 @@ export function ServiceStep({
                 <div className="font-display text-2xl">{tier.blurb}</div>
                 <div className="text-base text-muted">from {dollars(tier.fromCents)}</div>
               </div>
-              <div className="flex flex-wrap gap-2 pt-1">
+              {/* Chips pushed to card bottom so all 4 cards' action areas
+                  share a baseline. */}
+              <div className="flex flex-wrap gap-2 mt-auto pt-2">
                 {tier.options.map((opt) => {
                   const active = state.hours === opt.hours && !tourSelected;
                   return (
@@ -232,7 +242,7 @@ export function ServiceStep({
           type="button"
           onClick={pickMultiDay}
           className={cn(
-            "text-left bg-panel border rounded-card p-5 transition-colors",
+            "h-full text-left bg-panel border rounded-card p-5 transition-colors",
             "flex flex-col gap-2",
             multiDaySelected
               ? "border-tungsten ring-1 ring-tungsten/40"
@@ -245,11 +255,15 @@ export function ServiceStep({
           <div className="text-base text-muted">
             $925/day · cap at 4 days ($3,700)
           </div>
-          <div className="text-sm text-tungsten mt-1">
-            {multiDaySelected ? "✓ Selected" : "Tap to pick"}
-          </div>
-          <div className="text-xs text-muted/80 mt-1">
-            Weekend (Sat + Sun) counts as one day.
+          {/* Bottom-aligned action area — matches the chips baseline on the
+              other cards. */}
+          <div className="mt-auto pt-2">
+            <div className="text-sm text-tungsten">
+              {multiDaySelected ? "✓ Selected" : "Tap to pick"}
+            </div>
+            <div className="text-xs text-muted/80 mt-1">
+              Weekend (Sat + Sun) counts as one day.
+            </div>
           </div>
         </button>
       </div>
