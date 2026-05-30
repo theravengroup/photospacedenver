@@ -13,7 +13,9 @@ import { addonBySlug, addonsForDuration } from "@/lib/booking/addons";
 import { calculatePricing } from "@/lib/booking/pricing";
 import { checkAvailability } from "@/lib/booking/availability";
 import { resolveCoupon } from "@/lib/booking/coupons";
-import type { PaymentMethod } from "@/lib/booking/types";
+import { getCurrentMember } from "@/lib/supabase/server";
+import { getMemberHoursAvailable } from "@/lib/booking/member-hours";
+import type { PaymentMethod, MemberTier } from "@/lib/booking/types";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -122,13 +124,54 @@ export async function POST(req: Request) {
     }
   }
 
+  // Authenticated member? Look up their tier + remaining free hours so the
+  // pricing engine can apply the discount in the live preview. NEVER trust
+  // an unauthenticated tier — only resolve via the auth-cookie-derived user.
+  let memberInput: { hoursAvailable: number; tier: MemberTier } | null = null;
+  let memberPreview: {
+    signedIn: boolean;
+    email: string | null;
+    tier: MemberTier | null;
+    hoursAvailable: number;
+  } = { signedIn: false, email: null, tier: null, hoursAvailable: 0 };
+  try {
+    const member = await getCurrentMember();
+    if (member) {
+      const balance = await getMemberHoursAvailable({
+        memberEmail: member.email,
+        tier: member.tier,
+      });
+      memberInput = { hoursAvailable: balance.hoursAvailable, tier: member.tier };
+      memberPreview = {
+        signedIn: true,
+        email: member.email,
+        tier: member.tier,
+        hoursAvailable: balance.hoursAvailable,
+      };
+    } else {
+      // signed in but not a member → still note signed-in state for the UI
+      const { getCurrentUser } = await import("@/lib/supabase/server");
+      const user = await getCurrentUser();
+      if (user?.email) {
+        memberPreview = {
+          signedIn: true,
+          email: user.email,
+          tier: null,
+          hoursAvailable: 0,
+        };
+      }
+    }
+  } catch (err) {
+    console.warn("[quote] member lookup failed (continuing as non-member):", err);
+  }
+
   const pricing = calculatePricing({
     appointment: { slug: appt.slug, hours: appt.hours, basePriceCents: appt.basePriceCents },
     multiDay: isMultiDay
       ? { startDateISO: body.multiDayStartDate!, endDateISO: body.multiDayEndDate! }
       : undefined,
     addons: resolvedAddons,
-    member: null, // members come in once Supabase Auth wires (Phase 5)
+    member: memberInput,
     coupon: resolvedCoupon,
     paymentMethod: body.paymentMethod ?? "card",
   });
@@ -138,6 +181,7 @@ export async function POST(req: Request) {
     availability,
     couponError,
     pricing,
+    member: memberPreview,
   });
 }
 

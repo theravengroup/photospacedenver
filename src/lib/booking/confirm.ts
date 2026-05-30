@@ -25,9 +25,11 @@ import "server-only";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { createEvent } from "@/lib/google/calendar";
 import { recordCouponRedemption } from "@/lib/booking/coupons";
+import { consumeMemberHours } from "@/lib/booking/member-hours";
 import { sendBookingConfirmation } from "@/lib/booking/emails";
 import { appointmentTypeBySlug } from "@/lib/booking/appointment-types";
 import { consumeHoldForBooking } from "@/lib/booking/holds";
+import type { MemberTier } from "@/lib/booking/types";
 
 type BookingRow = {
   id: string;
@@ -43,6 +45,7 @@ type BookingRow = {
   custom_gear_request: string | null;
   coupon_code: string | null;
   total_cents: number;
+  member_hours_applied: number | null;
 };
 
 export type ConfirmResult =
@@ -58,7 +61,7 @@ export async function confirmBooking(opts: {
   const { data: booking, error: readErr } = await sb
     .from("bookings")
     .select(
-      "id, status, appointment_type_slug, start_at, end_at, customer_first_name, customer_last_name, customer_email, customer_emails, customer_phone, custom_gear_request, coupon_code, total_cents",
+      "id, status, appointment_type_slug, start_at, end_at, customer_first_name, customer_last_name, customer_email, customer_emails, customer_phone, custom_gear_request, coupon_code, total_cents, member_hours_applied",
     )
     .eq("id", opts.bookingId)
     .maybeSingle();
@@ -125,6 +128,43 @@ export async function confirmBooking(opts: {
       });
     } catch (err) {
       console.error("[confirmBooking] recordCouponRedemption failed for", row.id, err);
+    }
+  }
+
+  // 4b. Member-hours consumption — decrement the member's bucket if the
+  // pricing engine applied any free hours to this booking. Pulls tier from
+  // the members table (keyed by the customer email).
+  const memberHoursToConsume = Number(row.member_hours_applied ?? 0);
+  if (memberHoursToConsume > 0) {
+    try {
+      const { data: memberRow } = await sb
+        .from("members")
+        .select("tier, email")
+        .eq("email", row.customer_email.toLowerCase())
+        .eq("status", "active")
+        .maybeSingle();
+      if (memberRow) {
+        const consumeRes = await consumeMemberHours({
+          memberEmail: memberRow.email,
+          tier: memberRow.tier as MemberTier,
+          hoursUsed: memberHoursToConsume,
+        });
+        if (!consumeRes.ok) {
+          console.error(
+            "[confirmBooking] consumeMemberHours failed for",
+            row.id,
+            consumeRes.reason,
+          );
+        }
+      } else {
+        console.warn(
+          "[confirmBooking] booking applied member hours but no active member found for",
+          row.customer_email,
+          "— hours not decremented",
+        );
+      }
+    } catch (err) {
+      console.error("[confirmBooking] consumeMemberHours threw for", row.id, err);
     }
   }
 

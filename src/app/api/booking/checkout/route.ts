@@ -21,7 +21,9 @@ import { createBookingHold } from "@/lib/booking/holds";
 import { createBookingPaymentIntent } from "@/lib/booking/stripe";
 import { confirmBooking } from "@/lib/booking/confirm";
 import { supabaseAdmin } from "@/lib/supabase/admin";
-import type { PaymentMethod } from "@/lib/booking/types";
+import { getCurrentMember } from "@/lib/supabase/server";
+import { getMemberHoursAvailable } from "@/lib/booking/member-hours";
+import type { PaymentMethod, MemberTier } from "@/lib/booking/types";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -166,13 +168,32 @@ export async function POST(req: Request) {
     };
   }
 
+  // Resolve the authenticated member (if any) + their remaining hours
+  // server-side. Same rule as quote — never trust a client-claimed tier.
+  // The actual consumption happens later in confirmBooking (which re-reads
+  // the member from the row's customer_email at confirm time), so we don't
+  // need to thread the member email through the hold here.
+  let memberInput: { hoursAvailable: number; tier: MemberTier } | null = null;
+  try {
+    const member = await getCurrentMember();
+    if (member) {
+      const balance = await getMemberHoursAvailable({
+        memberEmail: member.email,
+        tier: member.tier,
+      });
+      memberInput = { hoursAvailable: balance.hoursAvailable, tier: member.tier };
+    }
+  } catch (err) {
+    console.warn("[checkout] member lookup failed (continuing as non-member):", err);
+  }
+
   const pricing = calculatePricing({
     appointment: { slug: appt.slug, hours: appt.hours, basePriceCents: appt.basePriceCents },
     multiDay: isMultiDay
       ? { startDateISO: body.multiDayStartDate!, endDateISO: body.multiDayEndDate! }
       : undefined,
     addons: resolvedAddons,
-    member: null, // Phase 5
+    member: memberInput,
     coupon: resolvedCoupon,
     paymentMethod: body.paymentMethod ?? "card",
   });

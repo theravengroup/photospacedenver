@@ -24,6 +24,7 @@ import {
 } from "./state";
 import { Stepper } from "./parts/Stepper";
 import { PriceSummary } from "./parts/PriceSummary";
+import { MemberSignIn } from "./parts/MemberSignIn";
 import { ServiceStep } from "./steps/ServiceStep";
 import { DateTimeStep } from "./steps/DateTimeStep";
 import { MultiDayStep } from "./steps/MultiDayStep";
@@ -149,6 +150,12 @@ export function BookingWizard() {
               livePricingLoading: false,
               appliedCouponCode: json.pricing?.couponCode ?? null,
               couponError: json.couponError ?? null,
+              member: json.member ?? {
+                signedIn: false,
+                email: null,
+                tier: null,
+                hoursAvailable: 0,
+              },
             });
           }
         } catch {
@@ -247,6 +254,7 @@ export function BookingWizard() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_24rem] gap-8 pb-24 lg:pb-0">
       <div>
+        <MemberSignIn preview={state.member} />
         <Stepper current={currentStep} visibleSteps={visibleSteps} onJumpBack={goto} />
 
         {currentStep === "service" && (

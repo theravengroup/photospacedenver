@@ -86,6 +86,15 @@ export type WizardState = {
   livePricing: PricingResult | null;
   livePricingLoading: boolean;
   livePricingError: string | null;
+
+  // Signed-in member info (set from the quote response so the wizard knows
+  // whether to show the member status pill and how many hours are left).
+  member: {
+    signedIn: boolean;
+    email: string | null;
+    tier: "spark" | "creator" | "visionary" | null;
+    hoursAvailable: number;
+  };
 };
 
 export const INITIAL_STATE: WizardState = {
@@ -108,6 +117,7 @@ export const INITIAL_STATE: WizardState = {
   couponCode: "",
   appliedCouponCode: null,
   couponError: null,
+  member: { signedIn: false, email: null, tier: null, hoursAvailable: 0 },
   bookingId: null,
   clientSecret: null,
   publishableKey: null,
