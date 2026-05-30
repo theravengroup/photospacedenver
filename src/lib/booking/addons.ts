@@ -99,6 +99,25 @@ export const ADDONS: Addon[] = [
     group: "cyc",
   },
 
+  // Studio Grip / Light Tech — two duration tiers (Dan's preferred order:
+  // grip first, digital second).
+  {
+    slug: "tech-grip-half",
+    label: "Studio Grip / Light Tech (1–5 hours)",
+    description: "Builds sets and runs lighting — extra hands on the floor.",
+    priceCents: 47500,
+    group: "crew",
+    maxHours: 5,
+  },
+  {
+    slug: "tech-grip-full",
+    label: "Studio Grip / Light Tech (6–12 hours)",
+    description: "Full-day grip / light tech — set build, lighting, on-set support.",
+    priceCents: 67500,
+    group: "crew",
+    minHours: 6,
+  },
+
   // Studio Digital Tech — two duration tiers
   {
     slug: "tech-digital-half",
@@ -113,24 +132,6 @@ export const ADDONS: Addon[] = [
     label: "Studio Digital Tech (6–12 hours)",
     description: "Full-day digital tech — Capture One, Lightroom, Phocus, on-set workflow.",
     priceCents: 87500,
-    group: "crew",
-    minHours: 6,
-  },
-
-  // Studio Grip / Light Tech — two duration tiers
-  {
-    slug: "tech-grip-half",
-    label: "Studio Grip / Light Tech (1–5 hours)",
-    description: "Builds sets and runs lighting — extra hands on the floor.",
-    priceCents: 47500,
-    group: "crew",
-    maxHours: 5,
-  },
-  {
-    slug: "tech-grip-full",
-    label: "Studio Grip / Light Tech (6–12 hours)",
-    description: "Full-day grip / light tech — set build, lighting, on-set support.",
-    priceCents: 67500,
     group: "crew",
     minHours: 6,
   },

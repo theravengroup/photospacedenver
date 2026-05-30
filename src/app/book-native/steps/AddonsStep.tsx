@@ -16,6 +16,29 @@ function dollars(cents: number): string {
   return `$${(cents / 100).toFixed(0)}`;
 }
 
+/**
+ * Split labels like "Studio Digital Tech (1–5 hours)" so the parenthetical
+ * qualifier sits on its own line under the main title — prevents ugly mid-
+ * range wraps like "(1-\n5 hours)" inside narrow cards.
+ */
+function renderTitle(label: string) {
+  const match = /^(.+?)\s*\((.+)\)\s*$/.exec(label);
+  if (!match) {
+    return (
+      <span className="block font-medium text-base sm:text-lg">{label}</span>
+    );
+  }
+  const [, head, qualifier] = match;
+  return (
+    <>
+      <span className="block font-medium text-base sm:text-lg">{head}</span>
+      <span className="block text-sm text-muted font-normal mt-0.5">
+        {qualifier}
+      </span>
+    </>
+  );
+}
+
 /** Display order + heading text for each group. */
 const GROUP_ORDER: Addon["group"][] = ["strobe", "video", "cyc", "crew", "fee"];
 const GROUP_LABELS: Record<Addon["group"], string> = {
@@ -122,9 +145,7 @@ export function AddonsStep({
                             )}
                           </span>
                           <span className="min-w-0">
-                            <span className="block font-medium text-base sm:text-lg">
-                              {a.label}
-                            </span>
+                            {renderTitle(a.label)}
                             {a.description && (
                               <span className="block text-base text-muted mt-1 leading-snug">
                                 {a.description}
