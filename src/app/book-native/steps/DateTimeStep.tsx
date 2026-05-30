@@ -12,6 +12,7 @@
 import { useEffect, useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
+import { Sunrise, Sun, Moon, Star, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/cn";
 import type { WizardState } from "../state";
 
@@ -46,6 +47,12 @@ const BUCKET_RANGE: Record<Bucket, string> = {
   afternoon: "12 PM – 5 PM",
   evening: "5 PM – 10 PM",
   late: "10 PM – 6 AM",
+};
+const BUCKET_ICON: Record<Bucket, LucideIcon> = {
+  morning: Sunrise,
+  afternoon: Sun,
+  evening: Moon,
+  late: Star,
 };
 const BUCKET_ORDER: Bucket[] = ["morning", "afternoon", "evening", "late"];
 function bucketFor(d: Date): Bucket {
@@ -169,7 +176,7 @@ export function DateTimeStep({
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-6">
-        <div className="bg-panel border border-hairline rounded-card p-4 flex justify-center text-bone">
+        <div className="glass-card rounded-card p-4 flex justify-center text-bone">
           <DayPicker
             mode="single"
             selected={date}
@@ -262,8 +269,8 @@ function SlotPanel({
   }
 
   return (
-    <div className="bg-panel border border-hairline rounded-card p-5">
-      <div className="text-xs uppercase tracking-wider text-muted mb-4">
+    <div className="glass-card rounded-card p-5">
+      <div className="text-xs uppercase tracking-[0.16em] text-muted mb-4">
         {date ? "Available times" : "Pick a date first"}
       </div>
 
@@ -314,10 +321,12 @@ function SlotPanel({
           {BUCKET_ORDER.map((bucket) => {
             const items = grouped.get(bucket);
             if (!items || items.length === 0) return null;
+            const Icon = BUCKET_ICON[bucket];
             return (
               <section key={bucket}>
-                <div className="flex items-baseline justify-between mb-2">
-                  <h3 className="text-xs uppercase tracking-[0.16em] text-tungsten font-medium">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-tungsten font-medium">
+                    <Icon className="w-4 h-4" strokeWidth={1.75} aria-hidden />
                     {BUCKET_LABEL[bucket]}
                   </h3>
                   <span className="text-xs text-muted">{BUCKET_RANGE[bucket]}</span>
@@ -333,11 +342,12 @@ function SlotPanel({
                         disabled={approvalOnly}
                         onClick={() => onPick(s)}
                         className={cn(
-                          "h-10 rounded-full text-sm border transition-colors whitespace-nowrap",
-                          isPicked && "bg-tungsten text-ink border-tungsten",
+                          "h-10 rounded-full text-sm border transition-all duration-200 ease-cinematic whitespace-nowrap",
+                          isPicked &&
+                            "bg-tungsten text-ink border-tungsten shadow-[0_4px_14px_-4px_rgba(200,132,43,0.45)]",
                           !isPicked &&
                             !approvalOnly &&
-                            "border-hairline hover:border-tungsten",
+                            "border-hairline hover:border-tungsten hover:bg-tungsten/5",
                           approvalOnly &&
                             "border-hairline/40 text-muted/70 cursor-not-allowed",
                         )}

@@ -257,45 +257,49 @@ export function BookingWizard() {
         <MemberSignIn preview={state.member} />
         <Stepper current={currentStep} visibleSteps={visibleSteps} onJumpBack={goto} />
 
-        {currentStep === "service" && (
-          <ServiceStep state={state} onChange={set} onContinue={fromService} />
-        )}
-        {currentStep === "datetime" && (
-          <DateTimeStep
-            state={state}
-            onChange={set}
-            onContinue={fromDateTime}
-            onBack={backFromDateTime}
-          />
-        )}
-        {currentStep === "multiday" && (
-          <MultiDayStep
-            state={state}
-            onChange={set}
-            onContinue={fromMultiDay}
-            onBack={backFromMultiDay}
-          />
-        )}
-        {currentStep === "addons" && (
-          <AddonsStep
-            state={state}
-            onChange={set}
-            onContinue={fromAddons}
-            onBack={backFromAddons}
-          />
-        )}
-        {currentStep === "intake" && (
-          <IntakeStep
-            state={state}
-            onChange={set}
-            onContinue={handleIntakeContinue}
-            onBack={backFromIntake}
-          />
-        )}
-        {currentStep === "payment" && (
-          <PaymentStep state={state} onBack={backFromPayment} />
-        )}
-        {currentStep === "confirmation" && <ConfirmationStep state={state} />}
+        {/* Step container — keyed by current step so React re-runs the fade-in
+            animation on every step transition. */}
+        <div key={currentStep} className="book-step-enter">
+          {currentStep === "service" && (
+            <ServiceStep state={state} onChange={set} onContinue={fromService} />
+          )}
+          {currentStep === "datetime" && (
+            <DateTimeStep
+              state={state}
+              onChange={set}
+              onContinue={fromDateTime}
+              onBack={backFromDateTime}
+            />
+          )}
+          {currentStep === "multiday" && (
+            <MultiDayStep
+              state={state}
+              onChange={set}
+              onContinue={fromMultiDay}
+              onBack={backFromMultiDay}
+            />
+          )}
+          {currentStep === "addons" && (
+            <AddonsStep
+              state={state}
+              onChange={set}
+              onContinue={fromAddons}
+              onBack={backFromAddons}
+            />
+          )}
+          {currentStep === "intake" && (
+            <IntakeStep
+              state={state}
+              onChange={set}
+              onContinue={handleIntakeContinue}
+              onBack={backFromIntake}
+            />
+          )}
+          {currentStep === "payment" && (
+            <PaymentStep state={state} onBack={backFromPayment} />
+          )}
+          {currentStep === "confirmation" && <ConfirmationStep state={state} />}
+        </div>
       </div>
 
       <PriceSummary state={state} />

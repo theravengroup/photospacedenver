@@ -7,6 +7,16 @@
  */
 
 import { useMemo, useState } from "react";
+import {
+  Zap,
+  Video,
+  Paintbrush,
+  UserPlus,
+  Wrench,
+  Check,
+  Plus,
+  type LucideIcon,
+} from "lucide-react";
 import { cn } from "@/lib/cn";
 import { addonsForDuration } from "@/lib/booking/addons";
 import type { WizardState } from "../state";
@@ -47,6 +57,13 @@ const GROUP_LABELS: Record<Addon["group"], string> = {
   cyc: "Cyc wall",
   crew: "Assistants",
   fee: "Other",
+};
+const GROUP_ICONS: Record<Addon["group"], LucideIcon> = {
+  strobe: Zap,
+  video: Video,
+  cyc: Paintbrush,
+  crew: UserPlus,
+  fee: Wrench,
 };
 
 export function AddonsStep({
@@ -99,9 +116,11 @@ export function AddonsStep({
           {GROUP_ORDER.map((group) => {
             const items = grouped[group];
             if (!items || items.length === 0) return null;
+            const GroupIcon = GROUP_ICONS[group];
             return (
               <section key={group} className="space-y-3">
-                <h2 className="text-xs uppercase tracking-[0.16em] text-tungsten font-medium">
+                <h2 className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-tungsten font-medium">
+                  <GroupIcon className="w-4 h-4" strokeWidth={1.75} aria-hidden />
                   {GROUP_LABELS[group]}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -113,11 +132,9 @@ export function AddonsStep({
                         type="button"
                         onClick={() => toggle(a.slug)}
                         className={cn(
-                          "text-left bg-panel border rounded-card p-4 transition-colors",
-                          "flex items-start justify-between gap-4",
-                          active
-                            ? "border-tungsten ring-1 ring-tungsten/40"
-                            : "border-hairline hover:border-tungsten/60",
+                          "text-left rounded-card p-4 flex items-start justify-between gap-4",
+                          "glass-card glass-card-hover",
+                          active && "glass-card--active",
                         )}
                         aria-pressed={active}
                       >
@@ -126,23 +143,16 @@ export function AddonsStep({
                               prevents flex parent from stretching it. */}
                           <span
                             className={cn(
-                              "mt-0.5 grid place-items-center w-5 h-5 shrink-0 rounded border transition-colors",
-                              active ? "bg-tungsten border-tungsten" : "border-hairline",
+                              "mt-0.5 grid place-items-center w-5 h-5 shrink-0 rounded border transition-all duration-200 ease-cinematic",
+                              active
+                                ? "bg-tungsten border-tungsten scale-105"
+                                : "border-hairline",
                             )}
                             aria-hidden
                           >
-                            {active && (
-                              <svg
-                                viewBox="0 0 12 12"
-                                className="w-3 h-3 text-ink fill-none stroke-current stroke-2"
-                              >
-                                <path
-                                  d="M2 6.5l3 3L10 3"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            )}
+                            {active ? (
+                              <Check className="w-3.5 h-3.5 text-ink" strokeWidth={3} />
+                            ) : null}
                           </span>
                           <span className="min-w-0">
                             {renderTitle(a.label)}
@@ -153,8 +163,14 @@ export function AddonsStep({
                             )}
                           </span>
                         </span>
-                        <span className="font-display text-lg shrink-0">
-                          +{dollars(a.priceCents)}
+                        <span
+                          className={cn(
+                            "font-display text-lg shrink-0 inline-flex items-center gap-0.5",
+                            active ? "text-tungsten" : "",
+                          )}
+                        >
+                          <Plus className="w-4 h-4 opacity-70" strokeWidth={2} />
+                          {dollars(a.priceCents).replace("$", "$")}
                         </span>
                       </button>
                     );

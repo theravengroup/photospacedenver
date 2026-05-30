@@ -11,6 +11,7 @@
  */
 
 import { useEffect, useState } from "react";
+import { CalendarRange, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { DateRangeCalendar, type DateRange } from "@/components/ui/DateRangeCalendar";
 import type { WizardState } from "../state";
@@ -95,15 +96,16 @@ export function MultiDayStep({
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-6">
-        <div className="bg-panel border border-hairline rounded-card p-4">
+        <div className="glass-card rounded-card p-4">
           <DateRangeCalendar range={range} onSelect={setRange} />
         </div>
 
-        <div className="bg-panel border border-hairline rounded-card p-5 space-y-4">
+        <div className="glass-card rounded-card p-5 space-y-4">
           <div>
-            <div className="text-xs uppercase tracking-wider text-muted mb-2">
+            <h3 className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-tungsten font-medium mb-3">
+              <CalendarRange className="w-4 h-4" strokeWidth={1.75} aria-hidden />
               Your range
-            </div>
+            </h3>
             {!range?.from && (
               <p className="text-base text-muted">
                 Tap a start date on the calendar, then tap your end date.
@@ -129,8 +131,9 @@ export function MultiDayStep({
             )}
           </div>
 
-          <div className="pt-2 border-t border-hairline">
-            <label className="block text-base text-muted mb-2">
+          <div className="pt-4 border-t border-hairline">
+            <label className="flex items-center gap-2 text-base text-muted mb-2">
+              <MessageSquare className="w-4 h-4 text-tungsten" strokeWidth={1.75} aria-hidden />
               Tell us about the shoot
               <span className="text-muted/70 font-normal">
                 {" "}(optional — but helpful)

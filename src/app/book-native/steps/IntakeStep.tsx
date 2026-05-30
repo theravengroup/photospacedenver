@@ -8,6 +8,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Tag, Mail, Shield, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/cn";
 import type { WizardState } from "../state";
 
@@ -106,9 +107,10 @@ export function IntakeStep({
         <button
           type="button"
           onClick={() => setCcOpen((v) => !v)}
-          className="text-base text-muted hover:text-current underline underline-offset-4"
+          className="inline-flex items-center gap-2 text-base text-muted hover:text-current underline underline-offset-4"
           aria-expanded={ccOpen}
         >
+          <Mail className="w-4 h-4" strokeWidth={1.75} />
           {ccOpen ? "Hide" : "Cc someone else? (producer, client, assistant)"}
         </button>
         {ccOpen && (
@@ -171,9 +173,10 @@ export function IntakeStep({
         <button
           type="button"
           onClick={() => setCouponOpen((v) => !v)}
-          className="text-base text-muted hover:text-current underline underline-offset-4"
+          className="inline-flex items-center gap-2 text-base text-muted hover:text-current underline underline-offset-4"
           aria-expanded={couponOpen}
         >
+          <Tag className="w-4 h-4" strokeWidth={1.75} />
           {couponOpen ? "Hide" : "Have a coupon or discount code?"}
         </button>
         {couponOpen && (
@@ -214,19 +217,30 @@ export function IntakeStep({
         )}
       </div>
 
-      <label className="flex items-start gap-3 text-base cursor-pointer">
+      <label className="flex items-start gap-3 text-base cursor-pointer glass-card rounded-card p-4">
         <input
           type="checkbox"
           checked={state.policiesAccepted}
           onChange={(e) => onChange({ policiesAccepted: e.target.checked })}
           className="mt-1 w-5 h-5 shrink-0 accent-tungsten cursor-pointer"
         />
-        <span className="text-muted">
-          I&apos;ve read and accept the{" "}
-          <Link href="/policies" target="_blank" className="text-current underline underline-offset-4">
-            studio policies
-          </Link>{" "}
-          (cancellation, damage, conduct).
+        <span className="flex items-start gap-2.5">
+          <Shield
+            className="w-5 h-5 text-tungsten mt-0.5 shrink-0"
+            strokeWidth={1.75}
+            aria-hidden
+          />
+          <span className="text-muted">
+            I&apos;ve read and accept the{" "}
+            <Link
+              href="/policies"
+              target="_blank"
+              className="text-current underline underline-offset-4"
+            >
+              studio policies
+            </Link>{" "}
+            (cancellation, damage, conduct).
+          </span>
         </span>
       </label>
 
@@ -243,13 +257,13 @@ export function IntakeStep({
           disabled={!canContinue}
           onClick={onContinue}
           className={cn(
-            "inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-colors",
+            "inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-all duration-200 ease-cinematic",
             canContinue
-              ? "bg-tungsten text-ink hover:bg-tungsten-soft"
+              ? "bg-tungsten text-ink hover:bg-tungsten-soft hover:shadow-[0_8px_22px_-8px_rgba(200,132,43,0.55)] hover:-translate-y-px"
               : "bg-panel text-muted border border-hairline cursor-not-allowed",
           )}
         >
-          Continue to payment →
+          Continue to payment <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </div>

@@ -8,6 +8,15 @@
  * locks in {appointmentTypeSlug, hours} and exposes the Continue button.
  */
 
+import {
+  Compass,
+  Zap,
+  Sun,
+  Sunrise,
+  CalendarDays,
+  ArrowRight,
+  type LucideIcon,
+} from "lucide-react";
 import { cn } from "@/lib/cn";
 import type { WizardState } from "../state";
 
@@ -26,6 +35,7 @@ type Tier = {
   id: "quick" | "halfday" | "fullday";
   label: string;
   blurb: string;
+  icon: LucideIcon;
   options: HourOption[];
   fromCents: number;
 };
@@ -35,6 +45,7 @@ const TIERS: Tier[] = [
     id: "quick",
     label: "Quick",
     blurb: "2–4 hours",
+    icon: Zap,
     options: [
       { label: "2h", hours: 2, priceCents: 20000 },
       { label: "3h", hours: 3, priceCents: 29500 },
@@ -46,6 +57,7 @@ const TIERS: Tier[] = [
     id: "halfday",
     label: "Half day",
     blurb: "5 hours flat",
+    icon: Sun,
     options: [{ label: "5h", hours: 5, priceCents: 48500 }],
     fromCents: 48500,
   },
@@ -53,6 +65,7 @@ const TIERS: Tier[] = [
     id: "fullday",
     label: "Full day",
     blurb: "6–12 hours",
+    icon: Sunrise,
     options: [
       { label: "6h", hours: 6, priceCents: 57500 },
       { label: "7h", hours: 7, priceCents: 66500 },
@@ -122,24 +135,31 @@ export function ServiceStep({
         type="button"
         onClick={pickTour}
         className={cn(
-          "w-full text-left bg-panel border rounded-card p-5 transition-colors",
-          "flex items-center justify-between gap-4",
-          tourSelected
-            ? "border-tungsten ring-1 ring-tungsten/40"
-            : "border-hairline hover:border-tungsten/60",
+          "w-full text-left rounded-card p-5",
+          "flex items-center gap-4",
+          "glass-card glass-card-hover",
+          tourSelected && "glass-card--active",
         )}
         aria-pressed={tourSelected}
       >
-        <div>
-          <div className="font-medium">Free studio tour</div>
-          <div className="text-sm text-muted mt-1">
+        <span className="icon-chip" aria-hidden>
+          <Compass className="w-5 h-5" strokeWidth={1.75} />
+        </span>
+        <div className="flex-1">
+          <div className="font-medium text-base sm:text-lg">Free studio tour</div>
+          <div className="text-sm text-muted mt-0.5">
             20 minutes · meet us in person before you book a real session
           </div>
         </div>
         <span className="font-display text-lg text-tungsten">Free</span>
       </button>
 
-      <div className="text-xs uppercase tracking-wider text-muted pt-2">or rent the studio</div>
+      <div className="flex items-center gap-3 pt-2">
+        <span className="text-xs uppercase tracking-[0.16em] text-muted">
+          or rent the studio
+        </span>
+        <span className="h-px flex-1 bg-hairline" aria-hidden />
+      </div>
 
       {/* Grid stretches every card to match the tallest in its row, so the
           single-option cards (Half-day, Multi-day) and the multi-option ones
@@ -157,6 +177,8 @@ export function ServiceStep({
             !multiDaySelected;
           const singleOption = tier.options.length === 1;
 
+          const Icon = tier.icon;
+
           // Single-option tier (Half day) → entire card is a single click target.
           if (singleOption) {
             const opt = tier.options[0];
@@ -166,22 +188,30 @@ export function ServiceStep({
                 type="button"
                 onClick={() => pickOption(opt)}
                 className={cn(
-                  "h-full text-left bg-panel border rounded-card p-5 transition-colors",
-                  "flex flex-col gap-2",
-                  isPicked
-                    ? "border-tungsten ring-1 ring-tungsten/40"
-                    : "border-hairline hover:border-tungsten/60",
+                  "h-full text-left rounded-card p-5 flex flex-col gap-2",
+                  "glass-card glass-card-hover",
+                  isPicked && "glass-card--active",
                 )}
                 aria-pressed={isPicked}
               >
-                <div className="text-xs uppercase tracking-wider text-muted">{tier.label}</div>
-                <div className="font-display text-2xl">{tier.blurb}</div>
+                <div className="flex items-center justify-between">
+                  <span className="icon-chip" aria-hidden>
+                    <Icon className="w-5 h-5" strokeWidth={1.75} />
+                  </span>
+                  <span className="text-xs uppercase tracking-[0.16em] text-muted">
+                    {tier.label}
+                  </span>
+                </div>
+                <div className="font-display text-2xl mt-1">{tier.blurb}</div>
                 <div className="text-base text-muted">{dollars(opt.priceCents)}</div>
-                {/* mt-auto pushes the action label to the bottom of the card
-                    so it lines up with the chips row on the multi-option
-                    tiers. */}
-                <div className="text-sm text-tungsten mt-auto pt-2">
-                  {isPicked ? "✓ Selected" : "Tap to pick"}
+                {/* mt-auto pushes the action label to the bottom so all
+                    4 cards' action areas share a baseline. */}
+                <div className="mt-auto pt-3 flex items-center gap-1.5 text-sm text-tungsten">
+                  {isPicked ? "✓ Selected" : (
+                    <>
+                      Tap to pick <ArrowRight className="w-3.5 h-3.5" />
+                    </>
+                  )}
                 </div>
               </button>
             );
@@ -192,19 +222,23 @@ export function ServiceStep({
             <div
               key={tier.id}
               className={cn(
-                "h-full bg-panel border rounded-card p-5 transition-colors flex flex-col gap-3",
-                isPicked
-                  ? "border-tungsten ring-1 ring-tungsten/40"
-                  : "border-hairline hover:border-tungsten/60",
+                "h-full rounded-card p-5 flex flex-col gap-3",
+                "glass-card glass-card-hover",
+                isPicked && "glass-card--active",
               )}
             >
-              <div className="flex flex-col gap-1">
-                <div className="text-xs uppercase tracking-wider text-muted">{tier.label}</div>
-                <div className="font-display text-2xl">{tier.blurb}</div>
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="icon-chip" aria-hidden>
+                    <Icon className="w-5 h-5" strokeWidth={1.75} />
+                  </span>
+                  <span className="text-xs uppercase tracking-[0.16em] text-muted">
+                    {tier.label}
+                  </span>
+                </div>
+                <div className="font-display text-2xl mt-1">{tier.blurb}</div>
                 <div className="text-base text-muted">from {dollars(tier.fromCents)}</div>
               </div>
-              {/* Chips pushed to card bottom so all 4 cards' action areas
-                  share a baseline. */}
               <div className="flex flex-wrap gap-2 mt-auto pt-2">
                 {tier.options.map((opt) => {
                   const active = state.hours === opt.hours && !tourSelected;
@@ -214,10 +248,10 @@ export function ServiceStep({
                       type="button"
                       onClick={() => pickOption(opt)}
                       className={cn(
-                        "rounded-full px-3.5 py-1.5 text-sm border transition-colors",
+                        "rounded-full px-3.5 py-1.5 text-sm border transition-all duration-200 ease-cinematic",
                         active
-                          ? "bg-tungsten text-ink border-tungsten"
-                          : "border-hairline hover:border-tungsten",
+                          ? "bg-tungsten text-ink border-tungsten shadow-[0_4px_14px_-4px_rgba(200,132,43,0.45)]"
+                          : "border-hairline hover:border-tungsten hover:bg-tungsten/5",
                       )}
                     >
                       {opt.label}
@@ -242,26 +276,33 @@ export function ServiceStep({
           type="button"
           onClick={pickMultiDay}
           className={cn(
-            "h-full text-left bg-panel border rounded-card p-5 transition-colors",
-            "flex flex-col gap-2",
-            multiDaySelected
-              ? "border-tungsten ring-1 ring-tungsten/40"
-              : "border-hairline hover:border-tungsten/60",
+            "h-full text-left rounded-card p-5 flex flex-col gap-2",
+            "glass-card glass-card-hover",
+            multiDaySelected && "glass-card--active",
           )}
           aria-pressed={multiDaySelected}
         >
-          <div className="text-xs uppercase tracking-wider text-muted">Multi-day</div>
-          <div className="font-display text-2xl">2+ days</div>
+          <div className="flex items-center justify-between">
+            <span className="icon-chip" aria-hidden>
+              <CalendarDays className="w-5 h-5" strokeWidth={1.75} />
+            </span>
+            <span className="text-xs uppercase tracking-[0.16em] text-muted">
+              Multi-day
+            </span>
+          </div>
+          <div className="font-display text-2xl mt-1">2+ days</div>
           <div className="text-base text-muted">
             $925/day · cap at 4 days ($3,700)
           </div>
-          {/* Bottom-aligned action area — matches the chips baseline on the
-              other cards. */}
-          <div className="mt-auto pt-2">
-            <div className="text-sm text-tungsten">
-              {multiDaySelected ? "✓ Selected" : "Tap to pick"}
+          <div className="mt-auto pt-3">
+            <div className="flex items-center gap-1.5 text-sm text-tungsten">
+              {multiDaySelected ? "✓ Selected" : (
+                <>
+                  Tap to pick <ArrowRight className="w-3.5 h-3.5" />
+                </>
+              )}
             </div>
-            <div className="text-xs text-muted/80 mt-1">
+            <div className="text-xs text-muted/80 mt-1.5">
               Weekend (Sat + Sun) counts as one day.
             </div>
           </div>

@@ -10,7 +10,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/cn";
 import type { WizardState } from "../state";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Receipt } from "lucide-react";
 
 const TZ = "America/Denver";
 const DATE_FMT = new Intl.DateTimeFormat("en-US", {
@@ -74,8 +74,11 @@ function SummaryBody({ state }: { state: WizardState }) {
   const pricing = state.livePricing;
 
   return (
-    <div className="bg-panel border border-hairline rounded-card p-6">
-      <h3 className="text-xs uppercase tracking-wider text-muted mb-4">Your booking</h3>
+    <div className="glass-card rounded-card p-6">
+      <h3 className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-tungsten font-medium mb-4">
+        <Receipt className="w-4 h-4" strokeWidth={1.75} aria-hidden />
+        Your booking
+      </h3>
 
       {!state.hours && !state.appointmentTypeSlug && (
         <p className="text-base text-muted">Pick a session to see your total.</p>

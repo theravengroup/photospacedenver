@@ -22,6 +22,7 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
+import { Lock, Timer, CreditCard } from "lucide-react";
 import { cn } from "@/lib/cn";
 import type { WizardState } from "../state";
 
@@ -59,6 +60,11 @@ export function PaymentStep({
           supported. We don&apos;t store your card — Stripe does.
         </p>
       </header>
+
+      <div className="inline-flex items-center gap-2 text-xs text-muted">
+        <Lock className="w-3.5 h-3.5 text-tungsten" strokeWidth={2} />
+        Secure payment via Stripe — your card never touches our servers
+      </div>
 
       <Elements
         stripe={stripePromise}
@@ -153,7 +159,7 @@ function CheckoutForm({
 
   return (
     <form onSubmit={onSubmit} className="space-y-5">
-      <div className="bg-panel border border-hairline rounded-card p-5">
+      <div className="glass-card rounded-card p-5">
         <PaymentElement
           options={{
             layout: { type: "tabs", defaultCollapsed: false },
@@ -163,7 +169,8 @@ function CheckoutForm({
       </div>
 
       {state.expiresAt && (
-        <p className="text-xs text-muted">
+        <p className="inline-flex items-center gap-2 text-xs text-muted">
+          <Timer className="w-3.5 h-3.5" strokeWidth={1.75} />
           Your slot is held until{" "}
           {new Intl.DateTimeFormat("en-US", {
             hour: "numeric",
@@ -194,11 +201,12 @@ function CheckoutForm({
           type="submit"
           disabled={!stripe || submitting}
           className={cn(
-            "inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-medium transition-colors",
-            "bg-tungsten text-ink hover:bg-tungsten-soft",
+            "inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-medium transition-all duration-200 ease-cinematic",
+            "bg-tungsten text-ink hover:bg-tungsten-soft hover:shadow-[0_10px_28px_-10px_rgba(200,132,43,0.6)] hover:-translate-y-px",
             submitting && "opacity-70 cursor-wait",
           )}
         >
+          <CreditCard className="w-4 h-4" strokeWidth={2} />
           {submitting ? "Processing…" : `Confirm & pay ${dollars(totalCents)}`}
         </button>
       </div>
