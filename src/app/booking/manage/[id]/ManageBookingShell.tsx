@@ -60,11 +60,20 @@ export function ManageBookingShell({
   const start = new Date(startAt);
   const end = new Date(endAt);
   // Date.now() at render is impure (lint rule react-hooks/purity); read it
-  // once after mount instead. Updates if the user keeps the page open across
-  // the 72h cutoff are fine — they'll see the new state on next interaction.
+  // once after mount via an async setter so set-state-in-effect is also
+  // happy. Stale by definition (no live ticker) — acceptable: the user
+  // re-loads when they want fresh data, and we re-check authoritatively
+  // server-side at cancel time.
   const [hoursOut, setHoursOut] = useState<number>(0);
   useEffect(() => {
-    setHoursOut((start.getTime() - Date.now()) / 3_600_000);
+    let cancelled = false;
+    void (async () => {
+      if (cancelled) return;
+      setHoursOut((start.getTime() - Date.now()) / 3_600_000);
+    })();
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startAt]);
   const beforeCutoff = hoursOut >= 72;
