@@ -70,6 +70,11 @@ export type WizardState = {
   additionalEmails: string[];
   policiesAccepted: boolean;
 
+  // Optional discount code (coupon or member-issued)
+  couponCode: string;
+  appliedCouponCode: string | null; // server-confirmed code that's currently applying
+  couponError: string | null;       // server-supplied reason a code didn't apply
+
   // Step 5: Payment
   bookingId: string | null;
   clientSecret: string | null;
@@ -100,6 +105,9 @@ export const INITIAL_STATE: WizardState = {
   customerPhone: "",
   additionalEmails: [],
   policiesAccepted: false,
+  couponCode: "",
+  appliedCouponCode: null,
+  couponError: null,
   bookingId: null,
   clientSecret: null,
   publishableKey: null,

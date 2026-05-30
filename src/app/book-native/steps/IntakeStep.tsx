@@ -32,6 +32,7 @@ export function IntakeStep({
 }) {
   const [ccOpen, setCcOpen] = useState(state.additionalEmails.length > 0);
   const [ccDraft, setCcDraft] = useState("");
+  const [couponOpen, setCouponOpen] = useState(state.couponCode.length > 0);
 
   const firstOk = state.customerFirstName.trim().length > 0;
   const lastOk = state.customerLastName.trim().length > 0;
@@ -164,6 +165,55 @@ export function IntakeStep({
         )}
       </div>
 
+      {/* Coupon / discount code — wizard live-pricing fetches with the
+          customer email so the engine can enforce allowlist + per-user limits. */}
+      <div>
+        <button
+          type="button"
+          onClick={() => setCouponOpen((v) => !v)}
+          className="text-base text-muted hover:text-current underline underline-offset-4"
+          aria-expanded={couponOpen}
+        >
+          {couponOpen ? "Hide" : "Have a coupon or discount code?"}
+        </button>
+        {couponOpen && (
+          <div className="mt-3 space-y-2">
+            <input
+              type="text"
+              autoComplete="off"
+              autoCapitalize="characters"
+              value={state.couponCode}
+              onChange={(e) =>
+                onChange({
+                  couponCode: e.target.value.toUpperCase(),
+                  // Clear stale feedback while they're typing
+                  appliedCouponCode: null,
+                  couponError: null,
+                })
+              }
+              placeholder="Enter code"
+              className="FIELD w-full max-w-xs uppercase tracking-wider"
+              maxLength={40}
+            />
+            {state.appliedCouponCode && (
+              <p className="text-sm text-tungsten">
+                ✓ {state.appliedCouponCode} applied — see updated total in summary.
+              </p>
+            )}
+            {state.couponError && !state.appliedCouponCode && state.couponCode.trim() && (
+              <p className="text-sm text-amber-400">
+                {couponErrorMessage(state.couponError)}
+              </p>
+            )}
+            {!state.customerEmail.trim() && state.couponCode.trim() && (
+              <p className="text-xs text-muted">
+                Enter your email above to validate the code.
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+
       <label className="flex items-start gap-3 text-base cursor-pointer">
         <input
           type="checkbox"
@@ -204,6 +254,32 @@ export function IntakeStep({
       </div>
     </div>
   );
+}
+
+/** Translate the backend's coupon_invalid `reason` codes into customer copy. */
+function couponErrorMessage(reason: string): string {
+  switch (reason) {
+    case "not_found":
+      return "We don't recognize that code.";
+    case "inactive":
+      return "That code is no longer active.";
+    case "expired":
+      return "That code has expired.";
+    case "not_yet_valid":
+      return "That code isn't active yet.";
+    case "applies_to_other_types":
+      return "That code doesn't apply to this session type.";
+    case "email_not_in_allowlist":
+      return "That code is reserved for specific customers.";
+    case "usage_limit_reached":
+      return "That code has been used to its limit.";
+    case "per_user_limit_reached":
+      return "You've already used that code.";
+    case "missing_customer_email_for_coupon":
+      return "Enter your email above to validate the code.";
+    default:
+      return "That code can't be applied right now.";
+  }
 }
 
 function Field({

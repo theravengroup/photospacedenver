@@ -74,6 +74,10 @@ export function BookingWizard() {
         mdStart: state.multiDayStartDate,
         mdEnd: state.multiDayEndDate,
         addons: state.addonSlugs,
+        couponCode: state.couponCode.trim().toUpperCase(),
+        // The coupon engine needs the email for allowlist / per-user-limit
+        // checks; include it so live-preview reflects the real validation.
+        email: state.customerEmail.trim().toLowerCase(),
       }),
     [
       state.appointmentTypeSlug,
@@ -82,6 +86,8 @@ export function BookingWizard() {
       state.multiDayStartDate,
       state.multiDayEndDate,
       state.addonSlugs,
+      state.couponCode,
+      state.customerEmail,
     ],
   );
 
@@ -98,10 +104,13 @@ export function BookingWizard() {
       void (async () => {
         set({ livePricingLoading: true, livePricingError: null });
         try {
+          const trimmedCoupon = state.couponCode.trim().toUpperCase();
           const body: Record<string, unknown> = {
             appointmentTypeSlug: state.appointmentTypeSlug,
             addonSlugs: state.addonSlugs,
             paymentMethod: "card",
+            couponCode: trimmedCoupon || null,
+            customerEmail: state.customerEmail.trim() || null,
           };
           if (isMultiDay) {
             body.multiDayStartDate = state.multiDayStartDate;
@@ -132,10 +141,14 @@ export function BookingWizard() {
               livePricingLoading: false,
             });
           } else {
+            // Surface coupon validity back into wizard state so the UI can
+            // render an applied chip OR a friendly error under the input.
             set({
               livePricing: json.pricing,
               livePricingError: null,
               livePricingLoading: false,
+              appliedCouponCode: json.pricing?.couponCode ?? null,
+              couponError: json.couponError ?? null,
             });
           }
         } catch {
@@ -158,6 +171,7 @@ export function BookingWizard() {
   const handleIntakeContinue = useCallback(async () => {
     set({ livePricingLoading: true, livePricingError: null });
     try {
+      const trimmedCoupon = state.couponCode.trim().toUpperCase();
       const checkoutBody: Record<string, unknown> = {
         appointmentTypeSlug: state.appointmentTypeSlug,
         addonSlugs: state.addonSlugs,
@@ -167,6 +181,7 @@ export function BookingWizard() {
         customerPhone: state.customerPhone,
         customerAdditionalEmails: state.additionalEmails,
         customGearRequest: state.customGearRequest || null,
+        couponCode: trimmedCoupon || null,
         policiesAccepted: state.policiesAccepted,
         paymentMethod: "card",
       };
