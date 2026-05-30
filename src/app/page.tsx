@@ -11,7 +11,13 @@ import { FaqList } from "@/components/sections/FaqList";
 import { Location } from "@/components/sections/Location";
 import { BookingCTA, EstimateCTA, TourCTA } from "@/components/cta/Ctas";
 import { Button } from "@/components/ui/Button";
+import { CardThumbnailStrip } from "@/components/sections/CardThumbnailStrip";
 import { SITE } from "@/lib/content/site-config";
+import {
+  STUDIO_GALLERY_FILES,
+  GEAR_GALLERY_FILES,
+  shuffleGallery,
+} from "@/lib/content/galleries";
 import { GEAR_BRANDS, GEAR_CATEGORIES } from "@/lib/content/gear-data";
 import { TESTIMONIALS } from "@/lib/content/testimonials";
 import { faqsByTag } from "@/lib/content/faqs";
@@ -25,6 +31,12 @@ const HERO_STATS = [
 
 
 export default function HomePage() {
+  // Shuffle the two galleries per render so refreshes feel alive.
+  // Server-only (page is a server component); shuffleGallery is pure-ish
+  // but uses Math.random which the purity lint flags inside components.
+  const studioThumbs = shuffleGallery(STUDIO_GALLERY_FILES);
+  const gearThumbs = shuffleGallery(GEAR_GALLERY_FILES);
+
   return (
     <>
       {/* Hero */}
@@ -61,6 +73,13 @@ export default function HomePage() {
                 209 Kalamath St · Denver
               </span>
             </div>
+            {/* Thumbnail marquee — sample of real work shot here. Scrolls
+                LEFT to mirror the gear strip's RIGHT scroll. */}
+            <CardThumbnailStrip
+              images={studioThumbs}
+              direction="left"
+              altPrefix="Shot at photospace"
+            />
             <div className="flex flex-1 flex-col p-7 sm:p-8">
               <p className="text-xs font-medium uppercase tracking-[0.2em] text-tungsten">01 · Rent the studio</p>
               <h2 className="font-display mt-2 text-display-lg">Shoot here.</h2>
@@ -98,6 +117,13 @@ export default function HomePage() {
                 On location · anywhere
               </span>
             </div>
+            {/* Thumbnail marquee — sample of the rental gear catalog.
+                Scrolls RIGHT to mirror the studio strip's LEFT scroll. */}
+            <CardThumbnailStrip
+              images={gearThumbs}
+              direction="right"
+              altPrefix="Gear available for rental"
+            />
             <div className="flex flex-1 flex-col p-7 sm:p-8">
               <p className="text-xs font-medium uppercase tracking-[0.2em] text-tungsten">02 · Rent the gear</p>
               <h2 className="font-display mt-2 text-display-lg">Take it anywhere.</h2>
